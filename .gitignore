@@ -51,3 +51,4 @@ models_v1/**/*.zip
 dashboard/dashboard.html
 dashboard/data.zip
 reports/drift/
+.venv-data/

@@ -4,10 +4,14 @@
 # Uniquement pour régénérer les Parquet depuis l'API FastF1.
 # Le service d'inférence n'en a pas besoin : les Parquet sont déjà produits.
 #
-# fastf1 3.3.0 exige numpy<2 et est donc incompatible avec les modèles.
-# Épingler ici la version installée dans .venv312 après vérification
-# (pip install fastf1 puis pip show fastf1).
+# Environnement SÉPARÉ (.venv-data), ne pas installer dans .venv312 :
+#   - fastf1 3.8.x exige pandas<3, l'inférence est figée en pandas 3.0.6 ;
+#   - les versions antérieures (3.0.2, 3.3.0) ne supportent pas numpy 2.
+# Aucune version de fastf1 ne peut donc cohabiter avec l'inférence.
+# L'interface entre les deux environnements est le fichier Parquet.
+#
+# Les Parquet versionnés ont été générés avec une version antérieure de fastf1.
+# Environnement complet figé : requirements-data.lock.txt
 # =============================================================================
--r requirements.txt
-
-fastf1
+fastf1==3.8.3
+pyarrow==25.0.1
