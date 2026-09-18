@@ -1,32 +1,13 @@
-# Deux usages, une image, deux cibles.
+# Execution ponctuelle d'un script, modeles et donnees montes en volume.
+#   docker compose run --rm train
+#   docker compose run --rm train python scripts/eval_generalization.py --model models/a2c/a2c_v2env_s2.zip --algo a2c
 
 services:
-  # Usage 1 : execution ponctuelle d'un script, tous les modeles et les
-  # donnees montes en volume.
-  #   docker compose run --rm train
-  #   docker compose run --rm train python scripts/eval_generalization.py --model models/dqn/dqn_v4_s1.zip --algo dqn
   train:
     build:
       context: .
-      target: service
-    image: f1-pitstop-rl:latest
+    image: f1-pitstop-rl-v2:latest
     volumes:
       - ./data:/app/data
       - ./models:/app/models
-      - ./reports:/app/reports
-
-  # Usage 2 : notebooks de demonstration
-  #   docker compose up notebook   ->  http://localhost:8888
-  # Sans jeton : expose uniquement sur la machine locale (127.0.0.1).
-  notebook:
-    build:
-      context: .
-      target: notebook
-    image: f1-pitstop-rl:notebook
-    ports:
-      - "127.0.0.1:8888:8888"
-    volumes:
-      - ./data:/app/data
-      - ./models:/app/models
-      - ./notebooks:/app/notebooks
       - ./reports:/app/reports

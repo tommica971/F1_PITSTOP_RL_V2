@@ -1,13 +1,11 @@
 # =============================================================================
-# F1_PITSTOP_RL — image CPU, Python 3.12
+# F1_PITSTOP_RL V2 — image CPU, Python 3.12
 # =============================================================================
-# Deux cibles :
-#   service  (defaut)  : inference. Lance check_models.py : preuve que le
-#                        modele livre se recharge dans l'image.
-#   notebook           : service + Jupyter, pour la demonstration.
+# Image de service (V2) : inference. Lance check_models.py : preuve que le
+# modele livre (a2c_v2env_s2) se recharge dans l'image.
+# La demonstration par notebooks est portee par l'image V1.
 #
-#   docker build -t f1-pitstop-rl .                       -> service
-#   docker build --target notebook -t f1-pitstop-rl:nb .  -> notebook
+#   docker build -t f1-pitstop-rl-v2 .
 #
 # Versions : requirements.txt, alignees sur system_info.txt des modeles.
 # CPU uniquement : reproductibilite (device='cpu') et image legere.
@@ -47,20 +45,6 @@ ENV PYTHONPATH=/app/src/f1_pitstop_rl/env:/app/src/f1_pitstop_rl/config:/app/src
 # Utilisateur non root
 RUN useradd --create-home --uid 1000 app && chown -R app:app /app
 USER app
-
-
-# --- Cible notebook -----------------------------------------------------------
-FROM base AS notebook
-
-USER root
-RUN pip install notebook
-COPY notebooks/ ./notebooks/
-RUN chown -R app:app /app/notebooks
-USER app
-
-EXPOSE 8888
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", \
-     "--ServerApp.token=", "--ServerApp.root_dir=/app"]
 
 
 # --- Cible service (derniere = cible par defaut) -----------------------------

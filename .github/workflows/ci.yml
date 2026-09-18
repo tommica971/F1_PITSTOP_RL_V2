@@ -1,8 +1,8 @@
-# Integration continue — F1_PITSTOP_RL
+# Integration continue — F1_PITSTOP_RL V2
 #
 # Verifie a chaque push :
 #   1. l'environnement fige s'installe depuis requirements.txt
-#   2. les 20 modeles versionnes se rechargent (check_models.py)
+#   2. les modeles versionnes se rechargent (check_models.py)
 #   3. la suite complete de tests passe (76 tests, donnees versionnees)
 #   4. l'environnement respecte le contrat Gymnasium (check_env)
 #   5. le style (ruff, non bloquant)
@@ -72,9 +72,6 @@ jobs:
           docker run --rm f1-pitstop-rl:ci | tee docker_check.log
           grep -q "\[OK\]" docker_check.log
           ! grep -q "\[KO\]" docker_check.log
-
-      - name: Build (cible notebook)
-        run: docker build --target notebook -t f1-pitstop-rl:nb .
 
       - name: Taille de l'image
         run: docker image ls f1-pitstop-rl
