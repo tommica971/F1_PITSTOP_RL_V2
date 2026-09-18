@@ -24,3 +24,15 @@ Voir la feuille de route complete dans le dossier ecrit (docs/dossier_ecrit/).
 
     python -m f1_pitstop_rl.data.extract_fastf1
     python -m f1_pitstop_rl.data.extract_tracinginsights
+
+### Environnement de collecte (optionnel)
+
+Les parquet sont versionnés : cette étape ne sert qu'à régénérer les données.
+fastf1 3.8.x exige pandas<3, incompatible avec l'environnement d'inférence
+(pandas 3.0.6) ; la collecte vit donc dans un venv séparé, l'interface entre
+les deux étant les fichiers parquet.
+
+```bat
+py -3.12 -m venv .venv-data
+.\.venv-data\Scripts\python -m pip install -r requirements-data.lock.txt
+```
