@@ -164,21 +164,38 @@ besoin de `features_dataset.parquet` et `all_drivers_dataset.parquet`.
 
 ---
 
-## 5. Reste à faire
+## 5. V2 publiée et dashboard régénéré (fin de session)
 
-1. **V2 sur GitHub** avec son infrastructure (copier celle de V1, Dockerfile à
-   faire pointer sur `models/a2c/a2c_v2env_s2.zip`, vérifier les tests V2).
-2. **`model_training.json`** : pointe encore sur `a2c_extended_pool_5000k`.
-3. **Dashboard** : régénérer sur l'environnement V2 avec `a2c_v2env`, après
-   `apply_patch_extract_optuna_v2.py` (lisait l'étude Optuna V1) et
-   `apply_patch_oracle_pool.py`. Appliquer aussi le patch oracle en V1.
-4. `fastf1` à épingler dans `requirements-data.txt`.
-5. Vérifier que `reports/drift/` est dans le `.gitignore` de V1.
-6. Lancer une fois à la main `smoke-test.yml` et `drift.yml` sur GitHub.
+- Dépôt `tommica971/F1_PITSTOP_RL_V2`, tag `v2-ci`. Même infrastructure que V1
+  (76 tests, contrat Gymnasium, Docker, smoke-test, dérive). Image V2 = cible
+  service seule (pas de notebooks en V2), modèle `models/a2c/a2c_v2env_s2.zip`.
+- Dashboard V2 sur `a2c_v2env_s2` : bat le 0-stop 14/19, oracle 2/19,
+  multi-graines « 67 % +/- 12 (~13/19) ». Chaîne de génération, dans l'ordre :
+  1. `python scripts/run_season_inference_v2.py --model models/a2c/a2c_v2env_s2.zip --algo a2c`
+  2. `python scripts/add_season_summary.py` (ajoute driver, team, summary :
+     sans lui le JS du template plante et 2 onglets restent vides)
+  3. `python scripts/build_comparison_data.py --model models/a2c/a2c_v2env_s2.zip --algo a2c --seeds models/a2c/a2c_v2env_s1.zip models/a2c/a2c_v2env_s3.zip`
+  4. `python scripts/extract_model_data.py --model a2c_v2env_s2 --algo a2c --compare a2c_v2env_s1 a2c_v2env_s3 a2c_v2opt_s1`
+  5. `cd dashboard && python build_dashboard.py --comparison data/comparison_a2c_v2env_s2.json --multi-seed "67 % +/- 12 (~13/19)"`
+- Patchs appliqués en V2 (scripts `apply_patch_*` dans `scripts/`) :
+  `extract_optuna_v2` (lisait l'étude V1), `oracle_pool` (oracle 0-stop inclus,
+  Belgique hors du jeu hors pool), `template_pool` (badge « test (pool) »,
+  cumul sur 19 GP, abstentions en gris), `template_labels` (panneau Optuna
+  « testés, non retenus », codes AUS/AUT).
 
----
+## 6. Reste à faire
 
-## 6. Choix de présentation
+1. Relancer les 12 évaluations V2 avec l'oracle corrigé pour que les JSON de
+   `docs/resultats/` correspondent aux chiffres du dossier.
+2. Appliquer `apply_patch_oracle_pool.py` en V1 (dqn_v4_s1 non affecté).
+3. Épingler `fastf1` dans `requirements-data.txt`.
+4. Vérifier `reports/drift/` dans le `.gitignore` de V1.
+5. Lancer une fois à la main `smoke-test.yml` et `drift.yml` sur les deux dépôts.
+6. Cosmétique dashboard : `n_steps : 32.00` affiché avec décimales ; le
+   verdict « sous le 0-stop » des abstentions dans la console de
+   `build_comparison_data.py`.
+
+## 7. Choix de présentation
 
 - Récit : **V1** démonstrateur qui a révélé les biais ; **V2** réévaluation
   corrigée. Ne pas présenter V2 comme une refonte architecturale.
