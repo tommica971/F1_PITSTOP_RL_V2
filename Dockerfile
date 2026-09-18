@@ -1,43 +1,69 @@
-# F1_PITSTOP_RL -- image CPU-only, reproductibilite prioritaire sur la vitesse
-# (coherent avec la contrainte device='cpu' obligatoire pour l'entrainement/eval,
-#  cf. memoire projet : le GPU introduit du non-determinisme malgre seed fixe)
+# =============================================================================
+# F1_PITSTOP_RL — image CPU, Python 3.12
+# =============================================================================
+# Deux cibles :
+#   service  (defaut)  : inference. Lance check_models.py : preuve que le
+#                        modele livre se recharge dans l'image.
+#   notebook           : service + Jupyter, pour la demonstration.
+#
+#   docker build -t f1-pitstop-rl .                       -> service
+#   docker build --target notebook -t f1-pitstop-rl:nb .  -> notebook
+#
+# Versions : requirements.txt, alignees sur system_info.txt des modeles.
+# CPU uniquement : reproductibilite (device='cpu') et image legere.
+# =============================================================================
 
-FROM python:3.12-slim AS base
+FROM python:3.12.10-slim AS base
 
-# Dependances systeme minimales : build-essential pour les wheels qui n'ont pas
-# de binaire precompile pour cette combinaison python/arch, libgomp pour torch CPU
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libgomp1 \
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# libgomp : runtime OpenMP de torch CPU. Pas de build-essential : toutes les
+# dependances ont des wheels precompiles pour cp312 / linux x86_64.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copier uniquement requirements.txt d'abord pour profiter du cache Docker
-# (le rebuild de l'image ne re-telecharge pas les dependances si le code change
-#  sans que les dependances changent)
+# Dependances d'abord : couche mise en cache tant que requirements.txt ne
+# change pas. L'index CPU de PyTorch est declare dans le fichier lui-meme.
 COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-# --index-url CPU pour torch : evite de telecharger les wheels CUDA (plusieurs Go
-# inutiles ici puisque l'entrainement/eval tourne exclusivement en CPU dans ce projet)
-RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu \
-    -r requirements.txt
-
-# Code source, config, modeles entraines, notebooks
+# Code et modele LIVRE uniquement. Les 19 autres modeles sont des artefacts
+# d'experimentation ; pour les evaluer, monter ./models en volume
+# (cf. docker-compose.yml, service train).
 COPY src/ ./src/
-COPY models/ ./models/
+COPY scripts/ ./scripts/
+COPY check_models.py .
+COPY models/a2c/a2c_v2env_s2.zip ./models/a2c/a2c_v2env_s2.zip
+
+# Le projet importe ses modules par leur nom court (f1_pitstop_env...).
+ENV PYTHONPATH=/app/src/f1_pitstop_rl/env:/app/src/f1_pitstop_rl/config:/app/src/f1_pitstop_rl/data:/app/src/f1_pitstop_rl/training
+
+# Utilisateur non root
+RUN useradd --create-home --uid 1000 app && chown -R app:app /app
+USER app
+
+
+# --- Cible notebook -----------------------------------------------------------
+FROM base AS notebook
+
+USER root
+RUN pip install notebook
 COPY notebooks/ ./notebooks/
+RUN chown -R app:app /app/notebooks
+USER app
 
-# Donnees : volontairement PAS copiees dans l'image (montees en volume au lancement,
-# cf. docker-compose.yml) -- eviter de figer des donnees dans l'image alourdit le
-# build et complique la mise a jour du pool de GP sans rebuild
-# COPY data/ ./data/
-
-ENV PYTHONPATH=/app/src/f1_pitstop_rl/env:/app/src/f1_pitstop_rl/config:$PYTHONPATH
-ENV PYTHONUNBUFFERED=1
-
-# Port par defaut si Jupyter est lance pour ouvrir/executer les notebooks dans le
-# conteneur (cf. docker-compose.yml, service "notebook")
 EXPOSE 8888
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", \
+     "--ServerApp.token=", "--ServerApp.root_dir=/app"]
 
-CMD ["python", "-m", "f1_pitstop_rl.training.train_a2c", "--help"]
+
+# --- Cible service (derniere = cible par defaut) -----------------------------
+FROM base AS service
+
+CMD ["python", "check_models.py"]

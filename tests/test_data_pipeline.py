@@ -46,7 +46,12 @@ class TestMasterDataset:
         assert set(df["driver"].unique()) == {DRIVER_CODE}
 
     def test_covers_ten_gps(self, df):
-        assert df.groupby(["season", "event"]).ngroups == 10
+        # Le jeu couvre au moins le pool d'entrainement. Il contient aussi
+        # les GP de la saison 2025 utilises pour l'inference au dashboard,
+        # d'ou un total superieur a la taille du pool.
+        pool = {(g["season"], g["event"]) for g in GP_POOL}
+        present = set(df.groupby(["season", "event"]).groups)
+        assert pool <= present, f"GP du pool absents : {pool - present}"
 
     def test_lap_1_always_excluded_from_usable(self, df):
         """Cf. debug Phase 1.2/1.3 : le tour 1 (artefact sesT) ne doit JAMAIS

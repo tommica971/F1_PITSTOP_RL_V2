@@ -1,0 +1,32 @@
+# Contexte de build minimal : seuls requirements.txt, src/, scripts/,
+# notebooks/, check_models.py et le modele livre sont utiles.
+
+.git/
+.github/
+.gitattributes
+.gitignore
+
+.venv*/
+venv*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.env
+
+# Donnees : montees en volume, jamais figees dans l'image
+data/
+.fastf1_cache/
+reports/
+
+# Hors perimetre de l'image
+tests/
+docs/
+dashboard/
+models/training_logs/
+/*.zip
+*.bak
+*.bak_*

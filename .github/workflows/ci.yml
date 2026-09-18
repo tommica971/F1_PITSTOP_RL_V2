@@ -1,0 +1,80 @@
+# Integration continue — F1_PITSTOP_RL
+#
+# Verifie a chaque push :
+#   1. l'environnement fige s'installe depuis requirements.txt
+#   2. les 20 modeles versionnes se rechargent (check_models.py)
+#   3. la suite complete de tests passe (76 tests, donnees versionnees)
+#   4. l'environnement respecte le contrat Gymnasium (check_env)
+#   5. le style (ruff, non bloquant)
+#   6. l'image Docker se construit ET le modele livre s'y recharge
+#
+# Non verifie : l'entrainement complet (plusieurs heures par algorithme,
+# GitHub Actions coupe a 6 h). Voir smoke-test.yml.
+#
+# Runner fige (ubuntu-24.04) plutot que ubuntu-latest : meme logique que
+# Python et les dependances, l'environnement de CI ne change pas sans nous.
+
+name: CI
+
+on:
+  push:
+    branches: [master, main, v2]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Tests et qualite
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.10"
+          cache: pip
+
+      - name: Dependances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Rechargement des modeles
+        run: |
+          python check_models.py | tee check_models.log
+          ! grep -q "\[KO\]" check_models.log
+
+      - name: Tests
+        run: pytest tests/ -v --tb=short
+
+      - name: Contrat Gymnasium
+        run: python scripts/check_env_contract.py
+
+      - name: Style (ruff)
+        run: ruff check src/ scripts/ tests/
+        continue-on-error: true   # signale sans bloquer
+
+  docker:
+    name: Image Docker
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build (cible service)
+        run: docker build -t f1-pitstop-rl:ci .
+
+      - name: Le modele livre se recharge dans l'image
+        run: |
+          docker run --rm f1-pitstop-rl:ci | tee docker_check.log
+          grep -q "\[OK\]" docker_check.log
+          ! grep -q "\[KO\]" docker_check.log
+
+      - name: Build (cible notebook)
+        run: docker build --target notebook -t f1-pitstop-rl:nb .
+
+      - name: Taille de l'image
+        run: docker image ls f1-pitstop-rl

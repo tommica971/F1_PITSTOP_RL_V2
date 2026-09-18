@@ -1,0 +1,13 @@
+# =============================================================================
+# F1_PITSTOP_RL — dépendances de COLLECTE des données (hors image Docker)
+# =============================================================================
+# Uniquement pour régénérer les Parquet depuis l'API FastF1.
+# Le service d'inférence n'en a pas besoin : les Parquet sont déjà produits.
+#
+# fastf1 3.3.0 exige numpy<2 et est donc incompatible avec les modèles.
+# Épingler ici la version installée dans .venv312 après vérification
+# (pip install fastf1 puis pip show fastf1).
+# =============================================================================
+-r requirements.txt
+
+fastf1

@@ -1,0 +1,11 @@
+# =============================================================================
+# F1_PITSTOP_RL — dependances de DEVELOPPEMENT (tests, qualite, tuning)
+# =============================================================================
+# Hors image Docker. Utilise par la CI et en local.
+# =============================================================================
+-r requirements.txt
+
+pytest>=8
+pytest-cov
+ruff
+optuna

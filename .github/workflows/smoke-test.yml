@@ -1,0 +1,46 @@
+# Test de fumee hebdomadaire — F1_PITSTOP_RL
+#
+# Remplace retrain.yml (irrealisable : plusieurs heures par algorithme,
+# GitHub Actions coupe a 6 h). Verifie qu'un entrainement TRES court demarre
+# et produit un modele rechargeable : attrape les regressions silencieuses
+# (signature modifiee, dependance cassee) sans pretendre valider une
+# performance.
+
+name: Test de fumee
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"   # lundi 03h00 UTC
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.10"
+          cache: pip
+
+      - name: Dependances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Entrainement court (20 000 pas)
+        run: |
+          python src/f1_pitstop_rl/training/train_v4.py \
+            --algo a2c --seed 1 --timesteps 20000 --name ci_smoke
+
+      - name: Le modele se recharge
+        run: |
+          python - <<'PY'
+          from stable_baselines3 import A2C
+          m = A2C.load("models/a2c/ci_smoke.zip", device="cpu")
+          print("gamma =", m.gamma, "| n_steps =", m.n_steps)
+          assert m.gamma > 0.9, "gamma anormalement bas — regression possible"
+          print("Modele rechargeable, hyperparametres coherents.")
+          PY

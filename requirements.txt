@@ -1,19 +1,23 @@
-# ATTENTION -- versions a completer avec `pip freeze` depuis l'environnement
-# Windows local de reference (celui qui a produit les resultats du dossier).
-# Les numeros ci-dessous sont des PLACEHOLDERS non-verifies -- ne pas builder
-# l'image finale avant de les remplacer par les versions exactes utilisees
-# pour entrainer/evaluer les 3 modeles finaux (Phase 3.5).
+# =============================================================================
+# F1_PITSTOP_RL — dépendances d'INFÉRENCE (image Docker, CI, dashboard)
+# =============================================================================
+# Python 3.12 requis.
+# Versions alignées sur system_info.txt des modèles livrés
+# (entraînés sous Python 3.12.7, SB3 2.7.1, torch 2.11.0, numpy 2.4.4,
+# gymnasium 1.2.3) et validées par reproduction : dqn_v4_s1 bat le 0-stop
+# sur 18/19 GP hors pool, identique à l'évaluation d'origine.
 #
-# torch installe separement via --extra-index-url CPU dans le Dockerfile
-# (voir RUN pip install ...) -- ne pas dupliquer ici avec une version CUDA
+# torch est la build CPU : les modèles entraînés sur GPU se rechargent
+# en CPU (device="cpu"), et l'image est ~10x plus légère.
+# Le suffixe +cpu n'existe que sur l'index PyTorch : pip ne peut donc pas
+# installer par erreur la build CUDA de PyPI.
+# =============================================================================
+--extra-index-url https://download.pytorch.org/whl/cpu
 
-stable-baselines3==2.3.0
-gymnasium==0.29.1
-torch==2.3.1
-optuna==3.6.1
-pandas==2.2.2
-pyarrow==16.1.0
-numpy==1.26.4
-matplotlib==3.9.0
-jupyter==1.0.0
-fastf1==3.3.0
+torch==2.11.0+cpu
+numpy==2.4.4
+stable-baselines3==2.7.1
+gymnasium==1.2.3
+cloudpickle==3.1.2
+pandas==3.0.6
+pyarrow==25.0.1

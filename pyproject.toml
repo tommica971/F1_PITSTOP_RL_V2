@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "f1-pitstop-rl"
+version = "1.1.0"
+description = "Agent d'apprentissage par renforcement pour la strategie d'arret au stand en Formule 1"
+readme = "README.md"
+# Python 3.12 : version d'entrainement des modeles livres (system_info.txt).
+requires-python = ">=3.12,<3.13"
+authors = [{ name = "Tom Micaelli" }]
+
+# Les versions EXACTES sont dans requirements.txt (inference) et
+# requirements.lock.txt (environnement complet valide). Ce fichier decrit le
+# projet ; il ne sert pas a l'epinglage.
+dependencies = [
+    "stable-baselines3",
+    "gymnasium",
+    "torch",
+    "numpy",
+    "pandas",
+    "pyarrow",
+    "cloudpickle",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov", "ruff"]
+tuning = ["optuna"]
+data = ["fastf1"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "requires_data: test necessitant les fichiers Parquet, absents du depot",
+]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]

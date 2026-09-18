@@ -1,29 +1,30 @@
-# Deux usages couverts : (1) lancer un script d'entrainement/eval en one-shot,
-# (2) ouvrir les notebooks (06/07/08) dans un Jupyter conteneurise pour la
-# soutenance -- meme image, deux points d'entree.
+# Deux usages, une image, deux cibles.
 
 services:
-  # Usage 1 : execution one-shot d'un script (ex. eval finale des 3 candidats)
-  #   docker compose run --rm train python -m f1_pitstop_rl.training.train_dqn --extended-pool
+  # Usage 1 : execution ponctuelle d'un script, tous les modeles et les
+  # donnees montes en volume.
+  #   docker compose run --rm train
+  #   docker compose run --rm train python scripts/eval_generalization.py --model models/dqn/dqn_v4_s1.zip --algo dqn
   train:
-    build: .
+    build:
+      context: .
+      target: service
+    image: f1-pitstop-rl:latest
     volumes:
       - ./data:/app/data
       - ./models:/app/models
       - ./reports:/app/reports
-    environment:
-      - PYTHONUNBUFFERED=1
 
-  # Usage 2 : notebooks pour la demo de soutenance
-  #   docker compose up notebook
-  #   -> http://localhost:8888
+  # Usage 2 : notebooks de demonstration
+  #   docker compose up notebook   ->  http://localhost:8888
+  # Sans jeton : expose uniquement sur la machine locale (127.0.0.1).
   notebook:
-    build: .
-    command: >
-      jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser
-      --allow-root --NotebookApp.token=''
+    build:
+      context: .
+      target: notebook
+    image: f1-pitstop-rl:notebook
     ports:
-      - "8888:8888"
+      - "127.0.0.1:8888:8888"
     volumes:
       - ./data:/app/data
       - ./models:/app/models

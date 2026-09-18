@@ -1,0 +1,10 @@
+# =============================================================================
+# F1_PITSTOP_RL — dependances de MONITORING (hors image Docker)
+# =============================================================================
+# Evidently tire une soixantaine de paquets (scikit-learn, statsmodels,
+# serveur web...) inutiles a l'inference : il reste hors de requirements.txt.
+# Version verifiee compatible avec pandas 3.0.6 / numpy 2.4.4.
+# =============================================================================
+-r requirements.txt
+
+evidently==0.7.23

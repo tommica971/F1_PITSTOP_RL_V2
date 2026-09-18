@@ -1,0 +1,702 @@
+{
+  "method": "distance",
+  "reference": {
+    "gp": 8,
+    "laps": 490,
+    "definition": "GP_POOL role train_*"
+  },
+  "current": {
+    "gp": 19,
+    "laps": 1153,
+    "definition": "GP hors GP_POOL, >= 25 tours"
+  },
+  "overall": {
+    "drifted_count": 9,
+    "drifted_share": 0.75,
+    "columns": {
+      "tyre_age_laps": {
+        "method": "wasserstein",
+        "threshold": 0.1,
+        "value": 0.42582181552151904,
+        "drift": true
+      },
+      "tours_restants": {
+        "method": "wasserstein",
+        "threshold": 0.1,
+        "value": 0.01344406677366037,
+        "drift": false
+      },
+      "position": {
+        "method": "wasserstein",
+        "threshold": 0.1,
+        "value": 1.1010050757151462,
+        "drift": true
+      },
+      "gap_avant": {
+        "method": "wasserstein",
+        "threshold": 0.1,
+        "value": 0.17733903636806334,
+        "drift": true
+      },
+      "gap_arriere": {
+        "method": "wasserstein",
+        "threshold": 0.1,
+        "value": 0.1256715679020999,
+        "drift": true
+      },
+      "track_temp_c": {
+        "method": "wasserstein",
+        "threshold": 0.1,
+        "value": 2.1188122479213667,
+        "drift": true
+      },
+      "delta_pluie_3tours": {
+        "method": "wasserstein",
+        "threshold": 0.1,
+        "value": 0.3187040676969884,
+        "drift": true
+      },
+      "n_compounds_used": {
+        "method": "wasserstein",
+        "threshold": 0.1,
+        "value": 0.11089585210659142,
+        "drift": true
+      },
+      "is_raining": {
+        "method": "jensenshannon",
+        "threshold": 0.1,
+        "value": 0.18941753338285716,
+        "drift": true
+      },
+      "rival_avant_vient_de_pitter": {
+        "method": "jensenshannon",
+        "threshold": 0.1,
+        "value": 0.05564348967843071,
+        "drift": false
+      },
+      "rival_arriere_vient_de_pitter": {
+        "method": "jensenshannon",
+        "threshold": 0.1,
+        "value": 0.044664125704841566,
+        "drift": false
+      },
+      "tyre_compound": {
+        "method": "jensenshannon",
+        "threshold": 0.1,
+        "value": 0.45066652872093177,
+        "drift": true
+      }
+    }
+  },
+  "calibration": {
+    "thresholds": {
+      "tyre_age_laps": 0.6353196652881913,
+      "tours_restants": 0.3315733159415683,
+      "position": 1.5274786911197602,
+      "gap_avant": 1.555230604898157,
+      "gap_arriere": 0.8026187708817063,
+      "track_temp_c": 1.8627323369279827,
+      "delta_pluie_3tours": 0.7641691990756366,
+      "n_compounds_used": 1.1903473679257495,
+      "is_raining": 0.21518870061868892,
+      "rival_avant_vient_de_pitter": 0.1,
+      "rival_arriere_vient_de_pitter": 0.15465281395173416,
+      "tyre_compound": 0.5822131201055617
+    },
+    "leave_one_out": {
+      "tyre_age_laps": [
+        0.6353196652881913,
+        0.20552604478292072,
+        0.570205892467943,
+        0.10726449967408605,
+        0.2381745401823555,
+        0.16556264579182917,
+        0.13759714612237325,
+        0.1365184864796085
+      ],
+      "tours_restants": [
+        0.1219972118749509,
+        0.1219972118749509,
+        0.15212347547712904,
+        0.3315733159415683,
+        0.13758819575336734,
+        0.26226493089391245,
+        0.15212347547712904,
+        0.3004406361849393
+      ],
+      "position": [
+        1.0833615726103762,
+        0.8066366628105669,
+        0.835522830573237,
+        1.5274786911197602,
+        0.6809071238431473,
+        1.4385631436133808,
+        0.7853347770781289,
+        0.9853803243035786
+      ],
+      "gap_avant": [
+        1.555230604898157,
+        0.3890733853820116,
+        0.31411860916961704,
+        0.25745092010517834,
+        0.4149987993179931,
+        0.5378291733306185,
+        0.36825186498272106,
+        0.2555695513578474
+      ],
+      "gap_arriere": [
+        0.8026187708817063,
+        0.3621998316194231,
+        0.3433397503330233,
+        0.09645224624530783,
+        0.320024434159069,
+        0.6277094604980568,
+        0.43566164773170785,
+        0.33567021288496557
+      ],
+      "track_temp_c": [
+        1.8627323369279827,
+        1.5990760244079407,
+        1.0753274856154778,
+        0.5360754517059967,
+        1.1303942316610032,
+        0.4871337548116393,
+        1.5658636037217488,
+        0.8406937669055998
+      ],
+      "delta_pluie_3tours": [
+        0.3453617152445848,
+        0.3453617152445848,
+        0.34494214515285204,
+        0.6543517320383601,
+        0.34877432566951583,
+        0.14141741818525744,
+        0.7641691990756366,
+        0.06021542821074643
+      ],
+      "n_compounds_used": [
+        1.1903473679257495,
+        0.3881445343005248,
+        0.637866760928108,
+        0.9279301439405842,
+        1.1833303832290663,
+        0.3537460361286708,
+        0.3585201141722408,
+        0.7555229525479683
+      ],
+      "is_raining": [
+        0.21308819319296157,
+        0.21308819319296157,
+        0.21282993705616243,
+        0.1148873874428617,
+        0.21518870061868892,
+        0.13523354077142502,
+        0.21129494651278627,
+        0.018211750272803473
+      ],
+      "rival_avant_vient_de_pitter": [
+        0.09909499454739387,
+        0.03901209119766394,
+        0.055879325011461714,
+        0.02079847920730439,
+        0.007020540953280434,
+        0.05941061554303904,
+        0.012466649642517535,
+        0.09153068010874452
+      ],
+      "rival_arriere_vient_de_pitter": [
+        0.08294468247609615,
+        0.08294468247609615,
+        0.08156280586809057,
+        0.15465281395173416,
+        0.09301992875346428,
+        0.04231970766307231,
+        0.07346866774786294,
+        0.04236065539151954
+      ],
+      "tyre_compound": [
+        0.5598843236459967,
+        0.5822131201055617,
+        0.5159690950143186,
+        0.5322489584487737,
+        0.4713736956924539,
+        0.3685488123819292,
+        0.390544851039818,
+        0.4891745949281093
+      ]
+    },
+    "floor": 0.1
+  },
+  "per_gp_frequency": {
+    "tyre_age_laps": 8,
+    "tours_restants": 0,
+    "position": 6,
+    "gap_avant": 1,
+    "gap_arriere": 2,
+    "track_temp_c": 8,
+    "delta_pluie_3tours": 0,
+    "n_compounds_used": 1,
+    "is_raining": 0,
+    "rival_avant_vient_de_pitter": 3,
+    "rival_arriere_vient_de_pitter": 6,
+    "tyre_compound": 4
+  },
+  "per_gp": [
+    {
+      "season": 2025,
+      "event": "Mexico City Grand Prix",
+      "laps": 70,
+      "drifted_count": 6,
+      "drifted_columns": [
+        "gap_avant",
+        "position",
+        "rival_avant_vient_de_pitter",
+        "track_temp_c",
+        "tyre_age_laps",
+        "tyre_compound"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.6825069802367727,
+        "tours_restants": 0.2196251129977995,
+        "position": 1.6654000130150877,
+        "gap_avant": 3.1127567394267572,
+        "gap_arriere": 0.40092907928777594,
+        "track_temp_c": 4.89199832168533,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.13836854960787792,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.10109114612533598,
+        "rival_arriere_vient_de_pitter": 0.08640871744739423,
+        "tyre_compound": 0.5935864317405714
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Italian Grand Prix",
+      "laps": 52,
+      "drifted_count": 4,
+      "drifted_columns": [
+        "gap_arriere",
+        "rival_arriere_vient_de_pitter",
+        "track_temp_c",
+        "tyre_age_laps"
+      ],
+      "distances": {
+        "tyre_age_laps": 1.347765381510406,
+        "tours_restants": 0.272442111252978,
+        "position": 1.221202119154628,
+        "gap_avant": 0.18307664256394676,
+        "gap_arriere": 0.9670337719152088,
+        "track_temp_c": 3.478893786793574,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.9365155968171662,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.02392324733183082,
+        "rival_arriere_vient_de_pitter": 0.1729528076771737,
+        "tyre_compound": 0.5379286738903993
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Azerbaijan Grand Prix",
+      "laps": 50,
+      "drifted_count": 3,
+      "drifted_columns": [
+        "position",
+        "rival_arriere_vient_de_pitter",
+        "rival_avant_vient_de_pitter"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.32296123700944895,
+        "tours_restants": 0.3270419617699348,
+        "position": 1.769920210136762,
+        "gap_avant": 0.1943607503418281,
+        "gap_arriere": 0.346753760554982,
+        "track_temp_c": 0.8052664352205781,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.5258004885099361,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.18561050487474098,
+        "rival_arriere_vient_de_pitter": 0.1729528076771737,
+        "tyre_compound": 0.5318597859393728
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Canadian Grand Prix",
+      "laps": 69,
+      "drifted_count": 3,
+      "drifted_columns": [
+        "position",
+        "track_temp_c",
+        "tyre_age_laps"
+      ],
+      "distances": {
+        "tyre_age_laps": 1.233448084335956,
+        "tours_restants": 0.19321661387021016,
+        "position": 1.7036110686405468,
+        "gap_avant": 0.43436351660323974,
+        "gap_arriere": 0.3230780561214617,
+        "track_temp_c": 4.904101524022506,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.6412580137805677,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.010994921067718296,
+        "rival_arriere_vient_de_pitter": 0.0825631037946113,
+        "tyre_compound": 0.5312822466387592
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Miami Grand Prix",
+      "laps": 57,
+      "drifted_count": 3,
+      "drifted_columns": [
+        "rival_arriere_vient_de_pitter",
+        "track_temp_c",
+        "tyre_age_laps"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.6441244902696057,
+        "tours_restants": 0.13594248496058609,
+        "position": 1.1810163173208772,
+        "gap_avant": 0.6548298841277265,
+        "gap_arriere": 0.42062097272705484,
+        "track_temp_c": 2.2958502254803834,
+        "delta_pluie_3tours": 0.21009303971093393,
+        "n_compounds_used": 0.2908773939783153,
+        "is_raining": 0.10467261475952597,
+        "rival_avant_vient_de_pitter": 0.033043171683021885,
+        "rival_arriere_vient_de_pitter": 0.1729528076771737,
+        "tyre_compound": 0.5410083712492386
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Abu Dhabi Grand Prix",
+      "laps": 57,
+      "drifted_count": 2,
+      "drifted_columns": [
+        "position",
+        "rival_arriere_vient_de_pitter"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.12641568484092108,
+        "tours_restants": 0.13594248496058609,
+        "position": 1.990403017864452,
+        "gap_avant": 0.5837293703719985,
+        "gap_arriere": 0.3338102713443489,
+        "track_temp_c": 1.013008740783254,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.46092505889115487,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.058759192567748246,
+        "rival_arriere_vient_de_pitter": 0.1729528076771737,
+        "tyre_compound": 0.5514498231236662
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Chinese Grand Prix",
+      "laps": 56,
+      "drifted_count": 2,
+      "drifted_columns": [
+        "rival_arriere_vient_de_pitter",
+        "tyre_age_laps"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.9456246872077118,
+        "tours_restants": 0.16324241021906455,
+        "position": 0.7776514206269931,
+        "gap_avant": 0.2838427064216424,
+        "gap_arriere": 0.3644925230563177,
+        "track_temp_c": 1.6510843775885427,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.5448261640810194,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.08735867840902006,
+        "rival_arriere_vient_de_pitter": 0.1729528076771737,
+        "tyre_compound": 0.5333052947604852
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Qatar Grand Prix",
+      "laps": 56,
+      "drifted_count": 2,
+      "drifted_columns": [
+        "gap_arriere",
+        "position"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.13682847606983226,
+        "tours_restants": 0.16324241021906455,
+        "position": 1.8188870090182825,
+        "gap_avant": 0.27623654783436613,
+        "gap_arriere": 1.4475231357811744,
+        "track_temp_c": 0.8413800518605028,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.6356305247611894,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.03132109093941104,
+        "rival_arriere_vient_de_pitter": 0.08379638313333185,
+        "tyre_compound": 0.5554126882509545
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Singapore Grand Prix",
+      "laps": 61,
+      "drifted_count": 2,
+      "drifted_columns": [
+        "position",
+        "rival_arriere_vient_de_pitter"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.1032953265886727,
+        "tours_restants": 0.026742783926672672,
+        "position": 2.044470352554205,
+        "gap_avant": 0.18231675049040785,
+        "gap_arriere": 0.47108984448454677,
+        "track_temp_c": 1.683824598980124,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.27169004966038657,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.09283920219334944,
+        "rival_arriere_vient_de_pitter": 0.1729528076771737,
+        "tyre_compound": 0.4485910059306642
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Spanish Grand Prix",
+      "laps": 66,
+      "drifted_count": 2,
+      "drifted_columns": [
+        "track_temp_c",
+        "tyre_compound"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.1881205705038331,
+        "tours_restants": 0.11816461155478673,
+        "position": 0.37525113842142216,
+        "gap_avant": 0.4799106295956614,
+        "gap_arriere": 0.6123540764113558,
+        "track_temp_c": 4.561397996282519,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.13543345916165028,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.046669040197997134,
+        "rival_arriere_vient_de_pitter": 0.009064338966835096,
+        "tyre_compound": 0.5901156339716697
+      }
+    },
+    {
+      "season": 2025,
+      "event": "São Paulo Grand Prix",
+      "laps": 71,
+      "drifted_count": 2,
+      "drifted_columns": [
+        "rival_avant_vient_de_pitter",
+        "tyre_compound"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.5042014472737671,
+        "tours_restants": 0.24647932519083326,
+        "position": 0.44313789989482716,
+        "gap_avant": 0.6899039342848057,
+        "gap_arriere": 0.528226909127623,
+        "track_temp_c": 1.1119378159965203,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.41778532143927943,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.18561050487474098,
+        "rival_arriere_vient_de_pitter": 0.037990383384203866,
+        "tyre_compound": 0.6233413679700522
+      }
+    },
+    {
+      "season": 2025,
+      "event": "United States Grand Prix",
+      "laps": 55,
+      "drifted_count": 2,
+      "drifted_columns": [
+        "track_temp_c",
+        "tyre_compound"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.3958218911748489,
+        "tours_restants": 0.19054233547754287,
+        "position": 1.1989621340811958,
+        "gap_avant": 0.14577626237562064,
+        "gap_arriere": 0.39938872398461,
+        "track_temp_c": 4.087276788933056,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.17138831712793973,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.08616814628835184,
+        "rival_arriere_vient_de_pitter": 0.0713306675089742,
+        "tyre_compound": 0.5946700509389783
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Austrian Grand Prix",
+      "laps": 69,
+      "drifted_count": 1,
+      "drifted_columns": [
+        "track_temp_c"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.2288225853441052,
+        "tours_restants": 0.19321661387021016,
+        "position": 0.5888432368540394,
+        "gap_avant": 0.2657578130147268,
+        "gap_arriere": 0.18362184617729932,
+        "track_temp_c": 4.714629269653811,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 1.1274530116418722,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.010994921067718296,
+        "rival_arriere_vient_de_pitter": 0.08556789443463422,
+        "tyre_compound": 0.4573862434014619
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Bahrain Grand Prix",
+      "laps": 57,
+      "drifted_count": 1,
+      "drifted_columns": [
+        "n_compounds_used"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.08892581091950202,
+        "tours_restants": 0.13594248496058609,
+        "position": 0.799855573286236,
+        "gap_avant": 0.2515985035583821,
+        "gap_arriere": 0.31919338504391553,
+        "track_temp_c": 1.1495147230501055,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 1.2257147352764524,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.033043171683021885,
+        "rival_arriere_vient_de_pitter": 0.026123821665077422,
+        "tyre_compound": 0.43657686752129343
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Dutch Grand Prix",
+      "laps": 72,
+      "drifted_count": 1,
+      "drifted_columns": [
+        "tyre_age_laps"
+      ],
+      "distances": {
+        "tyre_age_laps": 1.012285749401981,
+        "tours_restants": 0.2735563939165893,
+        "position": 0.8158862826784284,
+        "gap_avant": 0.4363504080365776,
+        "gap_arriere": 0.5665517439175946,
+        "track_temp_c": 0.7838628805390753,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.306044326736869,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.015582804392086185,
+        "rival_arriere_vient_de_pitter": 0.00043470066243334114,
+        "tyre_compound": 0.5325509546574481
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Emilia Romagna Grand Prix",
+      "laps": 63,
+      "drifted_count": 1,
+      "drifted_columns": [
+        "track_temp_c"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.1469571887000569,
+        "tours_restants": 0.05177700110247465,
+        "position": 1.253750907924817,
+        "gap_avant": 0.1608628101736119,
+        "gap_arriere": 0.40741536200512324,
+        "track_temp_c": 3.19323477049081,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.6053624045344661,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.042466205108688766,
+        "rival_arriere_vient_de_pitter": 0.027368421895226574,
+        "tyre_compound": 0.536319798753667
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Hungarian Grand Prix",
+      "laps": 69,
+      "drifted_count": 1,
+      "drifted_columns": [
+        "tyre_age_laps"
+      ],
+      "distances": {
+        "tyre_age_laps": 0.656797050826342,
+        "tours_restants": 0.19321661387021016,
+        "position": 1.3963339801863621,
+        "gap_avant": 0.4442907182161441,
+        "gap_arriere": 0.2627155875478975,
+        "track_temp_c": 1.220902939236705,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.12538396469902274,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.010994921067718296,
+        "rival_arriere_vient_de_pitter": 0.08556789443463422,
+        "tyre_compound": 0.552851241181056
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Las Vegas Grand Prix",
+      "laps": 50,
+      "drifted_count": 1,
+      "drifted_columns": [
+        "tyre_age_laps"
+      ],
+      "distances": {
+        "tyre_age_laps": 1.336715481491772,
+        "tours_restants": 0.3270419617699348,
+        "position": 1.3972244566467806,
+        "gap_avant": 0.8196057849598302,
+        "gap_arriere": 0.2461961765433197,
+        "track_temp_c": 1.6270100035156418,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.7797067770403924,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.07965631404699021,
+        "rival_arriere_vient_de_pitter": 0.004738207566188508,
+        "tyre_compound": 0.559654099393061
+      }
+    },
+    {
+      "season": 2025,
+      "event": "Japanese Grand Prix",
+      "laps": 53,
+      "drifted_count": 0,
+      "drifted_columns": [],
+      "distances": {
+        "tyre_age_laps": 0.25365044314772045,
+        "tours_restants": 0.24514218599449966,
+        "position": 0.9120367342180646,
+        "gap_avant": 0.38442291235080867,
+        "gap_arriere": 0.3678171922245258,
+        "track_temp_c": 1.1911916022274642,
+        "delta_pluie_3tours": 0.3243326622375326,
+        "n_compounds_used": 0.10684401684344161,
+        "is_raining": 0.19950283975231387,
+        "rival_avant_vient_de_pitter": 0.08368062576033965,
+        "rival_arriere_vient_de_pitter": 0.06882101115608473,
+        "tyre_compound": 0.5424659243516404
+      }
+    }
+  ]
+}

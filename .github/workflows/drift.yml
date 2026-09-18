@@ -1,0 +1,43 @@
+# Monitoring de derive — F1_PITSTOP_RL (C5.3.3)
+#
+# Compare les entrees de l'agent entre le pool d'entrainement et les GP
+# d'inference, et publie le rapport Evidently en artefact telechargeable.
+# Mensuel, et a la demande (onglet Actions -> Run workflow).
+#
+# Ne fait pas echouer la CI : une derive entre saisons est attendue (autres
+# circuits, autre meteo). Le rapport sert a decider d'un reentrainement,
+# pas a bloquer une livraison.
+
+name: Monitoring de derive
+
+on:
+  schedule:
+    - cron: "0 4 1 * *"   # le 1er du mois, 04h00 UTC
+  workflow_dispatch:
+
+jobs:
+  drift:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.10"
+          cache: pip
+
+      - name: Dependances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-monitoring.txt
+
+      - name: Rapport de derive
+        run: python src/f1_pitstop_rl/monitoring/drift_report.py --out reports/drift
+
+      - name: Publication du rapport
+        uses: actions/upload-artifact@v5
+        with:
+          name: drift-report
+          path: reports/drift/
+          retention-days: 90
