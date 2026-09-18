@@ -158,6 +158,9 @@ def main():
     for event, n_laps in events:
         gp = gp_dict(event)
         in_pool = role_of(event) in TRAIN_ROLES
+        # GP_POOL entier (entrainement + test) : meme jeu hors pool que
+        # eval_generalization.py (la Belgique 2025 est un GP de test)
+        in_gp_pool = role_of(event) is not None
         try:
             agent = [run_agent(main_model, gp, s) for s in range(args.n_seeds)]
             scripts = {name: [run_script(gp, s, f) for s in range(args.n_seeds)]
@@ -173,6 +176,11 @@ def main():
             ((n, rs) for n, rs in scripts.items() if n != "0-stop"),
             key=lambda kv: np.mean([r["reward"] for r in kv[1]]))
         oracle = float(np.mean([r["reward"] for r in oracle_runs]))
+        # Oracle = meilleure strategie connue a posteriori, 0-stop INCLUS.
+        # Sans cela, sur une course ou ne pas s'arreter est optimal, un
+        # agent qui s'abstient "bat l'oracle" sans rien decider (Miami).
+        if zero >= oracle:
+            oracle_name, oracle_runs, oracle = "0-stop", scripts["0-stop"], zero
 
         # bande d'incertitude entre modeles (graines d'entrainement)
         seed_rewards = [a_mean]
@@ -186,12 +194,14 @@ def main():
         chosen = agent[0]["chosen"]
         verdict = ("bat l'oracle" if a_mean > oracle
                    else "bat le 0-stop" if a_mean > zero else "sous le 0-stop")
-        print(f"{event[:29]:<30}{'oui' if in_pool else '-':>6}{a_mean:>10.1f}"
+        pool_txt = "train" if in_pool else "test" if in_gp_pool else "-"
+        print(f"{event[:29]:<30}{pool_txt:>6}{a_mean:>10.1f}"
               f"{zero:>10.1f}{oracle:>10.1f}{len(chosen):>9}{verdict:>16}")
 
         rows.append({
             "gp_name": event, "total_laps": n_laps,
             "in_train_pool": in_pool,
+            "in_gp_pool": in_gp_pool,
             "agent": {
                 "reward_mean": a_mean, "reward_std": a_std,
                 "pit_laps": [p["lap"] for p in chosen],
@@ -222,7 +232,7 @@ def main():
             "delta_vs_oracle": a_mean - oracle,
         })
 
-    out_pool = [r for r in rows if not r["in_train_pool"]]
+    out_pool = [r for r in rows if not r["in_gp_pool"]]
     n = len(out_pool)
     bz = sum(1 for r in out_pool if r["delta_vs_zero"] > 0)
     bo = sum(1 for r in out_pool if r["delta_vs_oracle"] > 0)
@@ -245,7 +255,7 @@ def main():
                 "valide ; la comparaison a des strategies evaluees dans le meme "
                 "environnement l'est, le biais affectant identiquement les deux.",
             "zero_stop": "Reference LOYALE : ne demande aucune connaissance prealable.",
-            "oracle": "Borne haute choisie A POSTERIORI parmi 4 fenetres. Aucun "
+            "oracle": "Borne haute choisie A POSTERIORI parmi 4 fenetres ET le 0-stop. Aucun "
                       "stratege ne connait d'avance la bonne fenetre : ce n'est "
                       "pas un concurrent realiste.",
         },

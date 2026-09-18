@@ -94,7 +94,9 @@ def evaluate(model, gp, n_seeds):
                for f in SCRIPTS)
     return {"event": gp["event"], "chosen": float(np.mean(chosen_n)),
             "forced": float(np.mean(forced_n)), "laps": laps,
-            "reward": float(np.mean(rewards)), "zero": zero, "best": best}
+            "reward": float(np.mean(rewards)), "zero": zero,
+            # oracle = meilleure strategie a posteriori, 0-stop INCLUS
+            "best": max(best, zero), "best_script": best}
 
 
 def main():

@@ -17,7 +17,8 @@ course tronquée à 8 tours), avec cinq graines d'évaluation par course.
 Quatre indicateurs sont rapportés, en moyenne et écart-type sur les trois
 graines d'entraînement : la récompense moyenne, le nombre de courses où l'agent
 bat la stratégie sans arrêt (0-stop), le nombre de courses où il bat l'oracle
-(meilleure fenêtre d'arrêt choisie a posteriori), et le nombre de
+(meilleure stratégie scriptée choisie a posteriori parmi quatre fenêtres d'arrêt
+et le 0-stop), et le nombre de
 « catastrophes », courses où l'agent fait pire que le 0-stop de plus de
 20 points.
 
@@ -28,10 +29,10 @@ l'environnement modifie la récompense et le plancher 0-stop.
 
 | Configuration | Récompense moy. | Bat le 0-stop | Bat l'oracle | Abstention | Catastrophes |
 |---|---|---|---|---|---|
-| A2C, réglages par défaut | **−38,8 ± 6,4** | 13 ± 2 / 19 | **4 ± 1** | 6 ± 3 | **0** |
-| A2C, réglages Optuna V2 | −46,6 ± 7,1 | 9 ± 3 / 19 | 2 ± 1 | 9 ± 3 | 0 |
-| DQN | −56,0 ± 5,4 | 13 ± 2 / 19 | 1 ± 2 | 2 ± 1 | 1 ± 2 |
-| PPO | −61,0 ± 10,9 | 11 ± 2 / 19 | 1 ± 1 | 4 ± 2 | 3 ± 1 |
+| A2C, réglages par défaut | **−38,8 ± 6,4** | 13 ± 2 / 19 | **2,7 ± 1,2** | 6 ± 3 | **0** |
+| A2C, réglages Optuna V2 | −46,6 ± 7,1 | 9 ± 3 / 19 | 0,7 ± 1,2 | 9 ± 3 | 0 |
+| DQN | −56,0 ± 5,4 | 13 ± 2 / 19 | 1,0 ± 1,7 | 2 ± 1 | 1 ± 2 |
+| PPO | −61,0 ± 10,9 | 11 ± 2 / 19 | 0,7 ± 0,6 | 4 ± 2 | 3 ± 1 |
 
 Repères : récompense moyenne du 0-stop −71,4 ; de l'oracle −18,8.
 
@@ -45,7 +46,9 @@ titre : l'étude Optuna avait été conduite sur ces mêmes courses hors pool, c
 qui aurait dû avantager la configuration optimisée. L'estimation produite par
 l'étude était pourtant fiable (−44,5 annoncé, −46,6 mesuré) : c'est la
 recherche, limitée à vingt essais, qui n'a pas trouvé de configuration
-supérieure aux valeurs par défaut. Ce résultat négatif est conservé tel quel,
+supérieure aux valeurs par défaut : neuf essais ont été élagués, deux se sont
+effondrés sur la stratégie sans arrêt, et le meilleur essai, le cinquième, n'a
+été amélioré par aucun des quinze suivants. Ce résultat négatif est conservé tel quel,
 au même titre que les deux extensions de modélisation abandonnées après mesure.
 
 **A2C devient l'algorithme le plus fiable sur V2.** A2C et DQN battent la
@@ -54,7 +57,8 @@ masque pourtant une différence majeure : une graine de DQN et une graine de PPO
 entrent dans des boucles de huit à douze arrêts sur plusieurs courses, avec des
 récompenses jusqu'à cinq fois plus mauvaises que le 0-stop. La récompense
 moyenne départage nettement les algorithmes (−38,8 pour A2C contre −56,0 pour
-DQN, soit un écart d'environ trois écarts-types entre graines), et A2C est le
+DQN, soit un écart d'environ trois écarts-types entre graines), A2C atteint
+plus souvent le niveau de l'oracle (2,7 courses contre 1,0), et il est le
 seul à ne produire aucune catastrophe sur 57 courses évaluées.
 
 **Enseignement méthodologique.** Un indicateur de comptage (« bat le 0-stop »)
@@ -68,7 +72,17 @@ sur trois graines. La graine livrée est choisie sur les courses d'entraînement
 et non sur les courses d'évaluation, afin de ne pas introduire de biais de
 sélection.
 
-### X.4 Limites
+### X.4 Définition de l'oracle
+
+Une première version de l'oracle excluait la stratégie sans arrêt. Sur une
+course où ne pas s'arrêter est optimal (Miami 2025), un agent qui s'abstenait
+était alors compté comme battant l'oracle sans avoir pris de décision. L'oracle
+est désormais la meilleure stratégie connue a posteriori, sans arrêt comprise ;
+les résultats ci-dessus utilisent cette définition. Ce défaut surévaluait
+surtout les configurations qui s'abstiennent le plus (A2C Optuna, A2C par
+défaut) ; il ne modifie aucune des conclusions.
+
+### X.5 Limites
 
 Trois graines par configuration ne suffisent pas à trancher les écarts
 inférieurs à environ deux écarts-types ; une dizaine de graines serait

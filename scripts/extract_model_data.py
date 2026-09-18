@@ -66,19 +66,21 @@ def load_training_curve(model_name: str):
     }
 
 
-def load_optuna(algo: str):
-    trials_path = LOGS_DIR / f"{algo}_optuna_trials.csv"
-    best_path = LOGS_DIR / f"{algo}_optuna_best_params.json"
+def load_optuna(algo: str, study: str = "optuna_v2"):
+    trials_path = LOGS_DIR / f"{algo}_{study}_trials.csv"
+    best_path = LOGS_DIR / f"{algo}_{study}_best_params.json"
     if not trials_path.exists() or not best_path.exists():
         print(f"  [!] Optuna introuvable pour {algo}")
         return None
 
     import csv
     trials = []
+    n_pruned = 0
     with open(trials_path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            if row.get("state") != "COMPLETE":
+            if row.get("state", "COMPLETE") != "COMPLETE" or row.get("value") in (None, ""):
+                n_pruned += 1
                 continue
             trials.append({
                 "number": int(row["number"]),
@@ -87,8 +89,20 @@ def load_optuna(algo: str):
                            if k.startswith("params_") and v not in (None, "")},
             })
     best = json.loads(best_path.read_text(encoding="utf-8"))
-    return {"trials": trials, "best_value": best["best_value"], "best_params": best["best_params"],
-            "timesteps_per_trial": best.get("timesteps_per_trial")}
+    heldout = "best_value_heldout" in best
+    return {
+        "study": study,
+        "trials": trials,
+        "n_pruned": n_pruned,
+        "best_value": best.get("best_value_heldout", best.get("best_value")),
+        # heldout : objectif mesure sur les GP hors pool ; train : sur le pool
+        "objective": "heldout" if heldout else "train",
+        "best_params": best["best_params"],
+        "timesteps_per_trial": best.get("timesteps_per_trial"),
+        "n_train_seeds": best.get("n_train_seeds"),
+        "validation_gps": best.get("validation_gps"),
+        "stay_prior": best.get("stay_prior"),
+    }
 
 
 def main():
@@ -96,6 +110,8 @@ def main():
     parser.add_argument("--model", type=str, required=True, help="Nom du modele final (ex. a2c_extended_pool_5000k)")
     parser.add_argument("--algo", type=str, required=True, help="Algo pour les donnees Optuna (ex. a2c)")
     parser.add_argument("--compare", nargs="*", default=[], help="Autres modeles a inclure pour comparaison")
+    parser.add_argument("--optuna-study", default="optuna_v2",
+                        help="Etude Optuna a lire : optuna_v2 (defaut) ou optuna (etude V1)")
     args = parser.parse_args()
 
     DASHBOARD_DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -110,8 +126,8 @@ def main():
         if curve:
             comparisons[name] = curve
 
-    print(f"Optuna : {args.algo}")
-    optuna_data = load_optuna(args.algo)
+    print(f"Optuna : {args.algo} / {args.optuna_study}")
+    optuna_data = load_optuna(args.algo, args.optuna_study)
 
     output = {
         "main_model": args.model,

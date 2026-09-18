@@ -57,21 +57,34 @@ V1 3 graines : DQN 88 % ± 8 contre le 0-stop, A2C 53 % ± 9, PPO 51 % ± 8.
 
 | | récompense moy. | bat 0-stop | bat oracle | abstention | catastrophes |
 |---|---|---|---|---|---|
-| **A2C, réglages par défaut (`a2c_v2env`)** | **−38,8 ± 6,4** | 13 ± 2 | **4 ± 1** | 6 ± 3 | **0** |
-| A2C, Optuna V2 (`a2c_v2opt`) | −46,6 ± 7,1 | 9 ± 3 | 2 ± 1 | 9 ± 3 | 0 |
-| DQN (`dqn_v2env`) | −56,0 ± 5,4 | 13 ± 2 | 1 ± 2 | 2 ± 1 | 1 ± 2 |
-| PPO (`ppo_v2env`) | −61,0 ± 10,9 | 11 ± 2 | 1 ± 1 | 4 ± 2 | 3 ± 1 |
+| **A2C, réglages par défaut (`a2c_v2env`)** | **−38,8 ± 6,4** | 13 ± 2 | **2,7 ± 1,2** | 6 ± 3 | **0** |
+| A2C, Optuna V2 (`a2c_v2opt`) | −46,6 ± 7,1 | 9 ± 3 | 0,7 ± 1,2 | 9 ± 3 | 0 |
+| DQN (`dqn_v2env`) | −56,0 ± 5,4 | 13 ± 2 | 1,0 ± 1,7 | 2 ± 1 | 1 ± 2 |
+| PPO (`ppo_v2env`) | −61,0 ± 10,9 | 11 ± 2 | 0,7 ± 0,6 | 4 ± 2 | 3 ± 1 |
 
 Plancher 0-stop moyen −71,4, oracle moyen −18,8. Catastrophe = agent pire que
 le 0-stop de plus de 20 points.
+
+**Oracle corrigé le 18/09** : c'était la meilleure des 4 fenêtres d'arrêt,
+0-stop EXCLU. Sur Miami (0-stop −36,1 > meilleure fenêtre −40,1), un agent qui
+s'abstient « battait l'oracle » sans rien décider. Oracle désormais = meilleure
+stratégie a posteriori, 0-stop inclus (`scripts/apply_patch_oracle_pool.py`,
+appliqué à `eval_generalization.py` et `build_comparison_data.py`). La colonne
+« bat oracle » ci-dessus est recalculée avec cette définition. V1 `dqn_v4_s1`
+non affecté (sur Miami, la meilleure fenêtre bat le 0-stop). Même patch : la
+Belgique 2025 (GP de test du pool) sortie du jeu « hors pool » du dashboard
+(20 → 19 GP, aligné sur l'évaluation).
 
 Conclusions :
 1. **Optuna V2 sans gain** (tendance défavorable, dans le bruit), alors même
    qu'il a été réglé sur ces 20 GP hors pool. Son estimation était juste
    (−44,5 annoncé, −46,6 mesuré) : la recherche en 20 essais n'a pas trouvé
-   mieux que les valeurs par défaut.
+   mieux que les valeurs par défaut. Détail de l'étude : 20 essais, 9 élagués,
+   2 effondrés sur le plancher 0-stop (−78,23), meilleur essai n° 5, aucun
+   progrès sur les 15 suivants.
 2. **Sur V2, A2C passe devant DQN** : à égalité sur « bat le 0-stop » (13/19),
-   mais −38,8 contre −56,0 en récompense (≈ 3 écarts-types entre graines) et
+   mais −38,8 contre −56,0 en récompense (≈ 3 écarts-types entre graines),
+   2,7 contre 1,0 face à l'oracle, et
    seul algorithme sans catastrophe sur 57 courses. DQN graine 2 et PPO graine 3
    font des boucles de 8 à 12 arrêts (Espagne, Autriche, Canada, Mexique).
 3. **Leçon de méthode** : une métrique de comptage (« bat le 0-stop ») ne voit
@@ -156,7 +169,9 @@ besoin de `features_dataset.parquet` et `all_drivers_dataset.parquet`.
 1. **V2 sur GitHub** avec son infrastructure (copier celle de V1, Dockerfile à
    faire pointer sur `models/a2c/a2c_v2env_s2.zip`, vérifier les tests V2).
 2. **`model_training.json`** : pointe encore sur `a2c_extended_pool_5000k`.
-3. **Dashboard** : régénérer sur l'environnement V2 avec `a2c_v2env`.
+3. **Dashboard** : régénérer sur l'environnement V2 avec `a2c_v2env`, après
+   `apply_patch_extract_optuna_v2.py` (lisait l'étude Optuna V1) et
+   `apply_patch_oracle_pool.py`. Appliquer aussi le patch oracle en V1.
 4. `fastf1` à épingler dans `requirements-data.txt`.
 5. Vérifier que `reports/drift/` est dans le `.gitignore` de V1.
 6. Lancer une fois à la main `smoke-test.yml` et `drift.yml` sur GitHub.
