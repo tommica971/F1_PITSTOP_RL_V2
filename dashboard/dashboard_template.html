@@ -494,7 +494,7 @@
   </div>
 
   <div class="panel" style="margin-top:16px;">
-    <p class="panel-title">Optimisation Optuna — meilleurs hyperparamètres</p>
+    <p class="panel-title">Étude Optuna V2 — réglages testés, non retenus</p>
     <div id="optunaParams" style="font-family:var(--font-mono);font-size:13px;line-height:2;"></div>
   </div>
 </div>
@@ -533,6 +533,15 @@ const REWARD_COMPONENT_LABELS = {
 };
 
 document.getElementById('driverName').textContent = seasonData.driver;
+function gpCode(name){
+  const codes = {"Abu Dhabi":"ABU","Australian":"AUS","Austrian":"AUT","Azerbaijan":"AZE",
+    "Bahrain":"BHR","Belgian":"BEL","British":"GBR","Canadian":"CAN","Chinese":"CHN",
+    "Dutch":"NED","Emilia Romagna":"EMI","Hungarian":"HUN","Italian":"ITA","Japanese":"JPN",
+    "Las Vegas":"LVG","Mexico City":"MEX","Miami":"MIA","Monaco":"MON","Qatar":"QAT",
+    "Singapore":"SGP","Spanish":"ESP","São Paulo":"BRA","United States":"USA"};
+  const key = name.replace(" Grand Prix","");
+  return codes[key] || key.slice(0,3).toUpperCase();
+}
 document.getElementById('teamName').textContent = `${seasonData.team} — Saison ${seasonData.season}`;
 document.getElementById('modelTag').textContent = `MODEL: ${seasonData.model} · CPU inference`;
 
@@ -841,7 +850,7 @@ seasonData.races.forEach(r=>{
     label.setAttribute('fill', r.seen_in_training ? '#8993A8' : '#FF6FA8');
     label.setAttribute('font-size','9'); label.setAttribute('font-family','JetBrains Mono, monospace');
     label.setAttribute('text-anchor','middle');
-    label.textContent = r.gp_name.slice(0,3).toUpperCase();
+    label.textContent = gpCode(r.gp_name);
     svg.appendChild(label);
   });
 })();
@@ -1218,7 +1227,7 @@ function renderModelTab(){
   const optunaEl = document.getElementById('optunaParams');
   if(modelData.optuna && modelData.optuna.best_params){
     const bp = modelData.optuna.best_params;
-    optunaEl.innerHTML = `<div style="color:var(--text-dim);margin-bottom:6px;">Meilleure valeur : ${modelData.optuna.best_value.toFixed(2)} (sur ${modelData.optuna.trials.length} essais complétés)</div>` +
+    optunaEl.innerHTML = `<div style="color:var(--text-dim);margin-bottom:10px;line-height:1.6;">Hyperparamètres <b>testés et non retenus</b>. Le modèle présenté (${modelData.main_model}) utilise les réglages par défaut : récompense moyenne hors pool −38,8 ± 6,4 contre −46,6 ± 7,1 avec ces réglages (3 graines chacun), bien que l’étude ait été conduite sur ces mêmes GP. Étude : ${modelData.optuna.trials.length} essais complétés${modelData.optuna.n_pruned!=null ? ", "+modelData.optuna.n_pruned+" élagués" : ""}.</div>` + `<div style="color:var(--text-dim);margin-bottom:6px;">Meilleure valeur : ${modelData.optuna.best_value.toFixed(2)} (sur ${modelData.optuna.trials.length} essais complétés)</div>` +
       Object.entries(bp).map(([k,v])=>`<div>${k} : <span style="color:var(--alpine-pink)">${typeof v==='number' ? v.toPrecision(4) : v}</span></div>`).join('');
   } else {
     optunaEl.innerHTML = `<div style="color:var(--text-faint);">Données Optuna non disponibles.</div>`;
@@ -1285,7 +1294,7 @@ function renderRankingChart(){
     label.setAttribute('font-size', '9'); label.setAttribute('font-family', 'JetBrains Mono, monospace');
     label.setAttribute('text-anchor', 'middle');
     label.setAttribute('transform', `rotate(-60 ${x} ${H-10})`);
-    label.textContent = r.gp_name.slice(0,3).toUpperCase();
+    label.textContent = gpCode(r.gp_name);
     svg.appendChild(label);
   });
 

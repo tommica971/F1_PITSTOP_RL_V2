@@ -10,7 +10,7 @@ s'affiche ensuite restait vide : KPI de points, graphique, onglet
 Apprentissage RL.
 
 Ce script ajoute :
-- driver : "Pierre Gasly"
+- driver : "Pierre Gasly", team : "Alpine F1 Team" (en-tete)
 - summary : points reels et agent sur la saison, les memes restreints aux GP
   hors pool, et le decompte des courses ameliorees / degradees / egales.
 
@@ -34,6 +34,7 @@ from gp_pool_config import GP_POOL  # noqa: E402
 
 SEASON_PATH = ROOT / "dashboard" / "data" / "season_2025.json"
 DRIVER = "Pierre Gasly"
+TEAM = "Alpine F1 Team"
 
 
 def points_key(d: dict, side: str) -> str:
@@ -64,6 +65,7 @@ def main() -> int:
         r["in_gp_pool"] = (season, r["gp_name"]) in pool
 
     data["driver"] = DRIVER
+    data["team"] = TEAM
     data["summary"] = {
         "real_total_points": sum(pts(r)[0] for r in races),
         "agent_total_points": sum(pts(r)[1] for r in races),

@@ -420,5 +420,6 @@
     "races_worse": 4,
     "races_equal": 13,
     "note": "Comparaison au pilote reel NON valide (biais de rythme +0,95 %, 5 a 9 positions) : affichee dans l'onglet Sim-to-Real a titre de diagnostic, pas comme mesure de l'agent."
-  }
+  },
+  "team": "Alpine F1 Team"
 }
