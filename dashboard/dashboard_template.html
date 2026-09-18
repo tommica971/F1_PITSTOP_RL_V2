@@ -548,7 +548,7 @@ function renderStrategyTab(){
     return;
   }
   const d = comparisonData, s = d.summary_out_of_pool;
-  const out = d.races.filter(r=>!r.in_train_pool)
+  const out = d.races.filter(r=>!(r.in_gp_pool ?? r.in_train_pool))
                      .slice().sort((a,b)=>b.delta_vs_zero - a.delta_vs_zero);
 
   document.getElementById('kpiZero').textContent = s.beats_zero_stop + ' / ' + s.n_gp;
@@ -597,7 +597,7 @@ function renderStrategyTab(){
 
   /* --- cumul --- */
   const cum = document.getElementById('stratCumChart');
-  const chrono = d.races.filter(r=>!r.in_train_pool);
+  const chrono = d.races.filter(r=>!(r.in_gp_pool ?? r.in_train_pool));
   const W2 = cum.clientWidth || 1100, H2 = 220, P = 34;
   let acc = 0;
   const pts = chrono.map((r,i)=>{ acc += r.delta_vs_zero; return {i, acc, gp:r.gp_name}; });
@@ -618,8 +618,10 @@ function renderStrategyTab(){
     + '<th>oracle</th><th>écart vs 0-stop</th><th>arrêts choisis (tour)</th></tr></thead><tbody>'
     + d.races.map(r=>{
         const badge = r.in_train_pool ? '<span class="badge">entraînement</span>'
-                                      : '<span class="badge">jamais vu</span>';
-        const dz = r.delta_vs_zero, col = dz>0 ? 'var(--pos)' : 'var(--neg)';
+          : (r.in_gp_pool ? '<span class="badge">test (pool)</span>'
+                          : '<span class="badge">jamais vu</span>');
+        const dz = r.delta_vs_zero, col = Math.abs(dz) < 0.05 ? 'var(--muted, #8b95a7)'  /* abstention = 0-stop */
+          : dz>0 ? 'var(--pos)' : 'var(--neg)';
         const pits = r.agent.pit_laps.length
           ? r.agent.pit_laps.map((l,k)=>l+' ('+(r.agent.pit_compounds[k]||'?')+')').join(', ')
           : '<span style="color:var(--text-faint)">aucun arrêt choisi</span>';

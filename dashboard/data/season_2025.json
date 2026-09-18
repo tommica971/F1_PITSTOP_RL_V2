@@ -25,7 +25,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 2,
@@ -42,7 +43,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": true
     },
     {
       "round": 3,
@@ -59,7 +61,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 6
+      "delta_points": 6,
+      "in_gp_pool": false
     },
     {
       "round": 4,
@@ -76,7 +79,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 0
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 5,
@@ -93,7 +97,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": -6
+      "delta_points": -6,
+      "in_gp_pool": false
     },
     {
       "round": 6,
@@ -110,7 +115,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 0
       },
-      "delta_points": -1
+      "delta_points": -1,
+      "in_gp_pool": true
     },
     {
       "round": 7,
@@ -127,7 +133,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": -4
+      "delta_points": -4,
+      "in_gp_pool": true
     },
     {
       "round": 8,
@@ -144,7 +151,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 0
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 9,
@@ -161,7 +169,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 10,
@@ -178,7 +187,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 11,
@@ -195,7 +205,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 12,
@@ -212,7 +223,8 @@
         "n_pitstops": 2,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 13,
@@ -229,7 +241,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 0
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 14,
@@ -246,7 +259,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 15,
@@ -263,7 +277,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 16,
@@ -280,7 +295,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 1
+      "delta_points": 1,
+      "in_gp_pool": false
     },
     {
       "round": 17,
@@ -297,7 +313,8 @@
         "n_pitstops": 0,
         "n_pitstops_chosen": 0
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 18,
@@ -314,7 +331,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 0
       },
-      "delta_points": 0
+      "delta_points": 0,
+      "in_gp_pool": false
     },
     {
       "round": 19,
@@ -331,7 +349,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 2
+      "delta_points": 2,
+      "in_gp_pool": false
     },
     {
       "round": 20,
@@ -348,7 +367,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": -2
+      "delta_points": -2,
+      "in_gp_pool": false
     },
     {
       "round": 21,
@@ -365,7 +385,8 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 5
+      "delta_points": 5,
+      "in_gp_pool": false
     },
     {
       "round": 22,
@@ -382,7 +403,22 @@
         "n_pitstops": 1,
         "n_pitstops_chosen": 1
       },
-      "delta_points": 1
+      "delta_points": 1,
+      "in_gp_pool": false
     }
-  ]
+  ],
+  "driver": "Pierre Gasly",
+  "summary": {
+    "real_total_points": 18,
+    "agent_total_points": 20,
+    "unseen_races_only": {
+      "n_races": 19,
+      "real_total_points": 9,
+      "agent_total_points": 16
+    },
+    "races_improved": 5,
+    "races_worse": 4,
+    "races_equal": 13,
+    "note": "Comparaison au pilote reel NON valide (biais de rythme +0,95 %, 5 a 9 positions) : affichee dans l'onglet Sim-to-Real a titre de diagnostic, pas comme mesure de l'agent."
+  }
 }
