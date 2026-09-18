@@ -1,0 +1,24 @@
+# Donnees volumineuses -- montees en volume, jamais copiees dans l'image
+data/raw/
+data/processed/*.parquet
+
+# Logs d'entrainement et checkpoints intermediaires -- pas necessaires a l'image,
+# seuls les modeles finaux retenus (models/*/,*_extended_pool*.zip, *_tuned.zip)
+# sont copies
+models/training_logs/
+*.npz
+
+# Artefacts Python / notebooks
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.egg-info/
+
+# Environnement / outils locaux
+.venv/
+venv/
+.git/
+.pytest_cache/
+
+# Rapports generes (figures, dossier) -- pas necessaires a l'execution
+reports/

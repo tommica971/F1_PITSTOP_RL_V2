@@ -1,0 +1,1057 @@
+{
+  "model": "dqn_v4_s1.zip",
+  "algo": "DQN",
+  "season": 2025,
+  "n_env_seeds": 5,
+  "seed_models": [
+    "dqn_v4_s1.zip",
+    "dqn_v4_s2.zip",
+    "dqn_v4_s3.zip"
+  ],
+  "excluded_gp": [
+    {
+      "gp_name": "Monaco Grand Prix",
+      "laps": 8,
+      "reason": "course tronquee (8 tours) — abandon, non evaluable"
+    }
+  ],
+  "methodology": {
+    "why_not_real_driver": "Le test de sanite montre qu'en rejouant la strategie REELLE de Gasly, l'environnement le classe P15 a Silverstone (P6 reel), P18 aux Pays-Bas (P4 reel). Un biais de +0.95% sur le temps total de course (~54 s sur 57 tours, soit ~0.9 s/tour) deplace l'agent de 5 a 9 positions quelle que soit sa strategie. La position finale face au pilote reel n'est donc pas une metrique valide ; la comparaison a des strategies evaluees dans le meme environnement l'est, le biais affectant identiquement les deux.",
+    "zero_stop": "Reference LOYALE : ne demande aucune connaissance prealable.",
+    "oracle": "Borne haute choisie A POSTERIORI parmi 4 fenetres. Aucun stratege ne connait d'avance la bonne fenetre : ce n'est pas un concurrent realiste."
+  },
+  "summary_out_of_pool": {
+    "n_gp": 20,
+    "beats_zero_stop": 19,
+    "beats_oracle": 2,
+    "pct_beats_zero_stop": 95.0,
+    "pct_beats_oracle": 10.0,
+    "mean_delta_vs_zero": 44.05
+  },
+  "races": [
+    {
+      "gp_name": "Belgian Grand Prix",
+      "total_laps": 44,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -63.3723616206363,
+        "reward_std": 2.8320054780880923,
+        "pit_laps": [
+          8
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5026.259861620633,
+        "final_position": 20
+      },
+      "zero_stop": {
+        "reward_mean": -98.7822697074728,
+        "total_time_s": 5047.22976970747
+      },
+      "oracle": {
+        "name": "1-stop @40%",
+        "reward_mean": -65.67215437658152,
+        "pit_laps": [
+          18
+        ],
+        "total_time_s": 5028.139654376579
+      },
+      "all_scripts": {
+        "0-stop": -98.7822697074728,
+        "1-stop @40%": -65.67215437658152,
+        "1-stop @50%": -68.83207793570551,
+        "1-stop @60%": -66.23684747102749,
+        "2-stop @33/66%": -73.95828789797449
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -66.3515018924703,
+        "reward_std": 2.797034171505381,
+        "reward_min": -68.92132319692239,
+        "reward_max": -63.3723616206363
+      },
+      "delta_vs_zero": 35.40990808683651,
+      "delta_vs_oracle": 2.2997927559452194
+    },
+    {
+      "gp_name": "Las Vegas Grand Prix",
+      "total_laps": 50,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -43.873548599485225,
+        "reward_std": 9.083649702229767,
+        "pit_laps": [
+          30
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 4837.131548599481,
+        "final_position": 17
+      },
+      "zero_stop": {
+        "reward_mean": -92.81328968591411,
+        "total_time_s": 4870.023289685911
+      },
+      "oracle": {
+        "name": "1-stop @40%",
+        "reward_mean": -42.13130078015372,
+        "pit_laps": [
+          20
+        ],
+        "total_time_s": 4836.690100780151
+      },
+      "all_scripts": {
+        "0-stop": -92.81328968591411,
+        "1-stop @40%": -42.13130078015372,
+        "1-stop @50%": -43.00820397027492,
+        "1-stop @60%": -44.19269119034223,
+        "2-stop @33/66%": -57.91756845199444
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -58.69763281407048,
+        "reward_std": 12.918085885414358,
+        "reward_min": -67.54558520480872,
+        "reward_max": -43.873548599485225
+      },
+      "delta_vs_zero": 48.93974108642889,
+      "delta_vs_oracle": -1.742247819331503
+    },
+    {
+      "gp_name": "Azerbaijan Grand Prix",
+      "total_laps": 50,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -85.1997925880268,
+        "reward_std": 8.133405748674818,
+        "pit_laps": [],
+        "pit_compounds": [],
+        "forced_pits": [
+          50
+        ],
+        "total_time_s": 5455.317792588025,
+        "final_position": 19
+      },
+      "zero_stop": {
+        "reward_mean": -89.27296454192822,
+        "total_time_s": 5458.757364541927
+      },
+      "oracle": {
+        "name": "1-stop @60%",
+        "reward_mean": -46.112448425543356,
+        "pit_laps": [
+          30
+        ],
+        "total_time_s": 5433.612848425541
+      },
+      "all_scripts": {
+        "0-stop": -89.27296454192822,
+        "1-stop @40%": -49.647754058677904,
+        "1-stop @50%": -47.19950922713756,
+        "1-stop @60%": -46.112448425543356,
+        "2-stop @33/66%": -74.18255829875349
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -87.91524055729441,
+        "reward_std": 2.35164692404062,
+        "reward_min": -89.27296454192822,
+        "reward_max": -85.1997925880268
+      },
+      "delta_vs_zero": 4.073171953901422,
+      "delta_vs_oracle": -39.08734416248344
+    },
+    {
+      "gp_name": "Italian Grand Prix",
+      "total_laps": 52,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -79.25709444559322,
+        "reward_std": 1.997491784676597,
+        "pit_laps": [],
+        "pit_compounds": [],
+        "forced_pits": [
+          52
+        ],
+        "total_time_s": 4328.284094445594,
+        "final_position": 18
+      },
+      "zero_stop": {
+        "reward_mean": -79.25709444559322,
+        "total_time_s": 4328.284094445594
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -39.45059786222923,
+        "pit_laps": [
+          26
+        ],
+        "total_time_s": 4308.7551978622305
+      },
+      "all_scripts": {
+        "0-stop": -79.25709444559322,
+        "1-stop @40%": -45.23180287192226,
+        "1-stop @50%": -39.45059786222923,
+        "1-stop @60%": -43.74272233928711,
+        "2-stop @33/66%": -62.20296833309951
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -67.5097065044584,
+        "reward_std": 24.777290399935254,
+        "reward_min": -84.22834036842553,
+        "reward_max": -39.04368469935646
+      },
+      "delta_vs_zero": 0.0,
+      "delta_vs_oracle": -39.806496583363995
+    },
+    {
+      "gp_name": "British Grand Prix",
+      "total_laps": 52,
+      "in_train_pool": true,
+      "agent": {
+        "reward_mean": -67.64114599027391,
+        "reward_std": 6.852693801602314,
+        "pit_laps": [
+          24
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5797.121145990275,
+        "final_position": 12
+      },
+      "zero_stop": {
+        "reward_mean": -76.99698703615545,
+        "total_time_s": 5801.915387036158
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -61.98132414664087,
+        "pit_laps": [
+          26
+        ],
+        "total_time_s": 5797.028524146644
+      },
+      "all_scripts": {
+        "0-stop": -76.99698703615545,
+        "1-stop @40%": -63.46913742041695,
+        "1-stop @50%": -61.98132414664087,
+        "1-stop @60%": -74.45404392086161,
+        "2-stop @33/66%": -92.76483412863341
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -65.10842854158115,
+        "reward_std": 10.571542671862248,
+        "reward_min": -74.18356493190846,
+        "reward_max": -53.50057470256108
+      },
+      "delta_vs_zero": 9.355841045881533,
+      "delta_vs_oracle": -5.65982184363304
+    },
+    {
+      "gp_name": "Japanese Grand Prix",
+      "total_laps": 53,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -54.276679018196184,
+        "reward_std": 10.127498905406242,
+        "pit_laps": [
+          27
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 4897.262179018194,
+        "final_position": 14
+      },
+      "zero_stop": {
+        "reward_mean": -111.9303856588663,
+        "total_time_s": 4931.315885658864
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -52.67608382738466,
+        "pit_laps": [
+          26
+        ],
+        "total_time_s": 4896.408783827383
+      },
+      "all_scripts": {
+        "0-stop": -111.9303856588663,
+        "1-stop @40%": -55.14368492902413,
+        "1-stop @50%": -52.67608382738466,
+        "1-stop @60%": -56.08484160286146,
+        "2-stop @33/66%": -80.38358360776108
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -60.02370770190327,
+        "reward_std": 4.989820544713443,
+        "reward_min": -63.25366986592769,
+        "reward_max": -54.276679018196184
+      },
+      "delta_vs_zero": 57.653706640670116,
+      "delta_vs_oracle": -1.600595190811525
+    },
+    {
+      "gp_name": "United States Grand Prix",
+      "total_laps": 55,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -58.468779197712784,
+        "reward_std": 5.741602850877814,
+        "pit_laps": [
+          20
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5525.505579197716,
+        "final_position": 17
+      },
+      "zero_stop": {
+        "reward_mean": -110.08949972882382,
+        "total_time_s": 5558.1894997288255
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -52.351890317503546,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 5520.1958903175055
+      },
+      "all_scripts": {
+        "0-stop": -110.08949972882382,
+        "1-stop @40%": -59.66286829891912,
+        "1-stop @50%": -52.351890317503546,
+        "1-stop @60%": -59.693096423562224,
+        "2-stop @33/66%": -71.77971808026696
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -60.30931757302614,
+        "reward_std": 2.6561902978536622,
+        "reward_min": -63.354359869784375,
+        "reward_max": -58.468779197712784
+      },
+      "delta_vs_zero": 51.62072053111104,
+      "delta_vs_oracle": -6.116888880209238
+    },
+    {
+      "gp_name": "Chinese Grand Prix",
+      "total_laps": 56,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -66.62125369562686,
+        "reward_std": 2.7886101253672977,
+        "pit_laps": [
+          23
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5432.527853695627,
+        "final_position": 19
+      },
+      "zero_stop": {
+        "reward_mean": -115.34954676751056,
+        "total_time_s": 5467.20254676751
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -56.74424745365491,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 5427.020447453655
+      },
+      "all_scripts": {
+        "0-stop": -115.34954676751056,
+        "1-stop @40%": -65.48315571718697,
+        "1-stop @50%": -56.74424745365491,
+        "1-stop @60%": -72.00078295016904,
+        "2-stop @33/66%": -78.1422893145481
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -67.47644803796383,
+        "reward_std": 1.8788714775775688,
+        "reward_min": -69.63078780919773,
+        "reward_max": -66.17730260906691
+      },
+      "delta_vs_zero": 48.7282930718837,
+      "delta_vs_oracle": -9.877006241971955
+    },
+    {
+      "gp_name": "Qatar Grand Prix",
+      "total_laps": 56,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -71.86468916262754,
+        "reward_std": 3.1636961529897296,
+        "pit_laps": [
+          24
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5009.540189162629,
+        "final_position": 18
+      },
+      "zero_stop": {
+        "reward_mean": -120.51354676751055,
+        "total_time_s": 5044.049046767512
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -66.4114474536549,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 5003.866947453656
+      },
+      "all_scripts": {
+        "0-stop": -120.51354676751055,
+        "1-stop @40%": -72.41515571718699,
+        "1-stop @50%": -66.4114474536549,
+        "1-stop @60%": -77.48478295016903,
+        "2-stop @33/66%": -83.24628931454808
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -70.81571443738726,
+        "reward_std": 1.4330385423092393,
+        "reward_min": -71.86468916262754,
+        "reward_max": -69.18292274693152
+      },
+      "delta_vs_zero": 48.648857604883005,
+      "delta_vs_oracle": -5.453241708972641
+    },
+    {
+      "gp_name": "Australian Grand Prix",
+      "total_laps": 57,
+      "in_train_pool": true,
+      "agent": {
+        "reward_mean": -87.24587616480025,
+        "reward_std": 5.417245075165561,
+        "pit_laps": [
+          22
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 6101.529876164802,
+        "final_position": 14
+      },
+      "zero_stop": {
+        "reward_mean": -69.24853333426638,
+        "total_time_s": 6083.772533334268
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -79.31148423432202,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 6093.855484234323
+      },
+      "all_scripts": {
+        "0-stop": -69.24853333426638,
+        "1-stop @40%": -87.68551662271253,
+        "1-stop @50%": -79.31148423432202,
+        "1-stop @60%": -83.36477424453165,
+        "2-stop @33/66%": -101.71635554831894
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -82.45546796600301,
+        "reward_std": 4.5594758441832015,
+        "reward_min": -87.24587616480025,
+        "reward_max": -78.16875337486445
+      },
+      "delta_vs_zero": -17.997342830533867,
+      "delta_vs_oracle": -7.9343919304782276
+    },
+    {
+      "gp_name": "Abu Dhabi Grand Prix",
+      "total_laps": 57,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -51.17355324797065,
+        "reward_std": 3.394110791204836,
+        "pit_laps": [
+          27
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5073.835653247967,
+        "final_position": 19
+      },
+      "zero_stop": {
+        "reward_mean": -111.09970493213878,
+        "total_time_s": 5117.480204932135
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -51.04709155276551,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 5073.689191552761
+      },
+      "all_scripts": {
+        "0-stop": -111.09970493213878,
+        "1-stop @40%": -57.86882392509392,
+        "1-stop @50%": -51.04709155276551,
+        "1-stop @60%": -63.96849676716312,
+        "2-stop @33/66%": -69.05433157170157
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -53.09694530637824,
+        "reward_std": 1.7848591984602096,
+        "reward_min": -54.69984691928276,
+        "reward_max": -51.17355324797065
+      },
+      "delta_vs_zero": 59.926151684168126,
+      "delta_vs_oracle": -0.12646169520514405
+    },
+    {
+      "gp_name": "Miami Grand Prix",
+      "total_laps": 57,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -52.664195143281745,
+        "reward_std": 6.66855079713499,
+        "pit_laps": [
+          25
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5334.172695143282,
+        "final_position": 16
+      },
+      "zero_stop": {
+        "reward_mean": -58.39352432035897,
+        "total_time_s": 5340.042024320359
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -52.87015083764885,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 5334.298650837651
+      },
+      "all_scripts": {
+        "0-stop": -58.39352432035897,
+        "1-stop @40%": -60.8030234901841,
+        "1-stop @50%": -52.87015083764885,
+        "1-stop @60%": -55.20567552868356,
+        "2-stop @33/66%": -68.99923682856422
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -52.570660187139985,
+        "reward_std": 5.870190528702511,
+        "reward_min": -58.39352432035897,
+        "reward_max": -46.65426109777923
+      },
+      "delta_vs_zero": 5.729329177077226,
+      "delta_vs_oracle": 0.20595569436710548
+    },
+    {
+      "gp_name": "Bahrain Grand Prix",
+      "total_laps": 57,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -83.88381818380532,
+        "reward_std": 4.976558382549699,
+        "pit_laps": [
+          19
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5708.552518183804,
+        "final_position": 19
+      },
+      "zero_stop": {
+        "reward_mean": -139.98656409601054,
+        "total_time_s": 5750.208064096009
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -82.24377291771798,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 5707.192472917716
+      },
+      "all_scripts": {
+        "0-stop": -139.98656409601054,
+        "1-stop @40%": -89.39160473603873,
+        "1-stop @50%": -82.24377291771798,
+        "1-stop @60%": -92.57265360621712,
+        "2-stop @33/66%": -94.78935251649077
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -98.24986157313775,
+        "reward_std": 19.868862419810803,
+        "reward_min": -120.92430966627462,
+        "reward_max": -83.88381818380532
+      },
+      "delta_vs_zero": 56.10274591220522,
+      "delta_vs_oracle": -1.6400452660873412
+    },
+    {
+      "gp_name": "Singapore Grand Prix",
+      "total_laps": 61,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -54.61300178216224,
+        "reward_std": 4.103297369013077,
+        "pit_laps": [
+          24
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5938.534501782162,
+        "final_position": 16
+      },
+      "zero_stop": {
+        "reward_mean": -117.89905386690641,
+        "total_time_s": 5979.348553866906
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -49.50006288158902,
+        "pit_laps": [
+          30
+        ],
+        "total_time_s": 5934.969562881588
+      },
+      "all_scripts": {
+        "0-stop": -117.89905386690641,
+        "1-stop @40%": -54.61300178216224,
+        "1-stop @50%": -49.50006288158902,
+        "1-stop @60%": -52.73301033073243,
+        "2-stop @33/66%": -64.08720618233001
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -53.92888950683918,
+        "reward_std": 0.624304249767802,
+        "reward_min": -54.61300178216224,
+        "reward_max": -53.38998674781379
+      },
+      "delta_vs_zero": 63.28605208474417,
+      "delta_vs_oracle": -5.112938900573226
+    },
+    {
+      "gp_name": "Emilia Romagna Grand Prix",
+      "total_laps": 63,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -82.27178880414407,
+        "reward_std": 2.0854752940622587,
+        "pit_laps": [
+          18
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5483.150788804145,
+        "final_position": 18
+      },
+      "zero_stop": {
+        "reward_mean": -138.3116320080895,
+        "total_time_s": 5525.010632008093
+      },
+      "oracle": {
+        "name": "1-stop @50%",
+        "reward_mean": -76.63752420741498,
+        "pit_laps": [
+          32
+        ],
+        "total_time_s": 5477.696524207417
+      },
+      "all_scripts": {
+        "0-stop": -138.3116320080895,
+        "1-stop @40%": -76.81406150542483,
+        "1-stop @50%": -76.63752420741498,
+        "1-stop @60%": -80.1431576670602,
+        "2-stop @33/66%": -89.09982776952292
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -83.34718748423646,
+        "reward_std": 3.1559140028229318,
+        "reward_min": -86.90025271457782,
+        "reward_max": -80.8695209339875
+      },
+      "delta_vs_zero": 56.03984320394544,
+      "delta_vs_oracle": -5.634264596729082
+    },
+    {
+      "gp_name": "Spanish Grand Prix",
+      "total_laps": 66,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -90.53339717930878,
+        "reward_std": 2.0441919864635696,
+        "pit_laps": [
+          12,
+          40
+        ],
+        "pit_compounds": [
+          "HARD",
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5560.040897179307,
+        "final_position": 17
+      },
+      "zero_stop": {
+        "reward_mean": -145.06986115538166,
+        "total_time_s": 5601.117361155381
+      },
+      "oracle": {
+        "name": "1-stop @40%",
+        "reward_mean": -85.76978928385628,
+        "pit_laps": [
+          26
+        ],
+        "total_time_s": 5555.717289283855
+      },
+      "all_scripts": {
+        "0-stop": -145.06986115538166,
+        "1-stop @40%": -85.76978928385628,
+        "1-stop @50%": -86.3142450839267,
+        "1-stop @60%": -88.09405648789259,
+        "2-stop @33/66%": -93.52812652565459
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -96.31802305095471,
+        "reward_std": 15.558549958386948,
+        "reward_min": -113.94030728516911,
+        "reward_max": -84.4803646883862
+      },
+      "delta_vs_zero": 54.53646397607288,
+      "delta_vs_oracle": -4.763607895452495
+    },
+    {
+      "gp_name": "Austrian Grand Prix",
+      "total_laps": 69,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -99.88843192151293,
+        "reward_std": 9.985232518217465,
+        "pit_laps": [
+          11,
+          31
+        ],
+        "pit_compounds": [
+          "HARD",
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 4966.94943192151,
+        "final_position": 15
+      },
+      "zero_stop": {
+        "reward_mean": -159.03453064977444,
+        "total_time_s": 5009.867530649771
+      },
+      "oracle": {
+        "name": "1-stop @40%",
+        "reward_mean": -87.97188450875646,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 4956.754484508753
+      },
+      "all_scripts": {
+        "0-stop": -159.03453064977444,
+        "1-stop @40%": -87.97188450875646,
+        "1-stop @50%": -97.40225773713566,
+        "1-stop @60%": -92.7311357782332,
+        "2-stop @33/66%": -101.36130399560898
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -119.07173035657719,
+        "reward_std": 21.16561060479391,
+        "reward_min": -141.7776415867889,
+        "reward_max": -99.88843192151293
+      },
+      "delta_vs_zero": 59.14609872826151,
+      "delta_vs_oracle": -11.916547412756472
+    },
+    {
+      "gp_name": "Hungarian Grand Prix",
+      "total_laps": 69,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -98.7370668642914,
+        "reward_std": 4.138546975440225,
+        "pit_laps": [
+          26
+        ],
+        "pit_compounds": [
+          "HARD"
+        ],
+        "forced_pits": [
+          69
+        ],
+        "total_time_s": 5681.420566864292,
+        "final_position": 19
+      },
+      "zero_stop": {
+        "reward_mean": -118.02914508785321,
+        "total_time_s": 5700.472645087852
+      },
+      "oracle": {
+        "name": "1-stop @60%",
+        "reward_mean": -61.765727750806285,
+        "pit_laps": [
+          41
+        ],
+        "total_time_s": 5664.440427750806
+      },
+      "all_scripts": {
+        "0-stop": -118.02914508785321,
+        "1-stop @40%": -62.55826242868735,
+        "1-stop @50%": -70.83451184671684,
+        "1-stop @60%": -61.765727750806285,
+        "2-stop @33/66%": -80.72942417643405
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -88.61371486487563,
+        "reward_std": 17.457220316315937,
+        "reward_min": -98.7370668642914,
+        "reward_max": -68.45591852269771
+      },
+      "delta_vs_zero": 19.292078223561802,
+      "delta_vs_oracle": -36.97133911348512
+    },
+    {
+      "gp_name": "Canadian Grand Prix",
+      "total_laps": 69,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -108.73828020148196,
+        "reward_std": 2.2122427366137014,
+        "pit_laps": [
+          16,
+          37
+        ],
+        "pit_compounds": [
+          "HARD",
+          "HARD"
+        ],
+        "forced_pits": [
+          69
+        ],
+        "total_time_s": 5459.395280201486,
+        "final_position": 18
+      },
+      "zero_stop": {
+        "reward_mean": -114.39314508785321,
+        "total_time_s": 5463.930145087856
+      },
+      "oracle": {
+        "name": "1-stop @60%",
+        "reward_mean": -61.84572775080628,
+        "pit_laps": [
+          41
+        ],
+        "total_time_s": 5427.89792775081
+      },
+      "all_scripts": {
+        "0-stop": -114.39314508785321,
+        "1-stop @40%": -62.01106242868737,
+        "1-stop @50%": -69.62731184671682,
+        "1-stop @60%": -61.84572775080628,
+        "2-stop @33/66%": -77.29342417643406
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -134.87798514527557,
+        "reward_std": 26.766529681043565,
+        "reward_min": -162.23013365999213,
+        "reward_max": -108.73828020148196
+      },
+      "delta_vs_zero": 5.654864886371257,
+      "delta_vs_oracle": -46.89255245067567
+    },
+    {
+      "gp_name": "Mexico City Grand Prix",
+      "total_laps": 70,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -76.37953621183237,
+        "reward_std": 6.3160956555301535,
+        "pit_laps": [
+          14,
+          37
+        ],
+        "pit_compounds": [
+          "HARD",
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5805.91603621183,
+        "final_position": 16
+      },
+      "zero_stop": {
+        "reward_mean": -138.1773864866093,
+        "total_time_s": 5850.925886486608
+      },
+      "oracle": {
+        "name": "1-stop @40%",
+        "reward_mean": -67.12605667792937,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 5795.92255667793
+      },
+      "all_scripts": {
+        "0-stop": -138.1773864866093,
+        "1-stop @40%": -67.12605667792937,
+        "1-stop @50%": -72.16645879204562,
+        "1-stop @60%": -78.46736322676428,
+        "2-stop @33/66%": -84.10069114878965
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -104.9305412947845,
+        "reward_std": 28.14431729896151,
+        "reward_min": -132.64972926063567,
+        "reward_max": -76.37953621183237
+      },
+      "delta_vs_zero": 61.79785027477692,
+      "delta_vs_oracle": -9.253479533903004
+    },
+    {
+      "gp_name": "São Paulo Grand Prix",
+      "total_laps": 71,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -95.8431931437448,
+        "reward_std": 10.05684193483171,
+        "pit_laps": [
+          20,
+          47
+        ],
+        "pit_compounds": [
+          "HARD",
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5515.574793143742,
+        "final_position": 17
+      },
+      "zero_stop": {
+        "reward_mean": -171.7114532552458,
+        "total_time_s": 5576.249453255243
+      },
+      "oracle": {
+        "name": "1-stop @40%",
+        "reward_mean": -94.47293279386642,
+        "pit_laps": [
+          28
+        ],
+        "total_time_s": 5513.050932793863
+      },
+      "all_scripts": {
+        "0-stop": -171.7114532552458,
+        "1-stop @40%": -94.47293279386642,
+        "1-stop @50%": -99.33221116553383,
+        "1-stop @60%": -99.06981039524656,
+        "2-stop @33/66%": -103.26085421656121
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -101.19793537156836,
+        "reward_std": 10.989409843980932,
+        "reward_min": -113.83834720978503,
+        "reward_max": -93.91226576117529
+      },
+      "delta_vs_zero": 75.868260111501,
+      "delta_vs_oracle": -1.3702603498783787
+    },
+    {
+      "gp_name": "Dutch Grand Prix",
+      "total_laps": 72,
+      "in_train_pool": false,
+      "agent": {
+        "reward_mean": -83.87601510310851,
+        "reward_std": 4.518844452209757,
+        "pit_laps": [
+          18,
+          43
+        ],
+        "pit_compounds": [
+          "HARD",
+          "HARD"
+        ],
+        "forced_pits": [],
+        "total_time_s": 5900.313015103115,
+        "final_position": 18
+      },
+      "zero_stop": {
+        "reward_mean": -152.32223535533683,
+        "total_time_s": 5954.639235355342
+      },
+      "oracle": {
+        "name": "1-stop @40%",
+        "reward_mean": -77.79045010128684,
+        "pit_laps": [
+          29
+        ],
+        "total_time_s": 5894.127450101291
+      },
+      "all_scripts": {
+        "0-stop": -152.32223535533683,
+        "1-stop @40%": -77.79045010128684,
+        "1-stop @50%": -81.84492577303247,
+        "1-stop @60%": -82.06629809129973,
+        "2-stop @33/66%": -90.72387709432851
+      },
+      "seeds": {
+        "n_models": 3,
+        "reward_mean": -84.40388407523118,
+        "reward_std": 4.901688884130025,
+        "reward_min": -89.54814331257765,
+        "reward_max": -79.78749381000735
+      },
+      "delta_vs_zero": 68.44622025222831,
+      "delta_vs_oracle": -6.085565001821678
+    }
+  ]
+}

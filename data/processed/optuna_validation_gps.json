@@ -1,0 +1,23 @@
+{
+  "criterion": "ecart entre le 0-stop et le meilleur script, par GP",
+  "eval_seeds": [
+    100,
+    101
+  ],
+  "events": [
+    "São Paulo Grand Prix",
+    "Austrian Grand Prix",
+    "Singapore Grand Prix",
+    "Las Vegas Grand Prix",
+    "Spanish Grand Prix",
+    "Miami Grand Prix"
+  ],
+  "gaps": {
+    "São Paulo Grand Prix": 76.5,
+    "Austrian Grand Prix": 70.04,
+    "Singapore Grand Prix": 53.31,
+    "Las Vegas Grand Prix": 52.4,
+    "Spanish Grand Prix": 36.38,
+    "Miami Grand Prix": -3.45
+  }
+}

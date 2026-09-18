@@ -1,0 +1,297 @@
+{
+  "model": "a2c_abl_complet_s3.zip",
+  "algo": "a2c",
+  "season": 2025,
+  "n_seeds": 5,
+  "min_laps": 25,
+  "excluded_truncated": [
+    {
+      "event": "Monaco Grand Prix",
+      "laps": 8
+    }
+  ],
+  "generalisation": [
+    {
+      "event": "Las Vegas Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        26,
+        27,
+        26,
+        26,
+        26
+      ],
+      "reward": -15.053306965373215,
+      "zero": -63.48298896354726,
+      "best": -14.108207334885213,
+      "total_laps": 50
+    },
+    {
+      "event": "Azerbaijan Grand Prix",
+      "chosen": 0.4,
+      "forced": 1.0,
+      "laps": [
+        38,
+        38
+      ],
+      "reward": -60.59570233759628,
+      "zero": -56.58214406325463,
+      "best": -11.043495520837277,
+      "total_laps": 50
+    },
+    {
+      "event": "Italian Grand Prix",
+      "chosen": 0.0,
+      "forced": 1.0,
+      "laps": [],
+      "reward": -36.412630999650915,
+      "zero": -36.412630999650915,
+      "best": 15.390430903939926,
+      "total_laps": 52
+    },
+    {
+      "event": "Japanese Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        27,
+        27,
+        27,
+        27,
+        27
+      ],
+      "reward": -28.202282658191553,
+      "zero": -69.86717747637955,
+      "best": -17.475037239959608,
+      "total_laps": 53
+    },
+    {
+      "event": "United States Grand Prix",
+      "chosen": 0.0,
+      "forced": 1.0,
+      "laps": [],
+      "reward": -63.81524354310643,
+      "zero": -63.81524354310643,
+      "best": -3.7402938901889042,
+      "total_laps": 55
+    },
+    {
+      "event": "Chinese Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        30,
+        30,
+        29,
+        30,
+        30
+      ],
+      "reward": -15.445370305986234,
+      "zero": -74.99912540523975,
+      "best": -8.787760849581293,
+      "total_laps": 56
+    },
+    {
+      "event": "Qatar Grand Prix",
+      "chosen": 0.6,
+      "forced": 0.4,
+      "laps": [
+        33,
+        33,
+        33
+      ],
+      "reward": -61.559096032258694,
+      "zero": -86.53297465779472,
+      "best": -42.92457077925346,
+      "total_laps": 56
+    },
+    {
+      "event": "Abu Dhabi Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        27,
+        27,
+        27,
+        28,
+        27
+      ],
+      "reward": -10.352610810857986,
+      "zero": -72.51430869444212,
+      "best": 8.22347401622811,
+      "total_laps": 57
+    },
+    {
+      "event": "Miami Grand Prix",
+      "chosen": 0.0,
+      "forced": 0.0,
+      "laps": [],
+      "reward": -36.08843307847835,
+      "zero": -36.08843307847835,
+      "best": -40.07522154928244,
+      "total_laps": 57
+    },
+    {
+      "event": "Bahrain Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        25,
+        26,
+        26,
+        26,
+        26
+      ],
+      "reward": -42.274555713124805,
+      "zero": -103.32449107503177,
+      "best": -46.889623484060394,
+      "total_laps": 57
+    },
+    {
+      "event": "Singapore Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        31,
+        31,
+        31,
+        31,
+        31
+      ],
+      "reward": -0.22881231265339644,
+      "zero": -61.698805148474136,
+      "best": 4.600321056725751,
+      "total_laps": 61
+    },
+    {
+      "event": "Emilia Romagna Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        29,
+        29,
+        28,
+        29,
+        29
+      ],
+      "reward": -41.298243837616496,
+      "zero": -88.40449025864567,
+      "best": -44.324116073793974,
+      "total_laps": 63
+    },
+    {
+      "event": "Spanish Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        34,
+        33,
+        34,
+        33,
+        34
+      ],
+      "reward": -63.028559560628295,
+      "zero": -92.78777954929603,
+      "best": -57.52675271249582,
+      "total_laps": 66
+    },
+    {
+      "event": "Austrian Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        29,
+        30,
+        29,
+        29,
+        30
+      ],
+      "reward": -2.6500126534767383,
+      "zero": -89.96078095700133,
+      "best": -9.551536148482235,
+      "total_laps": 69
+    },
+    {
+      "event": "Hungarian Grand Prix",
+      "chosen": 1.0,
+      "forced": 1.0,
+      "laps": [
+        35,
+        35,
+        36,
+        36,
+        35
+      ],
+      "reward": -55.45368788199748,
+      "zero": -56.36577614689279,
+      "best": -9.43220138749211,
+      "total_laps": 69
+    },
+    {
+      "event": "Canadian Grand Prix",
+      "chosen": 0.0,
+      "forced": 1.0,
+      "laps": [],
+      "reward": -46.87560853983779,
+      "zero": -46.87560853983779,
+      "best": -5.484281318293462,
+      "total_laps": 69
+    },
+    {
+      "event": "Mexico City Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        32,
+        31,
+        31,
+        31,
+        31
+      ],
+      "reward": -20.448283994767444,
+      "zero": -66.30535221161573,
+      "best": -16.14294104360681,
+      "total_laps": 70
+    },
+    {
+      "event": "São Paulo Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        33,
+        33,
+        33,
+        33,
+        33
+      ],
+      "reward": -11.514641489037535,
+      "zero": -100.80392624140094,
+      "best": -12.674357292332799,
+      "total_laps": 71
+    },
+    {
+      "event": "Dutch Grand Prix",
+      "chosen": 1.0,
+      "forced": 0.0,
+      "laps": [
+        44,
+        44,
+        44,
+        44,
+        44
+      ],
+      "reward": -48.37666730427777,
+      "zero": -88.86565580699661,
+      "best": -45.59478787962046,
+      "total_laps": 72
+    }
+  ],
+  "summary": {
+    "mean_chosen": 0.7368421052631579,
+    "n_gp": 19,
+    "never_pits": 4,
+    "beats_zero": 14,
+    "beats_best": 5
+  }
+}

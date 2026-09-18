@@ -1,0 +1,14 @@
+# Fins de ligne normalisées en LF dans le dépôt (compatibilité Docker / CI Linux)
+* text=auto eol=lf
+
+# Scripts Windows : CRLF obligatoire
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binaires : git ne doit jamais les modifier
+*.zip binary
+*.npz binary
+*.parquet binary
+*.pt binary
+*.png binary
+*.jpg binary

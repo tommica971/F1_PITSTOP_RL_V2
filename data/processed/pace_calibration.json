@@ -1,0 +1,18 @@
+{
+  "degradation_s_per_lap": {
+    "SOFT": 0.041947010937367836,
+    "MEDIUM": 0.042868159168332344,
+    "HARD": 0.035588380352751414,
+    "INTERMEDIATE": 0.018745382553957683
+  },
+  "out_lap_penalty_s": {
+    "SOFT": 0.4898940218746901,
+    "MEDIUM": 0.38567039792072677,
+    "HARD": 0.09676514105804301,
+    "INTERMEDIATE": -0.1260092348921944
+  },
+  "noise_std_s": 0.6085,
+  "pit_stop_cost_mean_s": 23.23,
+  "pit_stop_cost_std_s": 5.38,
+  "method": "effets fixes pilote + tour, multi-pilotes, par GP ; l'effet carburant est absorbe par l'effet fixe de tour"
+}

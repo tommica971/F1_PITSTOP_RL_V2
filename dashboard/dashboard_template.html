@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F1_PITSTOP_RL — Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E1420;
+    --panel:#161D2C;
+    --panel-alt:#1B2436;
+    --panel-raised:#202A40;
+    --border:#29334A;
+    --border-soft:#212a3d;
+    --text:#E8ECF4;
+    --text-dim:#8993A8;
+    --text-faint:#5B667F;
+    --alpine-blue:#0090D0;
+    --alpine-pink:#FF6FA8;
+    --pos:#3DDC84;
+    --neg:#FF4757;
+    --tire-soft:#FF3333;
+    --tire-medium:#FFD400;
+    --tire-hard:#F2F2F2;
+    --tire-inter:#43B02A;
+    --tire-wet:#2F8FE0;
+    --font-display:'Titillium Web', 'Arial Narrow', sans-serif;
+    --font-mono:'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font-display);}
+  body{min-height:100vh;}
+  ::selection{background:var(--alpine-blue);color:#fff;}
+
+  /* ---------- Top strip ---------- */
+  .topstrip{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 28px;border-bottom:2px solid var(--alpine-blue);
+    background:linear-gradient(180deg, var(--panel-raised) 0%, var(--panel) 100%);
+  }
+  .topstrip .driver-id{display:flex;align-items:center;gap:16px;}
+  .car-number{
+    font-family:var(--font-mono);font-weight:700;font-size:28px;
+    color:var(--bg);background:var(--alpine-pink);
+    padding:4px 12px;border-radius:3px;line-height:1;
+  }
+  .driver-name{font-weight:700;font-size:20px;letter-spacing:.3px;}
+  .team-name{font-size:12px;color:var(--text-dim);margin-top:2px;}
+  .model-tag{
+    font-family:var(--font-mono);font-size:11px;color:var(--alpine-blue);
+    border:1px solid var(--border);padding:5px 10px;border-radius:3px;
+    background:rgba(0,144,208,.08);
+  }
+
+  /* ---------- Tabs ---------- */
+  .tabs{display:flex;gap:2px;padding:0 28px;background:var(--panel);border-bottom:1px solid var(--border);}
+  .tab{
+    padding:13px 22px;font-family:var(--font-display);font-size:14px;font-weight:600;
+    color:var(--text-dim);cursor:pointer;border-bottom:3px solid transparent;
+    transition:color .15s ease, border-color .15s ease;user-select:none;
+  }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--text);border-bottom-color:var(--alpine-pink);}
+
+  .view{display:none;padding:24px 28px 48px;max-width:1400px;margin:0 auto;}
+  .view.active{display:block;}
+
+  /* ---------- Shared panel ---------- */
+  .panel{
+    background:var(--panel);border:1px solid var(--border-soft);border-radius:6px;
+    padding:18px 20px;
+  }
+  .panel-title{
+    font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;
+    margin:0 0 14px;font-weight:600;
+  }
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+
+  /* ---------- Command Center ---------- */
+  .cc-controls{
+    display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;
+  }
+  select{
+    background:var(--panel-alt);color:var(--text);border:1px solid var(--border);
+    padding:8px 12px;border-radius:4px;font-family:var(--font-display);font-size:13px;
+  }
+  .badge{
+    font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.4px;
+  }
+  .badge.trained{background:rgba(61,220,132,.15);color:var(--pos);border:1px solid rgba(61,220,132,.35);}
+  .badge.unseen{background:rgba(255,111,168,.15);color:var(--alpine-pink);border:1px solid rgba(255,111,168,.35);}
+  .weather-note{font-size:12px;color:var(--text-dim);}
+
+  .lap-transport{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+  .transport-btn{
+    background:var(--panel-raised);border:1px solid var(--border);color:var(--text);
+    width:36px;height:36px;border-radius:4px;cursor:pointer;font-size:14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .transport-btn:hover{border-color:var(--alpine-blue);}
+  .lap-slider{flex:1;accent-color:var(--alpine-pink);}
+  .lap-readout{font-family:var(--font-mono);font-size:13px;color:var(--text-dim);min-width:90px;text-align:right;}
+
+  .track-panel{margin-bottom:16px;}
+  .lane{display:grid;grid-template-columns:70px 1fr 120px;align-items:center;gap:14px;padding:10px 0;}
+  .lane + .lane{border-top:1px solid var(--border-soft);}
+  .lane-label{font-size:12px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;}
+  .lane-track{position:relative;height:34px;background:var(--panel-alt);border-radius:4px;overflow:hidden;}
+  .lane-track::before{
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg, var(--border-soft) 0 1px, transparent 1px 5%);
+    opacity:.5;
+  }
+  .car-marker{
+    position:absolute;top:4px;height:26px;width:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-weight:700;font-size:12px;color:var(--bg);
+    transition:left .3s ease;box-shadow:0 0 0 2px var(--bg);
+  }
+  .car-marker.real{background:var(--text-dim);}
+  .car-marker.agent{background:var(--alpine-pink);}
+  .lane-status{display:flex;flex-direction:column;gap:3px;align-items:flex-end;}
+  .pos-readout{font-family:var(--font-mono);font-weight:700;font-size:16px;}
+  .tire-chip{
+    display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;
+    color:var(--text-dim);
+  }
+  .tire-dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+
+  .confidence-panel{margin-top:16px;}
+
+  /* ---------- Track 2D ---------- */
+  .track2d-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+  .track2d-svg{width:260px;height:260px;flex-shrink:0;}
+  .track2d-path{stroke:var(--border);stroke-width:10;stroke-linejoin:round;}
+  .track2d-marker{stroke:var(--bg);stroke-width:2;transition:cx .25s ease, cy .25s ease;}
+  .track2d-marker.agent{fill:var(--alpine-pink);}
+  .track2d-marker.real{fill:var(--text-dim);}
+  .track2d-legend{display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-dim);}
+  .legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;}
+  .legend-dot.agent{background:var(--alpine-pink);}
+  .legend-dot.real{background:var(--text-dim);}
+  .track2d-gap{font-family:var(--font-mono);font-size:15px;color:var(--text);font-weight:700;margin-top:6px;}
+  .conf-bars{display:flex;flex-direction:column;gap:8px;}
+  .conf-row{display:grid;grid-template-columns:130px 1fr 46px;align-items:center;gap:10px;}
+  .conf-name{font-size:12px;color:var(--text-dim);font-family:var(--font-mono);}
+  .conf-track{height:8px;background:var(--panel-alt);border-radius:4px;overflow:hidden;}
+  .conf-fill{height:100%;background:var(--alpine-blue);border-radius:4px;transition:width .3s ease;}
+  .conf-val{font-family:var(--font-mono);font-size:11px;text-align:right;color:var(--text-dim);}
+
+  .finalcards{display:flex;gap:16px;margin-top:18px;}
+  .finalcard{flex:1;text-align:center;padding:16px;border-radius:6px;background:var(--panel-alt);border:1px solid var(--border-soft);}
+  .finalcard .who{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;}
+  .finalcard .pos{font-family:var(--font-mono);font-weight:700;font-size:34px;margin:6px 0 2px;}
+  .finalcard .pts{font-size:13px;color:var(--text-dim);}
+  .finalcard.agent .pos{color:var(--alpine-pink);}
+
+  /* ---------- Season view ---------- */
+  .summary-strip{display:flex;gap:16px;margin-bottom:20px;}
+  .stat-card{flex:1;background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:6px;padding:16px 18px;}
+  .stat-label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .stat-value{font-family:var(--font-mono);font-weight:700;font-size:26px;}
+  .stat-value.pink{color:var(--alpine-pink);}
+  .stat-sub{font-size:11px;color:var(--text-faint);margin-top:4px;}
+
+  .chart-wrap{overflow-x:auto;padding-top:4px;}
+  .season-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:13px;}
+  .season-table th{
+    text-align:left;font-size:11px;color:var(--text-dim);text-transform:uppercase;
+    letter-spacing:.6px;padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;
+  }
+  .season-table td{padding:9px 10px;border-bottom:1px solid var(--border-soft);}
+  .season-table tr:hover td{background:var(--panel-alt);}
+  .delta-pos{color:var(--pos);font-family:var(--font-mono);font-weight:700;}
+  .delta-neg{color:var(--neg);font-family:var(--font-mono);font-weight:700;}
+  .delta-zero{color:var(--text-faint);font-family:var(--font-mono);}
+
+  /* ---------- Undercut view ---------- */
+  .scenario-card{margin-bottom:20px;}
+  .scenario-meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px;}
+  .meta-item{font-size:12px;}
+  .meta-item span{display:block;color:var(--text-faint);font-size:10px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;}
+  .meta-item strong{font-family:var(--font-mono);font-size:15px;}
+
+  .option-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .option-card{
+    background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:6px;
+    padding:18px;display:flex;flex-direction:column;gap:12px;
+  }
+  .option-card.chosen{border-color:var(--alpine-pink);box-shadow:0 0 0 1px var(--alpine-pink) inset;}
+  .option-label{font-weight:700;font-size:14px;}
+  .option-pitlap{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);}
+  .option-outcome{margin-top:auto;padding-top:10px;border-top:1px solid var(--border-soft);}
+  .outcome-pos{font-family:var(--font-mono);font-size:24px;font-weight:700;}
+  .outcome-label{font-size:11px;color:var(--text-faint);}
+  .chosen-tag{
+    align-self:flex-start;font-size:10px;font-weight:700;color:var(--alpine-pink);
+    letter-spacing:.5px;text-transform:uppercase;
+  }
+
+  .caveat{
+    margin-top:18px;font-size:12px;color:var(--text-faint);font-style:italic;
+    border-left:2px solid var(--border);padding-left:10px;
+  }
+
+  .data-note{
+    font-size:11px;color:var(--text-faint);text-align:center;margin-top:36px;font-family:var(--font-mono);
+  }
+</style>
+</head>
+<body>
+
+<div class="topstrip">
+  <div class="driver-id">
+    <div class="car-number">10</div>
+    <div>
+      <div class="driver-name" id="driverName">Pierre Gasly</div>
+      <div class="team-name" id="teamName">Alpine F1 Team — Saison 2025</div>
+    </div>
+  </div>
+  <div class="model-tag" id="modelTag">MODEL: a2c_extended_pool_5000k · CPU inference</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-view="strategy">Stratégie &amp; baselines</div>
+  <div class="tab" data-view="cc">Télémétrie &amp; décisions</div>
+  <div class="tab" data-view="model">Apprentissage RL</div>
+  <div class="tab" data-view="season">Validation Sim-to-Real</div>
+</div>
+
+<!-- ================= STRATEGIE (vue d'accueil) ================= -->
+<div class="view active" id="view-strategy">
+  <div class="summary-strip">
+    <div class="stat-card" style="flex:1.6;border-color:var(--pos);">
+      <div class="stat-label">Bat la stratégie naïve (0-stop)</div>
+      <div class="stat-value" id="kpiZero" style="font-size:40px;color:var(--pos);">–</div>
+      <div class="stat-sub" id="kpiZeroSub"></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Gain moyen par Grand Prix</div>
+      <div class="stat-value" id="kpiDelta" style="color:var(--pos);">–</div>
+      <div class="stat-sub">en récompense, face au 0-stop</div>
+    </div>
+    <div class="stat-card" style="opacity:.72;">
+      <div class="stat-label">Atteint l'oracle</div>
+      <div class="stat-value" id="kpiOracle" style="font-size:20px;">–</div>
+      <div class="stat-sub" id="kpiOracleSub">L'oracle est choisi après coup : il connaît déjà la meilleure fenêtre d'arrêt du circuit.</div>
+    </div>
+    <div class="stat-card" style="opacity:.72;">
+      <div class="stat-label">Modèle évalué</div>
+      <div class="stat-value" id="kpiModel" style="font-size:16px;">–</div>
+      <div class="stat-sub" id="kpiModelSub"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Écart de récompense face au 0-stop, par Grand Prix</p>
+    <div class="chart-wrap"><svg id="stratChart" width="100%" height="560"></svg></div>
+    <p class="caveat">Vert à droite : l'agent fait mieux que la stratégie naïve. Rouge à gauche :
+    il fait moins bien. Le losange marque l'écart de l'oracle sur le même circuit — la borne haute
+    atteignable si l'on connaissait d'avance la bonne fenêtre d'arrêt.</p>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Cumul de l'avantage sur la saison</p>
+    <div class="chart-wrap"><svg id="stratCumChart" width="100%" height="220"></svg></div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Détail par Grand Prix</p>
+    <table class="season-table" id="stratTable"></table>
+    <p class="caveat" id="stratExcluded"></p>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Note méthodologique</p>
+    <p class="caveat" id="stratMethod" style="font-size:12.5px;line-height:1.7;"></p>
+  </div>
+</div>
+
+<!-- ================= COMMAND CENTER ================= -->
+<div class="view" id="view-cc">
+  <div class="cc-controls">
+    <select id="raceSelect"></select>
+    <span class="badge" id="trainBadge"></span>
+    <span class="weather-note" id="weatherNote"></span>
+  </div>
+
+  <div class="lap-transport">
+    <div class="transport-btn" id="btnPlay">▶</div>
+    <input type="range" class="lap-slider" id="lapSlider" min="1" max="1" value="1">
+    <div class="lap-readout" id="lapReadout">Tour 1 / 1</div>
+  </div>
+
+  <div class="panel" id="trackVisualPanel">
+    <p class="panel-title">Écart sur piste (schématique) — tour courant</p>
+    <div class="track2d-wrap">
+      <svg id="track2dSvg" viewBox="0 0 400 400" class="track2d-svg">
+        <path id="track2dPath" class="track2d-path" fill="none"></path>
+        <circle id="track2dMarkerAgent" class="track2d-marker agent" r="7"></circle>
+        <circle id="track2dMarkerReal" class="track2d-marker real" r="7"></circle>
+      </svg>
+      <div class="track2d-legend">
+        <div><span class="legend-dot agent"></span> Agent RL</div>
+        <div><span class="legend-dot real"></span> Réel</div>
+        <div class="track2d-gap" id="track2dGapLabel">écart : –</div>
+      </div>
+    </div>
+    <p class="caveat">Tracé schématique représentatif (pas les coordonnées GPS réelles du circuit) — la position angulaire du point "Réel" par rapport à l'agent est proportionnelle à l'écart de temps cumulé entre les deux, pas à une distance réelle sur la piste.</p>
+  </div>
+
+  <div class="panel track-panel">
+    <p class="panel-title">Position en piste — tour courant</p>
+    <div class="lane">
+      <div class="lane-label">Réel</div>
+      <div class="lane-track"><div class="car-marker real" id="markerReal">P–</div></div>
+      <div class="lane-status">
+        <div class="pos-readout" id="posReal">P–</div>
+        <div class="tire-chip"><span class="tire-dot" id="tireDotReal"></span><span id="tireLabelReal">–</span></div>
+      </div>
+    </div>
+    <div class="lane">
+      <div class="lane-label">Agent RL</div>
+      <div class="lane-track"><div class="car-marker agent" id="markerAgent">P–</div></div>
+      <div class="lane-status">
+        <div class="pos-readout" id="posAgent">P–</div>
+        <div class="tire-chip"><span class="tire-dot" id="tireDotAgent"></span><span id="tireLabelAgent">–</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel confidence-panel">
+      <p class="panel-title">Marge d'action — tour courant</p>
+      <div class="conf-bars" id="confBars"></div>
+      <p class="caveat" id="confCaveat" style="margin-top:10px;"></p>
+    </div>
+    <div class="panel">
+      <p class="panel-title">Arrêts au stand</p>
+      <div id="pitEventsList" style="font-size:13px;line-height:1.9;font-family:var(--font-mono);"></div>
+    </div>
+  </div>
+
+  <div class="finalcards">
+    <div class="finalcard">
+      <div class="who">Résultat réel</div>
+      <div class="pos" id="finalPosReal">P–</div>
+      <div class="pts" id="finalPtsReal">– pts</div>
+    </div>
+    <div class="finalcard agent">
+      <div class="who">Résultat agent RL</div>
+      <div class="pos" id="finalPosAgent">P–</div>
+      <div class="pts" id="finalPtsAgent">– pts</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SEASON ================= -->
+<div class="view" id="view-season">
+  <div class="panel" style="border-color:var(--neg);">
+    <p class="panel-title" style="color:var(--neg);">Avertissement méthodologique — chiffres non comparables</p>
+    <p class="caveat" style="font-size:12.5px;line-height:1.75;">
+      Les positions et les points de cette vue <strong>ne mesurent pas la qualité de l'agent</strong>.
+      Le test de sanité rejoue la stratégie <em>réelle</em> de Gasly dans le simulateur : il le classe
+      P15 à Silverstone (P6 en réalité), P18 aux Pays-Bas (P4), P20 en Belgique (P10). L'écart ne
+      vient donc pas des décisions, mais d'un biais systématique du modèle de rythme.
+    </p>
+    <table class="season-table" style="margin-top:14px;max-width:640px;">
+      <thead><tr><th>Mesure</th><th>Valeur</th></tr></thead>
+      <tbody>
+        <tr><td>Erreur médiane sur le temps total de course</td><td style="font-family:var(--font-mono)">+0,95 %</td></tr>
+        <tr><td>Pire cas mesuré (Pays-Bas 2023)</td><td style="font-family:var(--font-mono)">+5,10 %</td></tr>
+        <tr><td>Équivalent sur une course de 57 tours à 95 s</td><td style="font-family:var(--font-mono)">≈ 54 s cumulées (~0,9 s/tour)</td></tr>
+        <tr><td>Déplacement de position induit</td><td style="font-family:var(--font-mono)">5 à 9 places</td></tr>
+        <tr><td>GP du pool testés</td><td style="font-family:var(--font-mono)">10</td></tr>
+      </tbody>
+    </table>
+    <p class="caveat" style="font-size:12.5px;line-height:1.75;margin-top:12px;">
+      Cause identifiée : la référence de rythme est la médiane du peloton au tour courant, qui
+      contient déjà la dégradation moyenne des autres voitures ; celle de l'agent s'y ajoute. Le
+      double comptage est faible par tour mais s'accumule sur la course. Il affecte
+      <strong>identiquement</strong> toutes les stratégies simulées, ce qui laisse la comparaison
+      agent / baselines valide — c'est l'objet de l'onglet Stratégie. Seule la comparaison au
+      pilote réel, dont les temps ne subissent pas ce biais, est invalidée.
+    </p>
+  </div>
+
+  <div class="summary-strip">
+    <div class="stat-card">
+      <div class="stat-label">Points réels (saison)</div>
+      <div class="stat-value" id="sumRealPts">–</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Points agent RL (saison)</div>
+      <div class="stat-value pink" id="sumAgentPts">–</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">GP jamais vus — réel vs agent</div>
+      <div class="stat-value" id="sumUnseen">–</div>
+      <div class="stat-sub" id="sumUnseenSub"></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Courses améliorées</div>
+      <div class="stat-value" id="sumImproved">–</div>
+      <div class="stat-sub" id="sumImprovedSub"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Points par Grand Prix — réel vs agent</p>
+    <div class="chart-wrap"><svg id="seasonChart" width="100%" height="220"></svg></div>
+  </div>
+
+  <table class="season-table">
+    <thead>
+      <tr>
+        <th>#</th><th>Grand Prix</th><th>Statut</th>
+        <th>Pos. réelle</th><th>Pos. agent</th>
+        <th>Pts réels</th><th>Pts agent</th><th>Δ pts</th>
+      </tr>
+    </thead>
+    <tbody id="seasonTableBody"></tbody>
+  </table>
+</div>
+
+<!-- ================= DECISIONS CLES ================= -->
+<div class="view" id="view-undercut">
+  <div class="panel scenario-card">
+    <p class="panel-title" id="undercutTitle">Arrêts décidés par l'agent — course sélectionnée</p>
+    <div class="scenario-meta" id="undercutMeta"></div>
+  </div>
+
+  <div class="option-cards" id="optionCards"></div>
+
+  <p class="caveat" id="undercutCaveat"></p>
+</div>
+
+<!-- ================= CIRCUIT & METEO ================= -->
+<div class="view" id="view-circuit">
+  <div class="grid-2">
+    <div class="panel">
+      <p class="panel-title" id="circuitTitle">Fiche circuit</p>
+      <div class="scenario-meta" id="circuitFacts"></div>
+    </div>
+    <div class="panel">
+      <p class="panel-title">Conditions de course</p>
+      <div class="scenario-meta" id="raceConditions"></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px;">
+    <p class="panel-title">Météo tour par tour — température piste/air</p>
+    <div class="chart-wrap"><svg id="weatherChart" width="100%" height="200"></svg></div>
+  </div>
+
+  <div class="panel" style="margin-top:16px;">
+    <p class="panel-title">Statut piste (vert / VSC / Safety Car)</p>
+    <div class="chart-wrap"><svg id="trackStatusChart" width="100%" height="60"></svg></div>
+  </div>
+</div>
+
+<!-- ================= MODELE ================= -->
+<div class="view" id="view-model">
+  <div class="summary-strip">
+    <div class="stat-card">
+      <div class="stat-label">Modèle</div>
+      <div class="stat-value" id="modelName" style="font-size:16px;">–</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Épisodes d'entraînement</div>
+      <div class="stat-value" id="modelEpisodes">–</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Timesteps finaux</div>
+      <div class="stat-value" id="modelTimesteps">–</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Reward moyen (500 derniers épisodes)</div>
+      <div class="stat-value" id="modelRewardMean">–</div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px;">
+    <p class="panel-title">Courbe d'apprentissage — reward par épisode (moyenne lissée)</p>
+    <div class="chart-wrap"><svg id="trainingCurveChart" width="100%" height="240"></svg></div>
+  </div>
+
+  <div class="panel" style="margin-top:16px;">
+    <p class="panel-title">Décomposition de la récompense — tour courant (course sélectionnée dans Command Center)</p>
+    <div class="chart-wrap"><svg id="rewardBreakdownChart" width="100%" height="180"></svg></div>
+  </div>
+
+  <div class="panel" style="margin-top:16px;">
+    <p class="panel-title">Optimisation Optuna — meilleurs hyperparamètres</p>
+    <div id="optunaParams" style="font-family:var(--font-mono);font-size:13px;line-height:2;"></div>
+  </div>
+</div>
+
+<!-- ================= CLASSEMENT SAISON ================= -->
+<div class="view" id="view-ranking">
+  <div class="panel">
+    <p class="panel-title">Évolution du classement — position réelle vs agent, course par course</p>
+    <div class="chart-wrap"><svg id="rankingChart" width="100%" height="320"></svg></div>
+    <p class="caveat">Position finale par Grand Prix (1 = vainqueur, 20 = dernier). Les GP marqués d'un repère différent (cf. légende) sont ceux vus à l'entraînement.</p>
+  </div>
+</div>
+
+<div class="data-note">Dashboard F1_PITSTOP_RL — RNCP Bloc 5 · saison 2025, modèle a2c_extended_pool_5000k</div>
+
+<script>
+/* ============================================================
+   DONNEES REELLES — injectees par build_dashboard.py a partir de
+   dashboard/data/season_2025.json et dashboard/data/race_*.json
+   ============================================================ */
+/*__EMBEDDED_DATA__*/
+
+const ACTION_LABELS = {
+  stay:"Rester en piste", pit_soft:"Pit → Tendre", pit_medium:"Pit → Medium",
+  pit_hard:"Pit → Dur", pit_intermediate:"Pit → Inter", pit_wet:"Pit → Pluie"
+};
+const TIRE_COLORS = {
+  SOFT:"var(--tire-soft)", MEDIUM:"var(--tire-medium)", HARD:"var(--tire-hard)",
+  INTERMEDIATE:"var(--tire-inter)", WET:"var(--tire-wet)"
+};
+const POINTS_TABLE = {1:25,2:18,3:15,4:12,5:10,6:8,7:6,8:4,9:2,10:1};
+const REWARD_COMPONENT_LABELS = {
+  time_component: "Temps au tour", position_delta_component: "Δ position",
+  dirty_air_component: "Air sale", compliance_component: "Conformité pneus",
+  terminal_component: "Bonus final"
+};
+
+document.getElementById('driverName').textContent = seasonData.driver;
+document.getElementById('teamName').textContent = `${seasonData.team} — Saison ${seasonData.season}`;
+document.getElementById('modelTag').textContent = `MODEL: ${seasonData.model} · CPU inference`;
+
+/* ============================================================
+   LOGIQUE UI
+   ============================================================ */
+
+/* ---- Onglet Strategie ---- */
+function renderStrategyTab(){
+  if (typeof comparisonData === 'undefined' || !comparisonData){
+    document.getElementById('stratMethod').textContent =
+      "comparison_*.json absent — lancer scripts/build_comparison_data.py puis rebuild.";
+    return;
+  }
+  const d = comparisonData, s = d.summary_out_of_pool;
+  const out = d.races.filter(r=>!r.in_train_pool)
+                     .slice().sort((a,b)=>b.delta_vs_zero - a.delta_vs_zero);
+
+  document.getElementById('kpiZero').textContent = s.beats_zero_stop + ' / ' + s.n_gp;
+  document.getElementById('kpiZeroSub').innerHTML =
+    s.pct_beats_zero_stop + '% des Grands Prix jamais vus à l\'entraînement'
+    + (d.multi_seed ? '<br><span style="color:var(--text-faint)">sur 3 graines d\'entraînement : '
+       + d.multi_seed + '</span>' : '');
+  document.getElementById('kpiDelta').textContent =
+    (s.mean_delta_vs_zero>0?'+':'') + s.mean_delta_vs_zero;
+  document.getElementById('kpiOracle').textContent =
+    s.beats_oracle + ' / ' + s.n_gp + '  (' + s.pct_beats_oracle + '%)';
+  document.getElementById('kpiModel').textContent = d.model;
+  document.getElementById('kpiModelSub').textContent =
+    d.algo + ' — ' + d.n_env_seeds + ' tirages par GP';
+
+  /* --- diverging bar chart horizontal --- */
+  const svg = document.getElementById('stratChart');
+  const W = svg.clientWidth || 1100;
+  const rowH = 24, PAD_T = 10, LABEL_W = 190, RIGHT = 70;
+  const H = PAD_T*2 + out.length*rowH;
+  svg.setAttribute('height', H);
+  const span = Math.max(...out.map(r=>Math.max(Math.abs(r.delta_vs_zero),
+                                               Math.abs(r.delta_vs_oracle))), 1);
+  const axisX = LABEL_W + 10;
+  const usable = W - axisX - RIGHT;
+  const px = v => (v/span) * (usable/2);
+  let h = `<line x1="${axisX+usable/2}" y1="${PAD_T}" x2="${axisX+usable/2}" y2="${H-PAD_T}"
+            stroke="var(--border)" stroke-width="1"/>`;
+  out.forEach((r,i)=>{
+    const y = PAD_T + i*rowH, cy = y + rowH/2;
+    const v = r.delta_vs_zero, w = Math.abs(px(v));
+    const x = v>=0 ? axisX+usable/2 : axisX+usable/2 - w;
+    const col = v>=0 ? 'var(--pos)' : 'var(--neg)';
+    h += `<text x="${LABEL_W}" y="${cy+4}" text-anchor="end" fill="var(--text-dim)"
+            font-size="11.5">${r.gp_name.replace(' Grand Prix','')}</text>`;
+    h += `<rect x="${x}" y="${cy-7}" width="${Math.max(w,1)}" height="14" fill="${col}" rx="2"
+            opacity=".88"><title>${r.gp_name} : ${v>0?'+':''}${v.toFixed(1)} vs 0-stop</title></rect>`;
+    const ox = axisX + usable/2 + px(r.delta_vs_oracle);
+    h += `<path d="M${ox},${cy-5} L${ox+5},${cy} L${ox},${cy+5} L${ox-5},${cy} Z"
+            fill="none" stroke="var(--text)" stroke-width="1.3" opacity=".75">
+            <title>${r.gp_name} — oracle (${r.oracle.name}) : ${r.delta_vs_oracle>0?'+':''}${r.delta_vs_oracle.toFixed(1)}</title></path>`;
+    h += `<text x="${axisX+usable+8}" y="${cy+4}" fill="${col}" font-size="11.5"
+            font-family="var(--font-mono)">${v>0?'+':''}${v.toFixed(1)}</text>`;
+  });
+  svg.innerHTML = h;
+
+  /* --- cumul --- */
+  const cum = document.getElementById('stratCumChart');
+  const chrono = d.races.filter(r=>!r.in_train_pool);
+  const W2 = cum.clientWidth || 1100, H2 = 220, P = 34;
+  let acc = 0;
+  const pts = chrono.map((r,i)=>{ acc += r.delta_vs_zero; return {i, acc, gp:r.gp_name}; });
+  const maxAcc = Math.max(...pts.map(p=>p.acc), 1);
+  const X = i => P + i*(W2-2*P)/((chrono.length-1)||1);
+  const Y = a => H2-P - a/maxAcc*(H2-2*P);
+  cum.innerHTML =
+    `<path d="${pts.map((p,i)=>`${i?'L':'M'}${X(p.i)},${Y(p.acc)}`).join(' ')}"
+       fill="none" stroke="var(--pos)" stroke-width="2.5"/>`
+    + pts.map(p=>`<circle cx="${X(p.i)}" cy="${Y(p.acc)}" r="3" fill="var(--pos)">
+         <title>${p.gp} — cumul ${p.acc.toFixed(0)}</title></circle>`).join('')
+    + `<text x="${P}" y="18" fill="var(--text-dim)" font-size="11"
+        font-family="var(--font-mono)">cumul final : +${acc.toFixed(0)} sur ${chrono.length} GP</text>`;
+
+  /* --- tableau --- */
+  document.getElementById('stratTable').innerHTML =
+    '<thead><tr><th>Grand Prix</th><th>statut</th><th>agent</th><th>0-stop</th>'
+    + '<th>oracle</th><th>écart vs 0-stop</th><th>arrêts choisis (tour)</th></tr></thead><tbody>'
+    + d.races.map(r=>{
+        const badge = r.in_train_pool ? '<span class="badge">entraînement</span>'
+                                      : '<span class="badge">jamais vu</span>';
+        const dz = r.delta_vs_zero, col = dz>0 ? 'var(--pos)' : 'var(--neg)';
+        const pits = r.agent.pit_laps.length
+          ? r.agent.pit_laps.map((l,k)=>l+' ('+(r.agent.pit_compounds[k]||'?')+')').join(', ')
+          : '<span style="color:var(--text-faint)">aucun arrêt choisi</span>';
+        return `<tr><td>${r.gp_name}</td><td>${badge}</td>`
+          + `<td style="font-family:var(--font-mono)">${r.agent.reward_mean.toFixed(1)}`
+          + ` <span style="color:var(--text-faint)">± ${r.seeds.reward_std.toFixed(1)}</span></td>`
+          + `<td style="font-family:var(--font-mono)">${r.zero_stop.reward_mean.toFixed(1)}</td>`
+          + `<td style="font-family:var(--font-mono)">${r.oracle.reward_mean.toFixed(1)}`
+          + ` <span style="color:var(--text-faint)">${r.oracle.name}</span></td>`
+          + `<td style="font-family:var(--font-mono);color:${col}">${dz>0?'+':''}${dz.toFixed(1)}</td>`
+          + `<td style="font-family:var(--font-mono);font-size:12px">${pits}</td></tr>`;
+      }).join('') + '</tbody>';
+
+  if (d.excluded_gp && d.excluded_gp.length){
+    document.getElementById('stratExcluded').innerHTML =
+      '<strong>Écarté :</strong> ' + d.excluded_gp.map(e=>e.gp_name+' — '+e.reason).join(' · ')
+      + '  ·  L\'écart-type du tableau est calculé sur les graines d\'entraînement, pas sur les tirages d\'environnement.';
+  }
+  document.getElementById('stratMethod').textContent =
+    d.methodology.why_not_real_driver + ' ' + d.methodology.oracle;
+
+  /* --- avertissement sur la marge d'action (DQN) --- */
+  const cav = document.getElementById('confCaveat');
+  if (cav){
+    const anyRace = Object.values(typeof raceCache!=='undefined' ? raceCache : {})[0];
+    const isQ = anyRace && anyRace.laps && anyRace.laps.some(l=>l.probs_from_q_values);
+    cav.textContent = isQ
+      ? "Proxy : ce modèle est un DQN, il n'a pas de politique paramétrée. Les valeurs "
+        + "affichées sont un softmax des Q-valeurs à température 1 — elles indiquent quelle "
+        + "action domine, pas une probabilité ni une incertitude statistique."
+      : "Distribution de probabilité de la politique au moment de la décision — ce n'est pas "
+        + "une incertitude statistique sur le résultat de la course.";
+  }
+}
+renderStrategyTab();
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('view-'+tab.dataset.view).classList.add('active');
+  });
+});
+
+/* ---- Command Center ---- */
+const raceSelect = document.getElementById('raceSelect');
+seasonData.races.forEach(r=>{
+  const opt = document.createElement('option');
+  opt.value = r.gp_name;
+  opt.textContent = `${r.round}. ${r.gp_name}`;
+  raceSelect.appendChild(opt);
+});
+
+let currentRace = null;
+let currentLap = 1;
+let playing = false, playTimer = null;
+let track2dPathEl = null;
+let track2dTotalLength = 0;
+
+function weatherNoteFor(race){
+  const rainLaps = race.laps.filter(l=>l.is_raining).length;
+  if(rainLaps === 0) return "Course sèche (aucun tour sous pluie détecté)";
+  const pct = Math.round(100*rainLaps/race.laps.length);
+  return `Pluie sur ${rainLaps}/${race.laps.length} tours (${pct}%)`;
+}
+
+function renderLap(){
+  const laps = currentRace.laps;
+  const idx = Math.min(currentLap, laps.length) - 1;
+  const l = laps[idx];
+
+  document.getElementById('lapReadout').textContent = `Tour ${l.lap} / ${currentRace.total_laps}`;
+  document.getElementById('lapSlider').value = l.lap;
+
+  const trackWidth = 100;
+  const clampPos = p => Math.max(1, Math.min(20, p));
+  const pctReal = 100 - (clampPos(l.position_real)/20)*trackWidth;
+  const pctAgent = 100 - (clampPos(l.position_agent)/20)*trackWidth;
+  document.getElementById('markerReal').style.left = `calc(${pctReal}% - 13px)`;
+  document.getElementById('markerAgent').style.left = `calc(${pctAgent}% - 13px)`;
+  document.getElementById('markerReal').textContent = 'P'+l.position_real;
+  document.getElementById('markerAgent').textContent = 'P'+l.position_agent;
+  document.getElementById('posReal').textContent = 'P'+l.position_real;
+  document.getElementById('posAgent').textContent = 'P'+l.position_agent;
+
+  document.getElementById('tireDotReal').style.background = TIRE_COLORS[l.compound_real] || '#5B667F';
+  document.getElementById('tireDotAgent').style.background = TIRE_COLORS[l.compound_agent] || '#5B667F';
+  document.getElementById('tireLabelReal').textContent = `${l.compound_real} · ${l.tire_age_real}t`;
+  document.getElementById('tireLabelAgent').textContent = `${l.compound_agent} · ${l.tire_age_agent}t`;
+
+  const bars = document.getElementById('confBars');
+  bars.innerHTML = '';
+  if(l.agent_action_probs){
+    const sorted = Object.entries(l.agent_action_probs).sort((a,b)=>b[1]-a[1]);
+    sorted.forEach(([k,v])=>{
+      const row = document.createElement('div');
+      row.className = 'conf-row';
+      row.innerHTML = `
+        <div class="conf-name">${ACTION_LABELS[k]}</div>
+        <div class="conf-track"><div class="conf-fill" style="width:${(v*100).toFixed(0)}%; ${k===l.agent_action?'':'opacity:.4'}"></div></div>
+        <div class="conf-val">${(v*100).toFixed(0)}%</div>
+      `;
+      bars.appendChild(row);
+    });
+  } else {
+    bars.innerHTML = `<div style="color:var(--text-faint);font-size:12px;">Tour 1 — état hérité des données réelles, pas de décision de l'agent (l'épisode démarre au tour 2)</div>`;
+  }
+
+  const pitsList = document.getElementById('pitEventsList');
+  const realPits = currentRace.pit_events.real.filter(p=>p.lap<=l.lap);
+  const agentPits = currentRace.pit_events.agent.filter(p=>p.lap<=l.lap);
+  pitsList.innerHTML =
+    `<div style="color:var(--text-dim)">RÉEL &nbsp;→ ${realPits.length? realPits.map(p=>`T${p.lap}:${p.compound_after}`).join(', ') : '—'}</div>
+     <div style="color:var(--alpine-pink)">AGENT → ${agentPits.length? agentPits.map(p=>`T${p.lap}:${p.compound_after}`).join(', ') : '—'}</div>`;
+
+  document.getElementById('finalPosReal').textContent = 'P'+currentRace.final.real.position;
+  document.getElementById('finalPtsReal').textContent = currentRace.final.real.points+' pts';
+  document.getElementById('finalPosAgent').textContent = 'P'+currentRace.final.agent.position;
+  document.getElementById('finalPtsAgent').textContent = currentRace.final.agent.points+' pts';
+
+  renderTrack2DMarkers(l);
+  renderRewardBreakdown(l);
+}
+
+function loadRace(name){
+  currentRace = raceCache[name];
+  if(!currentRace){ console.error('Course introuvable:', name); return; }
+  currentLap = 1;
+  document.getElementById('lapSlider').max = currentRace.total_laps;
+  document.getElementById('lapSlider').value = 1;
+  document.getElementById('trainBadge').textContent = currentRace.seen_in_training ? 'Vu à l\'entraînement' : 'Généralisation (jamais vu)';
+  document.getElementById('trainBadge').className = 'badge ' + (currentRace.seen_in_training ? 'trained' : 'unseen');
+  document.getElementById('weatherNote').textContent = weatherNoteFor(currentRace);
+  buildTrack2D(currentRace.gp_name);
+  renderLap();
+  renderKeyDecisions();
+  renderCircuitTab();
+}
+raceSelect.addEventListener('change', e=>loadRace(e.target.value));
+
+document.getElementById('lapSlider').addEventListener('input', e=>{
+  currentLap = parseInt(e.target.value);
+  renderLap();
+});
+document.getElementById('btnPlay').addEventListener('click', ()=>{
+  playing = !playing;
+  document.getElementById('btnPlay').textContent = playing ? '❚❚' : '▶';
+  if(playing){
+    playTimer = setInterval(()=>{
+      if(currentLap >= currentRace.total_laps){ playing=false; document.getElementById('btnPlay').textContent='▶'; clearInterval(playTimer); return; }
+      currentLap++; renderLap();
+    }, 180);
+  } else { clearInterval(playTimer); }
+});
+
+/* Course de depart : la plus grande bascule de points, ca ouvre bien la demo */
+const defaultRace = [...seasonData.races].sort((a,b)=>Math.abs(b.delta_points)-Math.abs(a.delta_points))[0];
+const defaultRaceName = defaultRace ? defaultRace.gp_name : seasonData.races[0].gp_name;
+raceSelect.value = defaultRaceName;
+loadRace(defaultRaceName);
+
+/* ---- Season view ---- */
+document.getElementById('sumRealPts').textContent = seasonData.summary.real_total_points;
+document.getElementById('sumAgentPts').textContent = seasonData.summary.agent_total_points;
+document.getElementById('sumUnseen').textContent =
+  `${seasonData.summary.unseen_races_only.real_total_points} → ${seasonData.summary.unseen_races_only.agent_total_points}`;
+document.getElementById('sumUnseenSub').textContent = `sur ${seasonData.summary.unseen_races_only.n_races} GP jamais vus`;
+document.getElementById('sumImproved').textContent = seasonData.summary.races_improved + ' / ' + seasonData.races.length;
+document.getElementById('sumImprovedSub').textContent =
+  `${seasonData.summary.races_worse} moins bonnes, ${seasonData.summary.races_equal} égales`;
+
+const tbody = document.getElementById('seasonTableBody');
+seasonData.races.forEach(r=>{
+  const tr = document.createElement('tr');
+  const deltaClass = r.delta_points>0 ? 'delta-pos' : r.delta_points<0 ? 'delta-neg' : 'delta-zero';
+  const deltaStr = r.delta_points>0 ? '+'+r.delta_points : r.delta_points;
+  tr.innerHTML = `
+    <td style="font-family:var(--font-mono);color:var(--text-faint)">${r.round}</td>
+    <td>${r.gp_name}</td>
+    <td><span class="badge ${r.seen_in_training?'trained':'unseen'}">${r.seen_in_training?'Entraînement':'Généralisation'}</span></td>
+    <td style="font-family:var(--font-mono)">P${r.real.finish_position}</td>
+    <td style="font-family:var(--font-mono);color:var(--alpine-pink)">P${r.agent.finish_position}</td>
+    <td style="font-family:var(--font-mono)">${r.real.points}</td>
+    <td style="font-family:var(--font-mono)">${r.agent.points}</td>
+    <td class="${deltaClass}">${deltaStr}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+/* Season chart (grouped bars, pure SVG) */
+(function drawChart(){
+  const svg = document.getElementById('seasonChart');
+  const W = Math.max(900, seasonData.races.length*46), H=220;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.style.width = W+'px';
+  const maxPts = 25;
+  const padBottom = 36, padTop = 10;
+  const chartH = H - padBottom - padTop;
+  const bw = 14;
+  seasonData.races.forEach((r,i)=>{
+    const gx = i*46 + 16;
+    const hReal = (r.real.points/maxPts)*chartH;
+    const hAgent = (r.agent.points/maxPts)*chartH;
+    const bar1 = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    bar1.setAttribute('x', gx); bar1.setAttribute('y', padTop+chartH-hReal);
+    bar1.setAttribute('width', bw); bar1.setAttribute('height', hReal);
+    bar1.setAttribute('fill', '#5B667F'); bar1.setAttribute('rx', 2);
+    svg.appendChild(bar1);
+    const bar2 = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    bar2.setAttribute('x', gx+bw+3); bar2.setAttribute('y', padTop+chartH-hAgent);
+    bar2.setAttribute('width', bw); bar2.setAttribute('height', hAgent);
+    bar2.setAttribute('fill', '#FF6FA8'); bar2.setAttribute('rx', 2);
+    svg.appendChild(bar2);
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('x', gx+bw); label.setAttribute('y', H-14);
+    label.setAttribute('fill', r.seen_in_training ? '#8993A8' : '#FF6FA8');
+    label.setAttribute('font-size','9'); label.setAttribute('font-family','JetBrains Mono, monospace');
+    label.setAttribute('text-anchor','middle');
+    label.textContent = r.gp_name.slice(0,3).toUpperCase();
+    svg.appendChild(label);
+  });
+})();
+
+/* ---- Decisions cles (bases sur les vraies decisions de pit de l'agent) ---- */
+function renderKeyDecisions(){
+  const race = currentRace;
+  document.getElementById('undercutTitle').textContent =
+    `Arrêts décidés par l'agent — ${race.gp_name} ${race.season}`;
+
+  const meta = document.getElementById('undercutMeta');
+  meta.innerHTML = `
+    <div class="meta-item"><span>Résultat réel</span><strong>P${race.final.real.position} · ${race.final.real.points} pts</strong></div>
+    <div class="meta-item"><span>Résultat agent</span><strong style="color:var(--alpine-pink)">P${race.final.agent.position} · ${race.final.agent.points} pts</strong></div>
+    <div class="meta-item"><span>Arrêts réels</span><strong>${race.pit_events.real.length}</strong></div>
+    <div class="meta-item"><span>Arrêts agent</span><strong>${race.pit_events.agent.length}</strong></div>
+  `;
+
+  const optCards = document.getElementById('optionCards');
+  optCards.innerHTML = '';
+
+  if(race.pit_events.agent.length === 0){
+    optCards.innerHTML = `<div class="option-card"><div class="option-label">Aucun arrêt décidé par l'agent sur cette course</div></div>`;
+  }
+
+  race.pit_events.agent.forEach(pit=>{
+    const lapData = race.laps.find(l=>l.lap === pit.lap);
+    const card = document.createElement('div');
+    card.className = 'option-card chosen';
+    const probsHtml = lapData && lapData.agent_action_probs
+      ? Object.entries(lapData.agent_action_probs).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>
+          `<div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-top:3px;">
+             <span>${ACTION_LABELS[k]}</span><span>${(v*100).toFixed(0)}%</span>
+           </div>`).join('')
+      : '';
+    const isForced = pit.forced_compliance;
+    card.innerHTML = `
+      <div class="chosen-tag" style="${isForced ? 'color:var(--neg);' : ''}">${isForced ? 'Pit forcé (conformité pneus, pas un choix de l\'agent)' : 'Décision réelle de l\'agent'}</div>
+      <div class="option-label">Tour ${pit.lap} → ${pit.compound_after}</div>
+      <div class="option-pitlap">Position à ce tour : P${lapData ? lapData.position_agent : '–'} (réel ce tour-là : P${lapData ? lapData.position_real : '–'})</div>
+      ${isForced ? `<div class="option-pitlap" style="color:var(--neg);">L'agent avait choisi "${lapData ? ACTION_LABELS[lapData.agent_action] : '–'}" — l'environnement a substitué un arrêt pour respecter la règle des 2 composés (Art. 30.7) avant la fin de course.</div>` : ''}
+      <div class="option-outcome">
+        <div class="outcome-pos">${(pit.confidence*100).toFixed(0)}%</div>
+        <div class="outcome-label">${isForced ? 'confiance de l\'agent dans son choix original (non appliqué)' : 'confiance de la décision'}</div>
+        ${probsHtml}
+      </div>
+    `;
+    optCards.appendChild(card);
+  });
+
+  document.getElementById('undercutCaveat').textContent =
+    "Décisions et probabilités réelles produites par l'agent en inférence sur cette course (pas une simulation) — la confiance reflète la distribution de probabilité de la politique au moment de la décision, pas une incertitude statistique sur le résultat.";
+}
+
+/* ============================================================
+   TRACE 2D SCHEMATIQUE DU CIRCUIT
+   Forme procédurale distincte par GP (seed = nom du GP) -- PAS les
+   coordonnées GPS réelles (cf. panneau : aucune source de télémétrie dans
+   le pipeline). La position du marqueur "Réel" par rapport à l'agent est
+   déterminée par l'écart de temps cumulé (cum_time_real_s - cum_time_agent_s),
+   pas par une distance réelle sur la piste.
+   ============================================================ */
+
+function seededHash(str){
+  let h = 0;
+  for(let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
+  return h;
+}
+function seededRng(seed){
+  let s = seed || 1;
+  return function(){ s = (s*1103515245 + 12345) & 0x7fffffff; return (s % 10000)/10000; };
+}
+
+function buildTrack2D(gpName){
+  try {
+    const rng = seededRng(seededHash(gpName));
+    const cx = 200, cy = 200;
+    const nPoints = 7 + Math.floor(rng()*5); // 7-11 sommets -> 7-11 "virages"
+    const baseR = 145;
+    const stretchX = 0.7 + rng()*0.6;
+    const stretchY = 0.7 + rng()*0.6;
+
+    // Sommets a angles IRREGULIERS (pas une ellipse reguliere) -> segments de
+    // longueurs variees entre eux, ce qui donne des lignes droites franches
+    // (longues et courtes) reliees par des virages -- l'aspect d'un vrai
+    // plan de circuit, pas une boucle organique lisse.
+    const pts = [];
+    for(let i=0;i<nPoints;i++){
+      const angle = (i/nPoints)*Math.PI*2 + (rng()-0.5)*(Math.PI/nPoints)*0.85;
+      const r = baseR * (0.7 + rng()*0.45);
+      pts.push([cx + r*stretchX*Math.cos(angle), cy + r*stretchY*Math.sin(angle)]);
+    }
+    const n = pts.length;
+    const normalize = v => { const len = Math.hypot(v[0],v[1]) || 1; return [v[0]/len, v[1]/len]; };
+
+    // Chaque sommet devient un virage arrondi : on recule le long de chaque
+    // segment adjacent (18-30% de sa longueur) et on relie par une courbe
+    // passant pres du sommet d'origine -- le reste de chaque segment reste
+    // une ligne DROITE (contrairement au lissage Catmull-Rom precedent, qui
+    // courbait tout le tracé et ne ressemblait a aucun circuit reel).
+    const cuts = pts.map((p,i)=>{
+      const prev = pts[(i-1+n)%n], next = pts[(i+1)%n];
+      const segPrev = Math.hypot(p[0]-prev[0], p[1]-prev[1]);
+      const segNext = Math.hypot(next[0]-p[0], next[1]-p[1]);
+      return Math.min(segPrev, segNext) * (0.18 + rng()*0.12);
+    });
+
+    let d = '';
+    for(let i=0;i<n;i++){
+      const prev = pts[(i-1+n)%n], cur = pts[i], next = pts[(i+1)%n];
+      const dirIn = normalize([cur[0]-prev[0], cur[1]-prev[1]]);
+      const dirOut = normalize([next[0]-cur[0], next[1]-cur[1]]);
+      const pIn = [cur[0]-dirIn[0]*cuts[i], cur[1]-dirIn[1]*cuts[i]];
+      const pOut = [cur[0]+dirOut[0]*cuts[i], cur[1]+dirOut[1]*cuts[i]];
+      d += (i===0 ? `M ${pIn[0]} ${pIn[1]} ` : `L ${pIn[0]} ${pIn[1]} `);
+      d += `Q ${cur[0]} ${cur[1]} ${pOut[0]} ${pOut[1]} `;
+    }
+    d += 'Z';
+
+    const pathEl = document.getElementById('track2dPath');
+    pathEl.setAttribute('d', d);
+    track2dPathEl = pathEl;
+    track2dTotalLength = pathEl.getTotalLength();
+  } catch(e){
+    console.error('buildTrack2D failed:', e);
+    track2dPathEl = null; track2dTotalLength = 0;
+  }
+}
+
+function renderTrack2DMarkers(lapData){
+  if(!track2dPathEl || track2dTotalLength === 0) return;
+  try {
+    const gapSeconds = (lapData.cum_time_real_s || 0) - (lapData.cum_time_agent_s || 0);
+    // 1 seconde d'ecart = 1.2% du perimetre de la boucle, plafonne a +/-40% du tour
+    // (schematique, pas une conversion distance/temps physique -- cf. caveat affiche)
+    const fractionOffset = Math.max(-0.4, Math.min(0.4, gapSeconds * 0.012));
+
+    // Les deux points tournent ensemble autour de la boucle au fil des tours
+    // (une revolution complete toutes les 4 tours -- purement visuel, pour
+    // donner une sensation de mouvement continu, pas une vitesse reelle) ;
+    // l'ecart de temps les separe l'un de l'autre le long de cette rotation.
+    const baseFraction = ((lapData.lap || 0) / 4) % 1;
+    const agentFraction = baseFraction;
+    const realFraction = ((agentFraction - fractionOffset) % 1 + 1) % 1;
+
+    const agentPoint = track2dPathEl.getPointAtLength(agentFraction * track2dTotalLength);
+    const realPoint = track2dPathEl.getPointAtLength(realFraction * track2dTotalLength);
+
+    document.getElementById('track2dMarkerAgent').setAttribute('cx', agentPoint.x);
+    document.getElementById('track2dMarkerAgent').setAttribute('cy', agentPoint.y);
+    document.getElementById('track2dMarkerReal').setAttribute('cx', realPoint.x);
+    document.getElementById('track2dMarkerReal').setAttribute('cy', realPoint.y);
+
+    const gapLabel = document.getElementById('track2dGapLabel');
+    if(Math.abs(gapSeconds) < 0.5){
+      gapLabel.textContent = 'écart : quasi nul';
+    } else {
+      gapLabel.textContent = gapSeconds > 0
+        ? `écart : agent +${gapSeconds.toFixed(1)}s devant`
+        : `écart : agent ${Math.abs(gapSeconds).toFixed(1)}s derrière`;
+    }
+  } catch(e){
+    console.error('renderTrack2DMarkers failed:', e);
+  }
+}
+
+/* ============================================================
+   DECOMPOSITION DE LA RECOMPENSE (tour courant)
+   ============================================================ */
+
+function renderRewardBreakdown(lapData){
+  const svg = document.getElementById('rewardBreakdownChart');
+  if(!svg) return;
+  svg.innerHTML = '';
+  const breakdown = lapData.reward_breakdown;
+  if(!breakdown){
+    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x', 10); txt.setAttribute('y', 30); txt.setAttribute('fill', '#5B667F');
+    txt.setAttribute('font-size', '12'); txt.textContent = "Tour 1 — pas de décision de l'agent, aucune récompense calculée.";
+    svg.appendChild(txt);
+    return;
+  }
+  const W = 900, H = 180;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const keys = Object.keys(REWARD_COMPONENT_LABELS);
+  const values = keys.map(k => breakdown[k] || 0);
+  const maxAbs = Math.max(1, ...values.map(v=>Math.abs(v)));
+  const midY = H/2, barMaxH = (H/2)-30;
+  const bw = 100;
+  keys.forEach((k,i)=>{
+    const v = values[i];
+    const gx = i*170 + 60;
+    const h = (Math.abs(v)/maxAbs) * barMaxH;
+    const y = v >= 0 ? midY - h : midY;
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x', gx); rect.setAttribute('y', y);
+    rect.setAttribute('width', bw); rect.setAttribute('height', Math.max(1,h));
+    rect.setAttribute('fill', v >= 0 ? '#3DDC84' : '#FF4757'); rect.setAttribute('rx', 3);
+    svg.appendChild(rect);
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('x', gx+bw/2); label.setAttribute('y', H-8);
+    label.setAttribute('fill', '#8993A8'); label.setAttribute('font-size','11');
+    label.setAttribute('text-anchor','middle'); label.setAttribute('font-family','Titillium Web');
+    label.textContent = REWARD_COMPONENT_LABELS[k];
+    svg.appendChild(label);
+    const val = document.createElementNS('http://www.w3.org/2000/svg','text');
+    val.setAttribute('x', gx+bw/2); val.setAttribute('y', v>=0 ? y-6 : y+h+16);
+    val.setAttribute('fill', '#E8ECF4'); val.setAttribute('font-size','12');
+    val.setAttribute('text-anchor','middle'); val.setAttribute('font-family','JetBrains Mono, monospace');
+    val.textContent = v.toFixed(2);
+    svg.appendChild(val);
+  });
+  const axis = document.createElementNS('http://www.w3.org/2000/svg','line');
+  axis.setAttribute('x1', 0); axis.setAttribute('x2', W); axis.setAttribute('y1', midY); axis.setAttribute('y2', midY);
+  axis.setAttribute('stroke', '#29334A'); svg.appendChild(axis);
+}
+
+/* ============================================================
+   ONGLET CIRCUIT & METEO
+   ============================================================ */
+function renderCircuitTab(){
+  const race = currentRace;
+  const facts = circuitRef && circuitRef.circuits ? circuitRef.circuits[race.gp_name] : null;
+
+  document.getElementById('circuitTitle').textContent = `Fiche circuit — ${race.gp_name}`;
+  const factsEl = document.getElementById('circuitFacts');
+  if(facts){
+    factsEl.innerHTML = `
+      <div class="meta-item"><span>Nom officiel</span><strong>${facts.official_name}</strong></div>
+      <div class="meta-item"><span>Longueur</span><strong>${facts.length_km} km</strong></div>
+      <div class="meta-item"><span>Virages</span><strong>${facts.n_corners}</strong></div>
+      <div class="meta-item"><span>Sens</span><strong>${facts.direction === 'clockwise' ? 'Horaire' : 'Antihoraire'}</strong></div>
+      <div class="meta-item"><span>Type</span><strong>${facts.type.replace(/_/g,' ')}</strong></div>
+      <div class="meta-item"><span>Zones DRS</span><strong>${facts.drs_zones}</strong></div>
+    `;
+  } else {
+    factsEl.innerHTML = `<div style="color:var(--text-faint);font-size:13px;">Données circuit non disponibles pour ce GP.</div>`;
+  }
+
+  const rainLaps = race.laps.filter(l=>l.is_raining).length;
+  const scLaps = race.laps.filter(l=>l.track_status==='sc').length;
+  const vscLaps = race.laps.filter(l=>l.track_status==='vsc').length;
+  document.getElementById('raceConditions').innerHTML = `
+    <div class="meta-item"><span>Tours totaux</span><strong>${race.total_laps}</strong></div>
+    <div class="meta-item"><span>Tours sous pluie</span><strong>${rainLaps}</strong></div>
+    <div class="meta-item"><span>Tours Safety Car</span><strong>${scLaps}</strong></div>
+    <div class="meta-item"><span>Tours VSC</span><strong>${vscLaps}</strong></div>
+    <div class="meta-item"><span>Statut entraînement</span><strong>${race.seen_in_training ? 'Vu' : 'Jamais vu'}</strong></div>
+  `;
+
+  // Graphique meteo : temperature piste/air par tour, avec graduations
+  const svg = document.getElementById('weatherChart');
+  svg.innerHTML = '';
+  const laps = race.laps.filter(l=>l.track_temp_c !== null && l.track_temp_c !== undefined);
+  if(laps.length > 1){
+    const W = Math.max(700, race.total_laps*8), H = 220;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.style.width = W+'px';
+    const allTemps = laps.flatMap(l=>[l.track_temp_c, l.air_temp_c]).filter(v=>v!=null);
+    const minT = Math.floor(Math.min(...allTemps)-2), maxT = Math.ceil(Math.max(...allTemps)+2);
+    const padL = 34, padB = 26, padT = 14, padR = 10;
+    const plotW = W-padL-padR, plotH = H-padT-padB;
+    const xFor = l => padL + (l.lap/race.total_laps) * plotW;
+    const yFor = t => padT + (1-(t-minT)/(maxT-minT)) * plotH;
+
+    // Graduations Y (temperature) -- 4 paliers
+    const nYTicks = 4;
+    for(let i=0;i<=nYTicks;i++){
+      const t = minT + (maxT-minT)*(i/nYTicks);
+      const y = yFor(t);
+      const grid = document.createElementNS('http://www.w3.org/2000/svg','line');
+      grid.setAttribute('x1', padL); grid.setAttribute('x2', W-padR); grid.setAttribute('y1', y); grid.setAttribute('y2', y);
+      grid.setAttribute('stroke', '#212a3d'); grid.setAttribute('stroke-width', '1');
+      svg.appendChild(grid);
+      const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+      label.setAttribute('x', padL-6); label.setAttribute('y', y+3); label.setAttribute('fill', '#5B667F');
+      label.setAttribute('font-size', '10'); label.setAttribute('font-family', 'JetBrains Mono, monospace');
+      label.setAttribute('text-anchor', 'end'); label.textContent = Math.round(t)+'°';
+      svg.appendChild(label);
+    }
+    // Graduations X (tours) -- tous les ~10 tours
+    const xStep = race.total_laps > 40 ? 10 : 5;
+    for(let lap=0; lap<=race.total_laps; lap+=xStep){
+      const x = padL + (lap/race.total_laps) * plotW;
+      const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+      label.setAttribute('x', x); label.setAttribute('y', H-8); label.setAttribute('fill', '#5B667F');
+      label.setAttribute('font-size', '10'); label.setAttribute('font-family', 'JetBrains Mono, monospace');
+      label.setAttribute('text-anchor', 'middle'); label.textContent = 'T'+lap;
+      svg.appendChild(label);
+    }
+
+    const pathFor = (key, color) => {
+      let d = '';
+      laps.forEach((l,i)=>{ const x=xFor(l), y=yFor(l[key]); d += (i===0?'M':'L')+x+' '+y+' '; });
+      const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('d', d); p.setAttribute('fill','none'); p.setAttribute('stroke', color); p.setAttribute('stroke-width','2');
+      svg.appendChild(p);
+    };
+    pathFor('track_temp_c', '#FF6FA8');
+    pathFor('air_temp_c', '#0090D0');
+    const legend = document.createElementNS('http://www.w3.org/2000/svg','text');
+    legend.setAttribute('x', padL); legend.setAttribute('y', 12); legend.setAttribute('fill', '#FF6FA8');
+    legend.setAttribute('font-size', '11'); legend.setAttribute('font-family', 'JetBrains Mono, monospace');
+    legend.textContent = 'piste'; svg.appendChild(legend);
+    const legend2 = document.createElementNS('http://www.w3.org/2000/svg','text');
+    legend2.setAttribute('x', padL+45); legend2.setAttribute('y', 12); legend2.setAttribute('fill', '#0090D0');
+    legend2.setAttribute('font-size', '11'); legend2.setAttribute('font-family', 'JetBrains Mono, monospace');
+    legend2.textContent = 'air'; svg.appendChild(legend2);
+  } else {
+    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x', 10); txt.setAttribute('y', 30); txt.setAttribute('fill', '#5B667F'); txt.setAttribute('font-size', '12');
+    txt.textContent = 'Données de température non disponibles pour cette course.';
+    svg.appendChild(txt);
+  }
+
+  // Statut piste (bande verte/jaune/rouge)
+  const svg2 = document.getElementById('trackStatusChart');
+  svg2.innerHTML = '';
+  const W2 = Math.max(700, race.total_laps*8), H2 = 40;
+  svg2.setAttribute('viewBox', `0 0 ${W2} ${H2}`); svg2.style.width = W2+'px';
+  const statusColor = {green:'#3DDC84', vsc:'#FFD400', sc:'#FF4757'};
+  race.laps.forEach(l=>{
+    const x = (l.lap/race.total_laps) * (W2-20) + 10;
+    const w = (W2-20)/race.total_laps + 1;
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x', x); rect.setAttribute('y', 5); rect.setAttribute('width', w); rect.setAttribute('height', 20);
+    rect.setAttribute('fill', statusColor[l.track_status] || '#5B667F');
+    svg2.appendChild(rect);
+  });
+}
+
+/* ============================================================
+   ONGLET MODELE (donnees d'entrainement -- independant de la course selectionnee)
+   ============================================================ */
+function renderModelTab(){
+  if(!modelData || !modelData.training_curve){
+    document.getElementById('modelName').textContent = 'Données non disponibles';
+    return;
+  }
+  const tc = modelData.training_curve;
+  document.getElementById('modelName').textContent = modelData.main_model;
+  document.getElementById('modelEpisodes').textContent = tc.n_episodes.toLocaleString('fr-FR');
+  document.getElementById('modelTimesteps').textContent = tc.final_timesteps.toLocaleString('fr-FR');
+  document.getElementById('modelRewardMean').textContent = tc.reward_last_500_mean.toFixed(1);
+
+  const svg = document.getElementById('trainingCurveChart');
+  svg.innerHTML = '';
+  const series = [{data: tc.reward_curve, color: '#FF6FA8', label: modelData.main_model}];
+  Object.entries(modelData.comparisons || {}).forEach(([name, curve], i)=>{
+    const colors = ['#5B667F', '#0090D0', '#3DDC84'];
+    series.push({data: curve.reward_curve, color: colors[i % colors.length], label: name});
+  });
+  const W = 900, H = 240, padB = 30, padT = 10, padL = 10, padR = 10;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const allVals = series.flatMap(s=>s.data);
+  const minV = Math.min(...allVals), maxV = Math.max(...allVals);
+  series.forEach(s=>{
+    let d = '';
+    s.data.forEach((v,i)=>{
+      const x = padL + (i/(s.data.length-1)) * (W-padL-padR);
+      const y = padT + (1-(v-minV)/(maxV-minV||1)) * (H-padT-padB);
+      d += (i===0?'M':'L')+x+' '+y+' ';
+    });
+    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d', d); p.setAttribute('fill','none'); p.setAttribute('stroke', s.color); p.setAttribute('stroke-width','2');
+    svg.appendChild(p);
+  });
+  series.forEach((s,i)=>{
+    const legend = document.createElementNS('http://www.w3.org/2000/svg','text');
+    legend.setAttribute('x', 10+i*160); legend.setAttribute('y', H-8); legend.setAttribute('fill', s.color);
+    legend.setAttribute('font-size', '11'); legend.setAttribute('font-family', 'JetBrains Mono, monospace');
+    legend.textContent = s.label; svg.appendChild(legend);
+  });
+
+  const optunaEl = document.getElementById('optunaParams');
+  if(modelData.optuna && modelData.optuna.best_params){
+    const bp = modelData.optuna.best_params;
+    optunaEl.innerHTML = `<div style="color:var(--text-dim);margin-bottom:6px;">Meilleure valeur : ${modelData.optuna.best_value.toFixed(2)} (sur ${modelData.optuna.trials.length} essais complétés)</div>` +
+      Object.entries(bp).map(([k,v])=>`<div>${k} : <span style="color:var(--alpine-pink)">${typeof v==='number' ? v.toPrecision(4) : v}</span></div>`).join('');
+  } else {
+    optunaEl.innerHTML = `<div style="color:var(--text-faint);">Données Optuna non disponibles.</div>`;
+  }
+}
+renderModelTab();
+
+/* ============================================================
+   ONGLET CLASSEMENT SAISON (position reelle vs agent, GP par GP)
+   ============================================================ */
+function renderRankingChart(){
+  const svg = document.getElementById('rankingChart');
+  if(!svg) return;
+  svg.innerHTML = '';
+  const races = seasonData.races;
+  if(!races.length) return;
+
+  const W = Math.max(900, races.length*40), H = 320;
+  const padL = 40, padR = 10, padT = 20, padB = 50;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.style.width = W+'px';
+  const plotW = W-padL-padR, plotH = H-padT-padB;
+
+  const maxPos = 20;
+  const xFor = i => padL + (i/(races.length-1||1)) * plotW;
+  const yFor = pos => padT + ((pos-1)/(maxPos-1)) * plotH; // position 1 en haut
+
+  // Graduations Y (position) -- tous les 5 rangs, + P1 et P20
+  [1,5,10,15,20].forEach(pos=>{
+    const y = yFor(pos);
+    const grid = document.createElementNS('http://www.w3.org/2000/svg','line');
+    grid.setAttribute('x1', padL); grid.setAttribute('x2', W-padR); grid.setAttribute('y1', y); grid.setAttribute('y2', y);
+    grid.setAttribute('stroke', '#212a3d'); grid.setAttribute('stroke-width', '1');
+    svg.appendChild(grid);
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('x', padL-6); label.setAttribute('y', y+3); label.setAttribute('fill', '#5B667F');
+    label.setAttribute('font-size', '10'); label.setAttribute('font-family', 'JetBrains Mono, monospace');
+    label.setAttribute('text-anchor', 'end'); label.textContent = 'P'+pos;
+    svg.appendChild(label);
+  });
+
+  // Lignes reel / agent
+  const lineFor = (key, color) => {
+    let d = '';
+    races.forEach((r,i)=>{ const x=xFor(i), y=yFor(r[key].finish_position); d += (i===0?'M':'L')+x+' '+y+' '; });
+    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d', d); p.setAttribute('fill','none'); p.setAttribute('stroke', color); p.setAttribute('stroke-width','2');
+    svg.appendChild(p);
+  };
+  lineFor('real', '#5B667F');
+  lineFor('agent', '#FF6FA8');
+
+  // Points + labels GP (verticaux) + distinction entrainement/generalisation
+  races.forEach((r,i)=>{
+    const x = xFor(i);
+    [['real','#5B667F', r.real.finish_position], ['agent','#FF6FA8', r.agent.finish_position]].forEach(([key,color,pos])=>{
+      const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx', x); c.setAttribute('cy', yFor(pos)); c.setAttribute('r', r.seen_in_training ? 5 : 3.5);
+      c.setAttribute('fill', color);
+      if(r.seen_in_training){ c.setAttribute('stroke', '#E8ECF4'); c.setAttribute('stroke-width', '1.5'); }
+      svg.appendChild(c);
+    });
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('x', x); label.setAttribute('y', H-10); label.setAttribute('fill', r.seen_in_training ? '#E8ECF4' : '#5B667F');
+    label.setAttribute('font-size', '9'); label.setAttribute('font-family', 'JetBrains Mono, monospace');
+    label.setAttribute('text-anchor', 'middle');
+    label.setAttribute('transform', `rotate(-60 ${x} ${H-10})`);
+    label.textContent = r.gp_name.slice(0,3).toUpperCase();
+    svg.appendChild(label);
+  });
+
+  // Legende
+  const legendReal = document.createElementNS('http://www.w3.org/2000/svg','text');
+  legendReal.setAttribute('x', padL); legendReal.setAttribute('y', 12); legendReal.setAttribute('fill', '#5B667F');
+  legendReal.setAttribute('font-size', '11'); legendReal.setAttribute('font-family', 'JetBrains Mono, monospace');
+  legendReal.textContent = 'réel'; svg.appendChild(legendReal);
+  const legendAgent = document.createElementNS('http://www.w3.org/2000/svg','text');
+  legendAgent.setAttribute('x', padL+40); legendAgent.setAttribute('y', 12); legendAgent.setAttribute('fill', '#FF6FA8');
+  legendAgent.setAttribute('font-size', '11'); legendAgent.setAttribute('font-family', 'JetBrains Mono, monospace');
+  legendAgent.textContent = 'agent'; svg.appendChild(legendAgent);
+  const legendTrained = document.createElementNS('http://www.w3.org/2000/svg','text');
+  legendTrained.setAttribute('x', padL+95); legendTrained.setAttribute('y', 12); legendTrained.setAttribute('fill', '#8993A8');
+  legendTrained.setAttribute('font-size', '11'); legendTrained.setAttribute('font-family', 'JetBrains Mono, monospace');
+  legendTrained.textContent = '(point cerclé = vu à l\'entraînement)'; svg.appendChild(legendTrained);
+}
+renderRankingChart();
+
+</script>
+</body>
+</html>

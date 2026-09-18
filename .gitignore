@@ -1,0 +1,52 @@
+# --- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# --- Environnements virtuels -----------------------------------------------
+.venv*/
+venv*/
+
+# --- Outils ---------------------------------------------------------------
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.env
+.fastf1_cache/
+.vscode/
+.idea/
+
+# --- Donnees --------------------------------------------------------------
+# Les Parquet de data/raw et data/processed SONT versionnes : moins de 1 Mo au
+# total, et indispensables pour que la CI teste l'environnement et pour
+# reproduire les resultats depuis un simple clone (sans relancer FastF1).
+# Seuls le cache FastF1 et les sources externes restent hors du depot.
+data/external/
+.fastf1_cache/
+
+# --- Modeles --------------------------------------------------------------
+# Les modeles deja versionnes le restent (git n'ignore que le non-suivi).
+# Un nouveau modele RETENU s'ajoute explicitement :  git add -f <chemin>
+models/**/*.zip
+models/**/*.pt
+models/**/optuna_trials_tmp/
+models_v1/**/*.zip
+
+# --- Sauvegardes de patch -------------------------------------------------
+*.bak
+*.bak_*
+!*.py.bak_prev3
+
+# --- Sorties d'execution a la racine ---------------------------------------
+# Les rapports retenus vivent dans docs/resultats/, pas a la racine.
+/generalisation_*.json
+/trigger_*.json
+/validation_report.json
+/clean_total_report.*
+/ablation.bat
+/*.zip
+dashboard/dashboard.html
+dashboard/data.zip

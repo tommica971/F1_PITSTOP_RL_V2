@@ -1,0 +1,31 @@
+# Deux usages couverts : (1) lancer un script d'entrainement/eval en one-shot,
+# (2) ouvrir les notebooks (06/07/08) dans un Jupyter conteneurise pour la
+# soutenance -- meme image, deux points d'entree.
+
+services:
+  # Usage 1 : execution one-shot d'un script (ex. eval finale des 3 candidats)
+  #   docker compose run --rm train python -m f1_pitstop_rl.training.train_dqn --extended-pool
+  train:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./reports:/app/reports
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # Usage 2 : notebooks pour la demo de soutenance
+  #   docker compose up notebook
+  #   -> http://localhost:8888
+  notebook:
+    build: .
+    command: >
+      jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser
+      --allow-root --NotebookApp.token=''
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./notebooks:/app/notebooks
+      - ./reports:/app/reports

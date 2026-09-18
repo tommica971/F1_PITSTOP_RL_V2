@@ -1,0 +1,71 @@
+{
+  "age_window": [
+    3,
+    20
+  ],
+  "percentiles": [
+    5,
+    95
+  ],
+  "bounds_s_per_lap": [
+    -0.0010143830438781873,
+    0.13720348265739551
+  ],
+  "plausibility_ratio": 0.4444444444444444,
+  "index": {
+    "2023|Abu Dhabi Grand Prix": 1.0,
+    "2023|Bahrain Grand Prix": 0.8842,
+    "2023|Dutch Grand Prix": 0.038,
+    "2023|Spanish Grand Prix": 0.4287,
+    "2025|Abu Dhabi Grand Prix": 0.1669,
+    "2025|Austrian Grand Prix": 0.4156,
+    "2025|Azerbaijan Grand Prix": 0.3467,
+    "2025|Bahrain Grand Prix": 0.9046,
+    "2025|Canadian Grand Prix": 0.2922,
+    "2025|Chinese Grand Prix": 0.4615,
+    "2025|Dutch Grand Prix": 0.0325,
+    "2025|Emilia Romagna Grand Prix": 0.5877,
+    "2025|Hungarian Grand Prix": 0.6162,
+    "2025|Italian Grand Prix": 0.4499,
+    "2025|Japanese Grand Prix": 0.3381,
+    "2025|Las Vegas Grand Prix": 0.1524,
+    "2025|Mexico City Grand Prix": 0.3941,
+    "2025|Miami Grand Prix": 1.0,
+    "2025|Monaco Grand Prix": 0.6313,
+    "2025|Qatar Grand Prix": 0.0,
+    "2025|Saudi Arabian Grand Prix": 0.5355,
+    "2025|Singapore Grand Prix": 0.2105,
+    "2025|Spanish Grand Prix": 0.6506,
+    "2025|São Paulo Grand Prix": 0.5451,
+    "2025|United States Grand Prix": 0.3626,
+    "2026|Japanese Grand Prix": 0.0
+  },
+  "slopes_s_per_lap": {
+    "2023|Abu Dhabi Grand Prix": 0.15004,
+    "2023|Bahrain Grand Prix": 0.12119,
+    "2023|Dutch Grand Prix": 0.00424,
+    "2023|Spanish Grand Prix": 0.05825,
+    "2025|Abu Dhabi Grand Prix": 0.02205,
+    "2025|Austrian Grand Prix": 0.05644,
+    "2025|Azerbaijan Grand Prix": 0.04691,
+    "2025|Bahrain Grand Prix": 0.12402,
+    "2025|Canadian Grand Prix": 0.03938,
+    "2025|Chinese Grand Prix": 0.06277,
+    "2025|Dutch Grand Prix": 0.00348,
+    "2025|Emilia Romagna Grand Prix": 0.08022,
+    "2025|Hungarian Grand Prix": 0.08415,
+    "2025|Italian Grand Prix": 0.06118,
+    "2025|Japanese Grand Prix": 0.04572,
+    "2025|Las Vegas Grand Prix": 0.02005,
+    "2025|Mexico City Grand Prix": 0.05345,
+    "2025|Miami Grand Prix": 0.1416,
+    "2025|Monaco Grand Prix": 0.08624,
+    "2025|Qatar Grand Prix": -0.00251,
+    "2025|Saudi Arabian Grand Prix": 0.07301,
+    "2025|Singapore Grand Prix": 0.02809,
+    "2025|Spanish Grand Prix": 0.08892,
+    "2025|São Paulo Grand Prix": 0.07433,
+    "2025|United States Grand Prix": 0.0491,
+    "2026|Japanese Grand Prix": -0.93232
+  }
+}

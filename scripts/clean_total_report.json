@@ -1,0 +1,242 @@
+{
+  "rows": [
+    {
+      "gp_name": "Abu Dhabi Grand Prix",
+      "seen_in_training": false,
+      "classification": "propre",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 20,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Australian Grand Prix",
+      "seen_in_training": true,
+      "classification": "propre",
+      "real_points": 0,
+      "agent_points_deterministic": 25,
+      "agent_position_deterministic": 1,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Austrian Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 12,
+      "n_suspicious_jumps": 1,
+      "stochastic_std_position": 2.33238075793812
+    },
+    {
+      "gp_name": "Azerbaijan Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 11,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 3.1999999999999997
+    },
+    {
+      "gp_name": "Bahrain Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 6,
+      "agent_points_deterministic": 18,
+      "agent_position_deterministic": 2,
+      "n_suspicious_jumps": 2,
+      "stochastic_std_position": 1.3564659966250538
+    },
+    {
+      "gp_name": "Belgian Grand Prix",
+      "seen_in_training": false,
+      "classification": "propre",
+      "real_points": 1,
+      "agent_points_deterministic": 25,
+      "agent_position_deterministic": 1,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "British Grand Prix",
+      "seen_in_training": true,
+      "classification": "suspect",
+      "real_points": 8,
+      "agent_points_deterministic": 25,
+      "agent_position_deterministic": 1,
+      "n_suspicious_jumps": 7,
+      "stochastic_std_position": 0.8
+    },
+    {
+      "gp_name": "Canadian Grand Prix",
+      "seen_in_training": false,
+      "classification": "propre",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 18,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Chinese Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 19,
+      "n_suspicious_jumps": 1,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Dutch Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 1,
+      "agent_position_deterministic": 10,
+      "n_suspicious_jumps": 10,
+      "stochastic_std_position": 5.878775382679628
+    },
+    {
+      "gp_name": "Emilia Romagna Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 25,
+      "agent_position_deterministic": 1,
+      "n_suspicious_jumps": 2,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Hungarian Grand Prix",
+      "seen_in_training": false,
+      "classification": "propre",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 19,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Italian Grand Prix",
+      "seen_in_training": false,
+      "classification": "propre",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 18,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Japanese Grand Prix",
+      "seen_in_training": false,
+      "classification": "propre",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 14,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.7999999999999999
+    },
+    {
+      "gp_name": "Las Vegas Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 17,
+      "n_suspicious_jumps": 2,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Mexico City Grand Prix",
+      "seen_in_training": false,
+      "classification": "propre",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 17,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Miami Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 16,
+      "n_suspicious_jumps": 1,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Monaco Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 12,
+      "agent_position_deterministic": 4,
+      "n_suspicious_jumps": 1,
+      "stochastic_std_position": 3.4409301068170506
+    },
+    {
+      "gp_name": "Qatar Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 16,
+      "n_suspicious_jumps": 4,
+      "stochastic_std_position": 2.481934729198171
+    },
+    {
+      "gp_name": "São Paulo Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 1,
+      "agent_points_deterministic": 25,
+      "agent_position_deterministic": 1,
+      "n_suspicious_jumps": 1,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Singapore Grand Prix",
+      "seen_in_training": false,
+      "classification": "propre",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 20,
+      "n_suspicious_jumps": 0,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "Spanish Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 2,
+      "agent_points_deterministic": 25,
+      "agent_position_deterministic": 1,
+      "n_suspicious_jumps": 1,
+      "stochastic_std_position": 0.0
+    },
+    {
+      "gp_name": "United States Grand Prix",
+      "seen_in_training": false,
+      "classification": "suspect",
+      "real_points": 0,
+      "agent_points_deterministic": 0,
+      "agent_position_deterministic": 19,
+      "n_suspicious_jumps": 2,
+      "stochastic_std_position": 0.0
+    }
+  ],
+  "totals": {
+    "real": 18,
+    "agent_gross": 181,
+    "agent_clean": 50,
+    "agent_suspect": 131,
+    "n_gp_clean": 9,
+    "n_gp_suspect": 14
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "_note": "Specs publiques (longueur homologuee, nb virages, sens, zones DRS). Compilees a partir de sources generales (FIA/Formula1/Wikipedia) -- a spot-checker avant integration finale au dossier, en particulier pour les circuits recents/hybrides (Miami, Las Vegas, Qatar, Jeddah) dont le tracé a change plusieurs fois.",
+  "circuits": {
+    "Australian Grand Prix": {"official_name": "Albert Park Circuit", "length_km": 5.278, "n_corners": 14, "direction": "clockwise", "type": "street_semi_permanent", "drs_zones": 4},
+    "Chinese Grand Prix": {"official_name": "Shanghai International Circuit", "length_km": 5.451, "n_corners": 16, "direction": "clockwise", "type": "permanent", "drs_zones": 2},
+    "Japanese Grand Prix": {"official_name": "Suzuka Circuit", "length_km": 5.807, "n_corners": 18, "direction": "clockwise", "type": "permanent", "drs_zones": 1},
+    "Bahrain Grand Prix": {"official_name": "Bahrain International Circuit", "length_km": 5.412, "n_corners": 15, "direction": "counter_clockwise", "type": "permanent", "drs_zones": 3},
+    "Saudi Arabian Grand Prix": {"official_name": "Jeddah Corniche Circuit", "length_km": 6.174, "n_corners": 27, "direction": "counter_clockwise", "type": "street", "drs_zones": 3},
+    "Miami Grand Prix": {"official_name": "Miami International Autodrome", "length_km": 5.412, "n_corners": 19, "direction": "counter_clockwise", "type": "street_hybrid", "drs_zones": 3},
+    "Emilia Romagna Grand Prix": {"official_name": "Autodromo Enzo e Dino Ferrari (Imola)", "length_km": 4.909, "n_corners": 19, "direction": "clockwise", "type": "permanent", "drs_zones": 1},
+    "Monaco Grand Prix": {"official_name": "Circuit de Monaco", "length_km": 3.337, "n_corners": 19, "direction": "clockwise", "type": "street", "drs_zones": 1},
+    "Spanish Grand Prix": {"official_name": "Circuit de Barcelona-Catalunya", "length_km": 4.657, "n_corners": 14, "direction": "clockwise", "type": "permanent", "drs_zones": 2},
+    "Canadian Grand Prix": {"official_name": "Circuit Gilles Villeneuve", "length_km": 4.361, "n_corners": 14, "direction": "counter_clockwise", "type": "street_semi_permanent", "drs_zones": 3},
+    "Austrian Grand Prix": {"official_name": "Red Bull Ring", "length_km": 4.318, "n_corners": 10, "direction": "clockwise", "type": "permanent", "drs_zones": 3},
+    "British Grand Prix": {"official_name": "Silverstone Circuit", "length_km": 5.891, "n_corners": 18, "direction": "clockwise", "type": "permanent", "drs_zones": 2},
+    "Belgian Grand Prix": {"official_name": "Circuit de Spa-Francorchamps", "length_km": 7.004, "n_corners": 19, "direction": "clockwise", "type": "permanent", "drs_zones": 2},
+    "Hungarian Grand Prix": {"official_name": "Hungaroring", "length_km": 4.381, "n_corners": 14, "direction": "clockwise", "type": "permanent", "drs_zones": 2},
+    "Dutch Grand Prix": {"official_name": "Circuit Zandvoort", "length_km": 4.259, "n_corners": 14, "direction": "clockwise", "type": "permanent", "drs_zones": 2},
+    "Italian Grand Prix": {"official_name": "Autodromo Nazionale Monza", "length_km": 5.793, "n_corners": 11, "direction": "clockwise", "type": "permanent", "drs_zones": 2},
+    "Azerbaijan Grand Prix": {"official_name": "Baku City Circuit", "length_km": 6.003, "n_corners": 20, "direction": "counter_clockwise", "type": "street", "drs_zones": 2},
+    "Singapore Grand Prix": {"official_name": "Marina Bay Street Circuit", "length_km": 4.940, "n_corners": 19, "direction": "counter_clockwise", "type": "street", "drs_zones": 3},
+    "United States Grand Prix": {"official_name": "Circuit of the Americas", "length_km": 5.513, "n_corners": 20, "direction": "counter_clockwise", "type": "permanent", "drs_zones": 2},
+    "Mexico City Grand Prix": {"official_name": "Autódromo Hermanos Rodríguez", "length_km": 4.304, "n_corners": 17, "direction": "counter_clockwise", "type": "permanent", "drs_zones": 3},
+    "São Paulo Grand Prix": {"official_name": "Autódromo José Carlos Pace (Interlagos)", "length_km": 4.309, "n_corners": 15, "direction": "counter_clockwise", "type": "permanent", "drs_zones": 2},
+    "Las Vegas Grand Prix": {"official_name": "Las Vegas Strip Circuit", "length_km": 6.201, "n_corners": 17, "direction": "counter_clockwise", "type": "street", "drs_zones": 2},
+    "Qatar Grand Prix": {"official_name": "Lusail International Circuit", "length_km": 5.380, "n_corners": 16, "direction": "counter_clockwise", "type": "permanent", "drs_zones": 2},
+    "Abu Dhabi Grand Prix": {"official_name": "Yas Marina Circuit", "length_km": 5.281, "n_corners": 16, "direction": "counter_clockwise", "type": "permanent", "drs_zones": 2}
+  }
+}

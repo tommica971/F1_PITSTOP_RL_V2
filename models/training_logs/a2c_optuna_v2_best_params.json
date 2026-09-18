@@ -1,0 +1,29 @@
+{
+  "best_value_heldout": -44.5124127226765,
+  "best_params": {
+    "learning_rate": 0.0010543362919010364,
+    "n_steps": 32,
+    "gamma": 0.9984221079275266,
+    "gae_lambda": 0.958518595270556,
+    "ent_coef": 0.06584106160121614,
+    "vf_coef": 0.905344615384884
+  },
+  "timesteps_per_trial": 500000,
+  "sampler_seed": 42,
+  "n_train_seeds": 2,
+  "scores_par_graine": [
+    -42.14,
+    -46.89
+  ],
+  "stay_prior": 0.97,
+  "reward_scale": 0.1,
+  "validation_gps": [
+    "Austrian Grand Prix",
+    "Las Vegas Grand Prix",
+    "Miami Grand Prix",
+    "Singapore Grand Prix",
+    "Spanish Grand Prix",
+    "São Paulo Grand Prix"
+  ],
+  "n_heldout_gps": 20
+}

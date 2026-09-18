@@ -1,0 +1,107 @@
+{
+  "n_seeds": 15,
+  "criteria": {
+    "max_position_error": 2.0,
+    "max_time_error_pct": 0.3
+  },
+  "summary": {
+    "time_error_median_pct": 0.576162578638692,
+    "time_error_max_pct": 4.599635325667217,
+    "position_error_median": 8.0,
+    "position_error_max": 14.0,
+    "position_bias": 8.0,
+    "criteria_met": false
+  },
+  "races": [
+    {
+      "gp": "2025 British",
+      "sim_time_s": 5813.925325429836,
+      "real_time_s": 5786.5869999999995,
+      "time_error_pct": 0.47244300361917857,
+      "sim_position": 15.0,
+      "real_position": 6,
+      "position_error": 9.0
+    },
+    {
+      "gp": "2025 Australian",
+      "sim_time_s": 6097.97290172785,
+      "real_time_s": 6018.669999999999,
+      "time_error_pct": 1.3176150499670267,
+      "sim_position": 14.0,
+      "real_position": 11,
+      "position_error": 3.0
+    },
+    {
+      "gp": "2024 Canadian",
+      "sim_time_s": 6309.321843969686,
+      "real_time_s": 6257.287,
+      "time_error_pct": 0.8315879385057042,
+      "sim_position": 15.0,
+      "real_position": 9,
+      "position_error": 6.0
+    },
+    {
+      "gp": "2023 Dutch",
+      "sim_time_s": 6242.926726769829,
+      "real_time_s": 5968.402,
+      "time_error_pct": 4.599635325667217,
+      "sim_position": 18.0,
+      "real_position": 4,
+      "position_error": 14.0
+    },
+    {
+      "gp": "2021 Turkish",
+      "sim_time_s": 5513.836280302466,
+      "real_time_s": 5407.709,
+      "time_error_pct": 1.9625183289719512,
+      "sim_position": 20.0,
+      "real_position": 6,
+      "position_error": 14.0
+    },
+    {
+      "gp": "2023 Bahrain",
+      "sim_time_s": 5637.0142394450495,
+      "real_time_s": 5600.839999999999,
+      "time_error_pct": 0.6458716807666398,
+      "sim_position": 17.0,
+      "real_position": 9,
+      "position_error": 8.0
+    },
+    {
+      "gp": "2023 Spanish",
+      "sim_time_s": 5260.127908433655,
+      "real_time_s": 5259.927,
+      "time_error_pct": 0.003819604980355405,
+      "sim_position": 19.0,
+      "real_position": 11,
+      "position_error": 8.0
+    },
+    {
+      "gp": "2023 Abu Dhabi",
+      "sim_time_s": 5185.174935565039,
+      "real_time_s": 5196.348,
+      "time_error_pct": -0.2150176322863847,
+      "sim_position": 15.0,
+      "real_position": 13,
+      "position_error": 2.0
+    },
+    {
+      "gp": "2025 Belgian",
+      "sim_time_s": 5007.52406418452,
+      "real_time_s": 4990.838000000002,
+      "time_error_pct": 0.33433391716017874,
+      "sim_position": 18.0,
+      "real_position": 10,
+      "position_error": 8.0
+    },
+    {
+      "gp": "2026 Japanese",
+      "sim_time_s": 5242.502043820256,
+      "real_time_s": 5216.085000000001,
+      "time_error_pct": 0.5064534765107442,
+      "sim_position": 17.0,
+      "real_position": 7,
+      "position_error": 10.0
+    }
+  ]
+}

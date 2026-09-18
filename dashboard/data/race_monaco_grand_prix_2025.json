@@ -1,0 +1,322 @@
+{
+  "gp_name": "Monaco Grand Prix",
+  "season": 2025,
+  "seen_in_training": false,
+  "total_laps": 8,
+  "laps": [
+    {
+      "lap": 1,
+      "position_real": 18,
+      "position_agent": 18,
+      "tire_age_real": 7,
+      "tire_age_agent": 7,
+      "compound_real": "MEDIUM",
+      "compound_agent": "MEDIUM",
+      "is_raining": false,
+      "track_status": "green",
+      "agent_action": "stay",
+      "agent_action_confidence": null,
+      "agent_action_probs": null,
+      "pit_real_this_lap": false,
+      "pit_agent_this_lap": false,
+      "air_temp_c": 22.0,
+      "track_temp_c": 45.2,
+      "humidity_pct": 51.0,
+      "cum_time_real_s": 0.0,
+      "cum_time_agent_s": 0.0,
+      "reward_breakdown": null
+    },
+    {
+      "lap": 2,
+      "position_real": 18,
+      "position_agent": 18,
+      "tire_age_real": 1,
+      "tire_age_agent": 7,
+      "compound_real": "MEDIUM",
+      "compound_agent": "MEDIUM",
+      "is_raining": false,
+      "track_status": "sc",
+      "agent_action": "stay",
+      "agent_action_confidence": 1.0,
+      "agent_action_probs": {
+        "stay": 1.0,
+        "pit_soft": 1.0857046598561348e-12,
+        "pit_medium": 4.234495393218296e-11,
+        "pit_hard": 4.362637909347683e-13,
+        "pit_intermediate": 2.0069657047372402e-09,
+        "pit_wet": 2.728722992326833e-15
+      },
+      "pit_real_this_lap": false,
+      "pit_agent_this_lap": false,
+      "forced_compliance_pit": false,
+      "compound_after_pit": null,
+      "air_temp_c": 21.9,
+      "track_temp_c": 42.7,
+      "humidity_pct": 53.0,
+      "cum_time_real_s": 108.9739999999997,
+      "cum_time_agent_s": 110.96680000000023,
+      "reward_breakdown": {
+        "time_component": -31.704800000000063,
+        "position_delta_component": 0.0,
+        "dirty_air_component": 0.0,
+        "compliance_component": -1.2,
+        "terminal_component": 0.0,
+        "total": -32.904800000000066
+      }
+    },
+    {
+      "lap": 3,
+      "position_real": 18,
+      "position_agent": 5,
+      "tire_age_real": 2,
+      "tire_age_agent": 8,
+      "compound_real": "MEDIUM",
+      "compound_agent": "MEDIUM",
+      "is_raining": false,
+      "track_status": "green",
+      "agent_action": "stay",
+      "agent_action_confidence": 1.0,
+      "agent_action_probs": {
+        "stay": 1.0,
+        "pit_soft": 1.095337145637365e-12,
+        "pit_medium": 4.213885490544911e-11,
+        "pit_hard": 4.280493331749319e-13,
+        "pit_intermediate": 1.969679752633624e-09,
+        "pit_wet": 2.759540592046786e-15
+      },
+      "pit_real_this_lap": false,
+      "pit_agent_this_lap": false,
+      "forced_compliance_pit": false,
+      "compound_after_pit": null,
+      "air_temp_c": 21.8,
+      "track_temp_c": 43.2,
+      "humidity_pct": 52.0,
+      "cum_time_real_s": 217.69699999999966,
+      "cum_time_agent_s": 191.38643323784902,
+      "reward_breakdown": {
+        "time_component": -1.1576332378486285,
+        "position_delta_component": 24.284000000000002,
+        "dirty_air_component": 0.0,
+        "compliance_component": -1.3333333333333333,
+        "terminal_component": 0.0,
+        "total": 21.793033428818042
+      }
+    },
+    {
+      "lap": 4,
+      "position_real": 18,
+      "position_agent": 1,
+      "tire_age_real": 3,
+      "tire_age_agent": 9,
+      "compound_real": "MEDIUM",
+      "compound_agent": "MEDIUM",
+      "is_raining": false,
+      "track_status": "vsc",
+      "agent_action": "stay",
+      "agent_action_confidence": 1.0,
+      "agent_action_probs": {
+        "stay": 1.0,
+        "pit_soft": 1.409980747608952e-12,
+        "pit_medium": 9.578816212441055e-11,
+        "pit_hard": 1.873430013552002e-12,
+        "pit_intermediate": 4.204689041387155e-09,
+        "pit_wet": 1.4670864756328658e-14
+      },
+      "pit_real_this_lap": false,
+      "pit_agent_this_lap": false,
+      "forced_compliance_pit": false,
+      "compound_after_pit": null,
+      "air_temp_c": 21.9,
+      "track_temp_c": 43.2,
+      "humidity_pct": 51.0,
+      "cum_time_real_s": 309.2059999999997,
+      "cum_time_agent_s": 273.0262932378492,
+      "reward_breakdown": {
+        "time_component": -2.3778600000000125,
+        "position_delta_component": 7.472,
+        "dirty_air_component": -0.1,
+        "compliance_component": -1.4666666666666666,
+        "terminal_component": 0.0,
+        "total": 3.5274733333333215
+      }
+    },
+    {
+      "lap": 5,
+      "position_real": 18,
+      "position_agent": 1,
+      "tire_age_real": 4,
+      "tire_age_agent": 10,
+      "compound_real": "MEDIUM",
+      "compound_agent": "MEDIUM",
+      "is_raining": false,
+      "track_status": "green",
+      "agent_action": "stay",
+      "agent_action_confidence": 1.0,
+      "agent_action_probs": {
+        "stay": 1.0,
+        "pit_soft": 1.2171868330954072e-12,
+        "pit_medium": 4.398897218704789e-11,
+        "pit_hard": 5.082581491094862e-13,
+        "pit_intermediate": 2.237728224940838e-09,
+        "pit_wet": 3.702024411577753e-15
+      },
+      "pit_real_this_lap": false,
+      "pit_agent_this_lap": false,
+      "forced_compliance_pit": false,
+      "compound_after_pit": null,
+      "air_temp_c": 22.0,
+      "track_temp_c": 41.3,
+      "humidity_pct": 55.0,
+      "cum_time_real_s": 388.0699999999997,
+      "cum_time_agent_s": 350.9053830422446,
+      "reward_breakdown": {
+        "time_component": 1.3829101956047651,
+        "position_delta_component": 0.0,
+        "dirty_air_component": -0.1,
+        "compliance_component": -1.6,
+        "terminal_component": 0.0,
+        "total": -0.31708980439523504
+      }
+    },
+    {
+      "lap": 6,
+      "position_real": 18,
+      "position_agent": 1,
+      "tire_age_real": 5,
+      "tire_age_agent": 11,
+      "compound_real": "MEDIUM",
+      "compound_agent": "MEDIUM",
+      "is_raining": false,
+      "track_status": "green",
+      "agent_action": "stay",
+      "agent_action_confidence": 1.0,
+      "agent_action_probs": {
+        "stay": 1.0,
+        "pit_soft": 1.2544934709091127e-12,
+        "pit_medium": 4.7090324695187036e-11,
+        "pit_hard": 5.581303648416469e-13,
+        "pit_intermediate": 2.311475455485379e-09,
+        "pit_wet": 4.305840741873927e-15
+      },
+      "pit_real_this_lap": false,
+      "pit_agent_this_lap": false,
+      "forced_compliance_pit": false,
+      "compound_after_pit": null,
+      "air_temp_c": 21.9,
+      "track_temp_c": 42.0,
+      "humidity_pct": 54.0,
+      "cum_time_real_s": 466.1239999999998,
+      "cum_time_agent_s": 432.4531370668456,
+      "reward_breakdown": {
+        "time_component": -2.2857540246008483,
+        "position_delta_component": 0.0,
+        "dirty_air_component": -0.1,
+        "compliance_component": -1.7333333333333334,
+        "terminal_component": 0.0,
+        "total": -4.119087357934182
+      }
+    },
+    {
+      "lap": 7,
+      "position_real": 18,
+      "position_agent": 1,
+      "tire_age_real": 6,
+      "tire_age_agent": 12,
+      "compound_real": "MEDIUM",
+      "compound_agent": "MEDIUM",
+      "is_raining": false,
+      "track_status": "green",
+      "agent_action": "stay",
+      "agent_action_confidence": 1.0,
+      "agent_action_probs": {
+        "stay": 1.0,
+        "pit_soft": 1.360161549363026e-12,
+        "pit_medium": 5.91645135661345e-11,
+        "pit_hard": 8.126017220222437e-13,
+        "pit_intermediate": 2.7309807748565618e-09,
+        "pit_wet": 6.933040059208754e-15
+      },
+      "pit_real_this_lap": false,
+      "pit_agent_this_lap": false,
+      "forced_compliance_pit": false,
+      "compound_after_pit": null,
+      "air_temp_c": 22.0,
+      "track_temp_c": 43.1,
+      "humidity_pct": 54.0,
+      "cum_time_real_s": 545.386,
+      "cum_time_agent_s": 514.4602277070792,
+      "reward_breakdown": {
+        "time_component": -2.7450906402334283,
+        "position_delta_component": 0.0,
+        "dirty_air_component": -0.1,
+        "compliance_component": -1.8666666666666667,
+        "terminal_component": 0.0,
+        "total": -4.711757306900095
+      }
+    },
+    {
+      "lap": 8,
+      "position_real": 19,
+      "position_agent": 4,
+      "tire_age_real": 7,
+      "tire_age_agent": 13,
+      "compound_real": "MEDIUM",
+      "compound_agent": "MEDIUM",
+      "is_raining": false,
+      "track_status": "green",
+      "agent_action": "stay",
+      "agent_action_confidence": 1.0,
+      "agent_action_probs": {
+        "stay": 1.0,
+        "pit_soft": 1.4957211901325818e-12,
+        "pit_medium": 7.841986782164412e-11,
+        "pit_hard": 1.3164443493640654e-12,
+        "pit_intermediate": 3.442971685529983e-09,
+        "pit_wet": 1.2568488323662017e-14
+      },
+      "pit_real_this_lap": false,
+      "pit_agent_this_lap": true,
+      "forced_compliance_pit": true,
+      "compound_after_pit": "HARD",
+      "air_temp_c": 22.1,
+      "track_temp_c": 44.1,
+      "humidity_pct": 52.0,
+      "cum_time_real_s": 638.6280000000002,
+      "cum_time_agent_s": 606.9707796480932,
+      "reward_breakdown": {
+        "time_component": -13.248551941013886,
+        "position_delta_component": -5.604,
+        "dirty_air_component": -0.1,
+        "compliance_component": 0.0,
+        "terminal_component": 48.0,
+        "total": 29.047448058986113
+      }
+    }
+  ],
+  "pit_events": {
+    "real": [
+      {
+        "lap": 2,
+        "compound_after": "MEDIUM"
+      }
+    ],
+    "agent": [
+      {
+        "lap": 8,
+        "compound_after": "HARD",
+        "confidence": 1.0,
+        "forced_compliance": true
+      }
+    ]
+  },
+  "final": {
+    "real": {
+      "position": 19,
+      "points": 0
+    },
+    "agent": {
+      "position": 4,
+      "points": 12
+    }
+  }
+}

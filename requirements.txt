@@ -1,0 +1,19 @@
+# ATTENTION -- versions a completer avec `pip freeze` depuis l'environnement
+# Windows local de reference (celui qui a produit les resultats du dossier).
+# Les numeros ci-dessous sont des PLACEHOLDERS non-verifies -- ne pas builder
+# l'image finale avant de les remplacer par les versions exactes utilisees
+# pour entrainer/evaluer les 3 modeles finaux (Phase 3.5).
+#
+# torch installe separement via --extra-index-url CPU dans le Dockerfile
+# (voir RUN pip install ...) -- ne pas dupliquer ici avec une version CUDA
+
+stable-baselines3==2.3.0
+gymnasium==0.29.1
+torch==2.3.1
+optuna==3.6.1
+pandas==2.2.2
+pyarrow==16.1.0
+numpy==1.26.4
+matplotlib==3.9.0
+jupyter==1.0.0
+fastf1==3.3.0
