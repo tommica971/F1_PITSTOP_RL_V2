@@ -52,3 +52,4 @@ dashboard/dashboard.html
 dashboard/data.zip
 reports/drift/
 .venv-data/
+*.log
