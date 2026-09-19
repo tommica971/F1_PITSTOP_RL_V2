@@ -192,8 +192,14 @@ def main():
                 pass
 
         chosen = agent[0]["chosen"]
-        verdict = ("bat l'oracle" if a_mean > oracle
-                   else "bat le 0-stop" if a_mean > zero else "sous le 0-stop")
+        if abs(a_mean - zero) < 1e-9:
+            verdict = "abstention"      # = score du 0-stop
+        elif a_mean > oracle:
+            verdict = "bat l'oracle"
+        elif a_mean > zero:
+            verdict = "bat le 0-stop"
+        else:
+            verdict = "sous le 0-stop"
         pool_txt = "train" if in_pool else "test" if in_gp_pool else "-"
         print(f"{event[:29]:<30}{pool_txt:>6}{a_mean:>10.1f}"
               f"{zero:>10.1f}{oracle:>10.1f}{len(chosen):>9}{verdict:>16}")

@@ -1228,7 +1228,7 @@ function renderModelTab(){
   if(modelData.optuna && modelData.optuna.best_params){
     const bp = modelData.optuna.best_params;
     optunaEl.innerHTML = `<div style="color:var(--text-dim);margin-bottom:10px;line-height:1.6;">Hyperparamètres <b>testés et non retenus</b>. Le modèle présenté (${modelData.main_model}) utilise les réglages par défaut : récompense moyenne hors pool −38,8 ± 6,4 contre −46,6 ± 7,1 avec ces réglages (3 graines chacun), bien que l’étude ait été conduite sur ces mêmes GP. Étude : ${modelData.optuna.trials.length} essais complétés${modelData.optuna.n_pruned!=null ? ", "+modelData.optuna.n_pruned+" élagués" : ""}.</div>` + `<div style="color:var(--text-dim);margin-bottom:6px;">Meilleure valeur : ${modelData.optuna.best_value.toFixed(2)} (sur ${modelData.optuna.trials.length} essais complétés)</div>` +
-      Object.entries(bp).map(([k,v])=>`<div>${k} : <span style="color:var(--alpine-pink)">${typeof v==='number' ? v.toPrecision(4) : v}</span></div>`).join('');
+      Object.entries(bp).map(([k,v])=>`<div>${k} : <span style="color:var(--alpine-pink)">${typeof v==='number' ? (Number.isInteger(v) ? v : v.toPrecision(4)) : v}</span></div>`).join('');
   } else {
     optunaEl.innerHTML = `<div style="color:var(--text-faint);">Données Optuna non disponibles.</div>`;
   }
