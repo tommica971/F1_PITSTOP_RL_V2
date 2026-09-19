@@ -48,7 +48,6 @@ models_v1/**/*.zip
 /clean_total_report.*
 /ablation.bat
 /*.zip
-dashboard/dashboard.html
 dashboard/data.zip
 reports/drift/
 .venv-data/
