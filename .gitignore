@@ -52,3 +52,4 @@ dashboard/data.zip
 reports/drift/
 .venv-data/
 *.log
+docs/REPRISE_F1_PITSTOP_RL.md
